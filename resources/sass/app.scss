@@ -1,7 +1,22 @@
 // Fonts
 //@import url('https://fonts.googleapis.com/css?family=Nunito');
 @import '~@mdi/font/css/materialdesignicons.min.css';
+@import "~shabnam-font/dist/font-face.css";
+
+
 // Variables
 @import 'variables';
 
 @import '~vuetify/dist/vuetify.min.css';
+*{
+    font-family: Shabnam !important;
+}
+.container {
+    max-width: 1200px;
+}
+.container--fluid {
+    max-width: 100%;
+}
+.top-nav{
+    font-size: 13px;
+}

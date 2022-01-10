@@ -1,7 +1,8 @@
 export default [
     {
-        path: '/login',
-        component: require('../components/login').default,
-        name: 'login'
-    }
+        path: '/',
+        component: require('../view/front/home').default,
+        name: 'home'
+    },
+
 ]

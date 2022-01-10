@@ -10,11 +10,15 @@
 </head>
 <body>
 <div id="app">
-    <router-link to="/login">Go to Foo</router-link>
-    <router-view></router-view>
+    <v-app>
+        <router-view></router-view>
+    </v-app>
+
+
 </div>
 <script src="{{asset('js/app.js')}}">
 
 </script>
 </body>
 </html>
+
