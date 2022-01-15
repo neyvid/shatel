@@ -11,6 +11,4 @@ const app = new Vue({
     vuetify,
     router,
 
-
-
 });

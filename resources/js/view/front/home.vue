@@ -1,24 +1,31 @@
 <template>
     <v-main>
-        <top-nav @show-navigation-drawer="drawer=!drawer"></top-nav>
-        <front-navbar></front-navbar>
-        <front-navigation-drawer :drawer="drawer"></front-navigation-drawer>
+
+        <carousel></carousel>
+        <online-services></online-services>
+        <our-services></our-services>
+        <our-news></our-news>
+
+
+
     </v-main>
 </template>
 
 <script>
-import TopNav from "../../components/front/TopNav";
-import FrontNavbar from "../../components/front/FrontNavbar";
-import FrontNavigationDrawer from "../../components/front/FrontNavigationDrawer";
+
+import Carousel from "../../components/front/Carousel";
+import OnlineServices from "../../components/front/OnlineServices";
+import OurServices from "../../components/front/OurServices";
+import OurNews from "../../components/front/OurNews";
+
 
 export default {
     name: "home",
-    data() {
-        return {
-            drawer: false,
-        }
-    },
-    components: {FrontNavigationDrawer, FrontNavbar, TopNav}
+
+    components: {
+
+        Carousel,OnlineServices,OurServices, OurNews,
+    }
 }
 </script>
 
