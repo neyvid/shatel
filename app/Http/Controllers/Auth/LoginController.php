@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -37,4 +39,44 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    protected function validateLogin(Request $request)
+    {
+
+        $request->validate([
+            "username" => array('required', 'regex:/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)|09(0[1-5]|1[0-9]|2[0-2]|3[0-9]|9[4|8|9])-?[0-9]{3}-?[0-9]{4}$/'),
+            'password' => 'required|string',
+        ]);
+    }
+
+    protected function credentials(Request $request)
+    {
+        $username = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
+        return [
+            $username => $request->username,
+            'password' => $request->password
+        ];
+
+    }
+
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        if ($response = $this->authenticated($request, $this->guard()->user())) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse(['data' => auth()->user()], 200)
+            : redirect()->intended($this->redirectPath());
+    }
+
+    public function username()
+    {
+        return 'username';
+    }
+
 }

@@ -9,7 +9,20 @@
     <title>Document</title>
 </head>
 <body>
+@auth()
+    <script>
+        window.user = {
+            name: '{{auth('sanctum')->user()->name}}',
+            email: '{{(auth('sanctum')->user()->email)}}',
+            mobile: '{{auth('sanctum')->user()->mobile}}',
+            isVerified: {{auth('sanctum')->user()->email_verified_at===null? 1:2}},
+            isMobileVerified: {{auth('sanctum')->user()->mobile_verified_at===null? 1:2}}
+        }
+    </script>
+@endauth
+{{--{{auth('sanctum')->user()}}--}}
 <div id="app">
+
     <v-app>
         <router-view></router-view>
     </v-app>

@@ -2,7 +2,6 @@
     <v-main>
 
 
-
         <v-container fluid class="login-content-container">
             <v-container>
                 <v-row class="login-content-wrap">
@@ -14,32 +13,44 @@
                         <p class="font-weight-bold py-5 ">ورود به صفحه کاربری </p>
 
                         <v-form
-                            ref="form"
-                            v-model="valid"
-                            lazy-validation
+                            ref="registerFormData"
                         >
-
                             <v-text-field
-                                label="ایمیل"
                                 required
+                                label="ایمیل یا شماره همراه"
+                                :rules="[required('ایمیل یا شماره همراه')]"
+                                v-model="registerFormInfo.username"
+                                :error-messages="errors.username"
+
                             ></v-text-field>
 
                             <v-text-field
                                 label="رمز عبور"
                                 required
+                                type="password"
+                                :rules="[required('رمزعبور'),moreThan('رمزعبور',8)]"
+                                v-model="registerFormInfo.password"
+                                :error-messages="errors.password"
                             ></v-text-field>
-
-
-                            <v-checkbox
-                                label="مرابه یاد داشته باش!"
-                                required
-                            ></v-checkbox>
 
 
                             <v-btn block
                                    color="success"
+                                   @click="register"
+                                   class="mt-8"
                             >
-                                ورود
+
+                                <template v-if="loading">
+                                    <v-progress-circular
+                                        indeterminate
+                                        color="red"
+                                    ></v-progress-circular>
+                                </template>
+                                <template v-else>
+                                    ورود
+                                </template>
+
+
                             </v-btn>
                         </v-form>
                     </v-col>
@@ -65,7 +76,7 @@
                                         justify="center"
                                     >
                                         <div class="text-h2">
-                                            {{ slide }} Slide
+                                            {{ slide }} slide
                                         </div>
                                     </v-row>
                                 </v-sheet>
@@ -82,27 +93,19 @@
 
 <script>
 
+
+import {registerModule} from "../../../Module/Common/registerModule";
+import {required, moreThan} from "../../../rules/frontRules";
+
 export default {
     name: "Register",
+    setup() {
 
-    data() {
         return {
-            colors: [
-                'indigo',
-                'warning',
-                'pink darken-2',
-                'red lighten-1',
-                'deep-purple accent-4',
-            ],
-            slides: [
-                'First',
-                'Second',
-                'Third',
-                'Fourth',
-                'Fifth',
-            ],
+            required, moreThan, ...registerModule()
         }
-    }
+    },
+
 }
 </script>
 

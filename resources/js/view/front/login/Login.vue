@@ -14,32 +14,49 @@
                         <p class="font-weight-bold py-5 ">ورود به صفحه کاربری </p>
 
                         <v-form
-                            ref="form"
-                            v-model="valid"
-                            lazy-validation
+                            ref="loginForm"
+
                         >
 
                             <v-text-field
-                                label="ایمیل"
+                                label="ایمیل یا شماره همراه"
                                 required
+                                :rules="[required('ایمیل یا شماره همراه')]"
+                                v-model="LoginInfo.username"
+                                :error-messages="errors.username"
                             ></v-text-field>
 
                             <v-text-field
                                 label="رمز عبور"
                                 required
+                                :rules="[required('رمزعبور')]"
+                                v-model="LoginInfo.password"
+                                type="password"
+                                :error-messages="errors.password"
                             ></v-text-field>
 
 
                             <v-checkbox
                                 label="مرابه یاد داشته باش!"
                                 required
+                                v-model="LoginInfo.remember"
                             ></v-checkbox>
+                            <router-link :to="{name:'reset-password-form'}">رمزعبوررا فراموش کرده اید؟</router-link>
 
 
-                            <v-btn block
-                                   color="success"
+                            <v-btn
+                                block
+                                color="success"
+                                @click="login"
+                                class="mt-3"
                             >
-                                ورود
+                                <template v-if="loading">
+                                    <v-progress-circular
+                                        indeterminate
+                                        color="red"
+                                    ></v-progress-circular>
+                                </template>
+                                <template v-else> ورود</template>
                             </v-btn>
                         </v-form>
                     </v-col>
@@ -81,27 +98,69 @@
 </template>
 
 <script>
+
+import {required,moreThan} from "../../../rules/frontRules";
+import {loginModule} from "../../../Module/Common/loginModule";
 export default {
     name: "Login",
-
-    data() {
+    setup() {
         return {
-            colors: [
-                'indigo',
-                'warning',
-                'pink darken-2',
-                'red lighten-1',
-                'deep-purple accent-4',
-            ],
-            slides: [
-                'First',
-                'Second',
-                'Third',
-                'Fourth',
-                'Fifth',
-            ],
+             required,moreThan, ...loginModule()
         }
-    }
+    },
+    // data() {
+    //
+    //     return {
+    //         loading: false,
+    //         colors: [
+    //             'indigo',
+    //             'warning',
+    //             'pink darken-2',
+    //             'red lighten-1',
+    //             'deep-purple accent-4',
+    //         ],
+    //         slides: [
+    //             'First',
+    //             'Second',
+    //             'Third',
+    //             'Fourth',
+    //             'Fifth',
+    //         ],
+    //         LoginInfo: {
+    //             email: null,
+    //             password: null,
+    //             remember: false
+    //         },
+    //         errors: {
+    //             email: null,
+    //             password: null,
+    //         },
+    //         emailRules: [
+    //             v => !!v || 'وارد نمودن ایمیل الزامی می باشد.'
+    //         ],
+    //         passwordRules: [
+    //             v => !!v || 'وارد نمودن رمزعبور الزامی می باشد.'
+    //         ],
+    //     }
+    // },
+    // methods: {
+    //     login() {
+    //         if (this.$refs.loginForm.validate()) {
+    //             this.loading = true;
+    //             axios.post('/login', this.LoginInfo).then(() => {
+    //                 router.push('/')
+    //             }).catch((error) => {
+    //                 this.errors.email = error.response.data.errors.email[0];
+    //                 this.errors.password = error.response.data.errors.password[0];
+    //
+    //             }).finally(() => {
+    //                 this.loading = false;
+    //             })
+    //         }
+    //
+    //
+    //     }
+    // }
 }
 </script>
 

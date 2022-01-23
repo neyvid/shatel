@@ -1,5 +1,6 @@
 <template>
     <v-container class="mb-4">
+
         <v-row class="hidden-lg-and-up mb-4">
             <v-col cols="8" class="text-right  ">
                 <p class="ma-0 pa-2 d-inline">
@@ -55,10 +56,32 @@
                             <v-icon>mdi-lock</v-icon>
                             شاتل کلاب
                         </v-btn>
-                        <v-btn class="success mr-2 ml-2" to="login">
-                            <v-icon>mdi-lock</v-icon>
-                            مای شاتل
-                        </v-btn>
+                        <template v-if="!auth">
+                            <v-btn class="success mr-2 ml-2" to="login">
+                                <v-icon>mdi-lock</v-icon>
+                                مای شاتل
+                            </v-btn>
+                        </template>
+                        <template v-else>
+                            <v-menu offset-y>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn class=" mr-2 ml-2"
+                                           color="success"
+                                           dark
+                                           v-on="on">
+                                        {{ (user.email) ? user.email : user.mobile }}
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item>
+                                        <v-list-item-title style="cursor: pointer">پروفایل</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item style="cursor: pointer">
+                                        <v-list-item-title @click.prevent="logout">خروج</v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </template>
                         <v-app-bar-nav-icon class="hidden-lg-and-up"
                                             @click="$emit('show-navigation-drawer')"></v-app-bar-nav-icon>
                     </v-col>
@@ -69,14 +92,33 @@
 </template>
 
 <script>
+import {mapState,mapActions} from 'vuex'
+import VerifyEmailAlert from "./VerifyEmailAlert";
+
+
 export default {
     name: "TopNav",
+    components: {VerifyEmailAlert},
     data() {
         return {
 
             showTop: false,
+            // auth: this.$store.state.isLoggedIn,
+            // user: this.$store.state.user,
+
         }
+    },
+    computed: {
+        ...mapState({
+            auth: state => state.user.isLoggedIn,
+            user: state => state.user.user
+        })
+    },
+    methods: {
+
+        ...mapActions(['logout'])
     }
+
 
 }
 </script>
