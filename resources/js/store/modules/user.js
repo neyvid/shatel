@@ -41,7 +41,14 @@ export default {
         login({commit}, LoginInfo) {
             return axios.post('/login', LoginInfo)
                 .then((response) => {
-                    commit('LOGIN', response.data.data)
+
+                    commit('LOGIN', {
+                        'name': response.data.data.name,
+                        'email': response.data.data.email,
+                        'mobile': response.data.data.mobile,
+                        'email_verified_at': response.data.data.email_verified_at,
+                        'mobile_verified_at': response.data.data.mobile_verified_at,
+                    })
 
                 })
 

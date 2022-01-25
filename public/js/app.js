@@ -8468,7 +8468,13 @@ __webpack_require__.r(__webpack_exports__);
     login: function login(_ref2, LoginInfo) {
       var commit = _ref2.commit;
       return axios.post('/login', LoginInfo).then(function (response) {
-        commit('LOGIN', response.data.data);
+        commit('LOGIN', {
+          'name': response.data.data.name,
+          'email': response.data.data.email,
+          'mobile': response.data.data.mobile,
+          'email_verified_at': response.data.data.email_verified_at,
+          'mobile_verified_at': response.data.data.mobile_verified_at
+        });
       });
     },
     register: function register(_ref3, RegisterInfo) {
@@ -42650,15 +42656,13 @@ var render = function () {
   return _c(
     "div",
     [
-      _vm.user.user &&
-      _vm.user.user.isVerified === 1 &&
-      _vm.user.user.email != ""
+      _vm.user.user && _vm.user.user.isVerified === 1 && !!_vm.user.user.email
         ? _c("verify-email-alert")
         : _vm._e(),
       _vm._v(" "),
       _vm.user.user &&
       _vm.user.user.isMobileVerified === 1 &&
-      _vm.user.user.mobile != null
+      !!_vm.user.user.mobile
         ? _c("verify-mobile-alert")
         : _vm._e(),
       _vm._v(" "),

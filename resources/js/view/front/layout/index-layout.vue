@@ -1,7 +1,7 @@
 <template>
     <div>
-        <verify-email-alert v-if="user.user && user.user.isVerified===1 && user.user.email !='' "></verify-email-alert>
-        <verify-mobile-alert v-if="user.user && user.user.isMobileVerified===1 && user.user.mobile !=null "   ></verify-mobile-alert>
+        <verify-email-alert v-if="user.user && user.user.isVerified===1 && !!user.user.email  "></verify-email-alert>
+        <verify-mobile-alert v-if="user.user && user.user.isMobileVerified===1 && !!user.user.mobile"   ></verify-mobile-alert>
         <top-nav @show-navigation-drawer="drawer=!drawer"></top-nav>
         <front-navigation-drawer :drawer="drawer"></front-navigation-drawer>
         <front-navbar></front-navbar>
