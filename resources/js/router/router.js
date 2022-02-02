@@ -10,7 +10,22 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
     if (to.meta.guest && store.state.user.isLoggedIn) {
-        next('/')
+        next({name:'home'})
+    } else {
+        next()
+    }
+    if (to.meta.auth && !store.state.user.isLoggedIn) {
+        next({name:'home'})
+    } else {
+        next()
+    }
+    if (to.meta.auth) {
+        if (store.state.user.user.authType === 'mobile' && store.state.user.user.isMobileVerified !== 2) {
+            next({name:'home'})
+        }
+        if (store.state.user.user.authType === 'email' && store.state.user.user.isVerified !== 2) {
+            next({name:'home'})
+        }
     } else {
         next()
     }

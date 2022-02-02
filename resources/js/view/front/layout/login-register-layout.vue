@@ -14,7 +14,6 @@
 
                 </v-col>
             </v-row>
-
         </v-container>
         <router-view></router-view>
         <footer-section></footer-section>

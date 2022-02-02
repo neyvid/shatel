@@ -6,7 +6,6 @@
         <front-navigation-drawer :drawer="drawer"></front-navigation-drawer>
         <front-navbar></front-navbar>
         <router-view></router-view>
-
         <footer-section></footer-section>
     </div>
 </template>

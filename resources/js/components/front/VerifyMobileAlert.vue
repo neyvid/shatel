@@ -2,8 +2,12 @@
     <v-container fluid class="verify-mobile-banner-wrap">
         <v-row>
             <v-col class="d-flex justify-center align-center">
+
                 <p class="ma-0">شما هنوز شماره همراه خود را تایید نکرده اید.</p>
-                <span v-if="sended">کد فعال سازی برای شماره همراه شما به درستی ارسال گردید.</span>
+
+                <template v-if="sended">
+                    <span class="pr-5">کد فعال سازی برای شماره همراه شما به درستی ارسال گردید.</span>
+                </template>
                 <template v-else>
                     <v-btn :disabled="isClicked" class="success mr-4 " small rounded
                            @click="resendMobileVerify">ارسال مجدد کد تایید
@@ -15,8 +19,6 @@
                             color="blue"
                         ></v-progress-circular>
                     </v-btn>
-
-
                 </template>
             </v-col>
         </v-row>
@@ -25,20 +27,22 @@
 
 <script>
 import {ref} from "@vue/composition-api";
+import router from "../../router/router";
 
 export default {
     name: "VerifyMobileAlert",
     setup() {
+
         const sended = ref(false);
         const isClicked = ref(false)
 
         function resendMobileVerify() {
             isClicked.value = true;
-            //baraye monbile dorost beshe
-            axios.post('/email/resend').then(() => {
+            axios.post('/mobileVerify/resend').then(() => {
                 sended.value = true;
             }).finally(() => {
                 isClicked.value = false;
+                router.push({name: 'verify-mobile'})
             })
         }
 

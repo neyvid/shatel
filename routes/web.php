@@ -30,6 +30,7 @@ Route::post('/password/reset', [App\Http\Controllers\Auth\ResetPasswordControlle
 Route::get('/password/reset/{token}',function () {
     return view('home');
 })->name('password.reset');
+Route::post('/mobileVerify/resend',[App\Http\Controllers\Auth\MobileVerificationController::class,'resend'])->name('mobile.verify.resend');
 Route::post('/mobile/verify/{hash}',[App\Http\Controllers\Auth\MobileVerificationController::class,'verify'])->name('mobile.verify');
 
 

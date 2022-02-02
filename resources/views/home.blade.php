@@ -15,6 +15,7 @@
             name: '{{auth('sanctum')->user()->name}}',
             email: '{{(auth('sanctum')->user()->email)}}',
             mobile: '{{auth('sanctum')->user()->mobile}}',
+            authType: '{{auth('sanctum')->user()->mobile===null? 'email':'mobile'}}',
             isVerified: {{auth('sanctum')->user()->email_verified_at===null? 1:2}},
             isMobileVerified: {{auth('sanctum')->user()->mobile_verified_at===null? 1:2}}
         }

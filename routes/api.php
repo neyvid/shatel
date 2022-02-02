@@ -17,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::patch('/admin/profile',[\App\Http\Controllers\Admin\ProfileController::class,'update'])->middleware('auth:sanctum')->name('profile.update');

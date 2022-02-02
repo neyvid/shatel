@@ -49,4 +49,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new \App\Notifications\VerifyEmail());
     }
+
 }

@@ -1,4 +1,5 @@
 export default [
+    //FRONT END ROUTES
     {
         path: '',
         component: require('../view/front/layout/index-layout').default,
@@ -37,12 +38,15 @@ export default [
     {
         path: '/verify-email',
         component: require('../view/front/register/VerifyEmail').default,
-        name: 'verify-email'
+        name: 'verify-email',
+        meta: {auth: true}
+
     },
     {
         path: '/verify-mobile',
         component: require('../view/front/register/VerifyMobile').default,
-        name: 'verify-mobile'
+        name: 'verify-mobile',
+        meta: {auth: true}
     },
     {
         path: '/reset-password-form-request',
@@ -52,8 +56,22 @@ export default [
     },
     {
         path: '/password/reset/:token',
-        component:require('../view/front/login/ResetPassword').default,
-        name:'reset-password',
+        component: require('../view/front/login/ResetPassword').default,
+        name: 'reset-password',
         meta: {guest: true}
+    },
+//    Admin Routes
+    {
+        path: '/profile',
+        component: require('../view/profile/layout/index-layout').default,
+        children: [
+            {
+                path: '',
+                component: require('../view/profile/home').default,
+                name:'',
+                meta: {auth:true}
+            }
+        ]
     }
+
 ]
