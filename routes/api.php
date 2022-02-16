@@ -17,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::patch('/admin/profile',[\App\Http\Controllers\Admin\ProfileController::class,'update'])->middleware('auth:sanctum')->name('profile.update');
+Route::patch('/user/update',[\App\Http\Controllers\Admin\UserController::class,'update'])->middleware('auth:sanctum')->name('profile.update');
+Route::post('/user/upload',[\App\Http\Controllers\UploadImage::class,'upload'])->middleware('auth:sanctum');
+//
+//Route::prefix('user')->group(function () {
+//    Route::post('/upload', [\App\Http\Controllers\UploadImage::class,'upload']);
+//});

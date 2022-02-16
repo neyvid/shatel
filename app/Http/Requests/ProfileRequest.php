@@ -27,11 +27,9 @@ class ProfileRequest extends FormRequest
             'name'=>['required'],
             'lastname'=>['required'],
             'email'=>['required','email',"unique:users,email,{$this->id}"],
+            'mobile'=>['required',"unique:users,mobile,{$this->id}"],
         ];
     }
 
-    public function messages()
-    {
-        return [];
-    }
+
 }

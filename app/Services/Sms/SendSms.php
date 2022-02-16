@@ -2,7 +2,7 @@
 
 namespace App\Services\Sms;
 
-class SendSms extends SmsContract
+class SendSms
 {
     private static $sms_client;
     const username = 'smsh5511';

@@ -68,8 +68,32 @@ export default [
             {
                 path: '',
                 component: require('../view/profile/home').default,
-                name:'',
-                meta: {auth:true}
+                name: '',
+
+            },
+            {
+                path: 'cities', //profile/cities
+                component: require('../view/profile/cities/index').default,
+                name: 'cities',
+
+            },
+            {
+                path: 'provinces', //profile/cities
+                component: require('../view/profile/provinces/index').default,
+                name: 'provinces',
+
+            },
+            {
+                path: 'editor', //profile/cities
+                component: require('../view/profile/editor/editor').default,
+                name: 'editor',
+
+            },
+            {
+                path: 'telecomeCenters', //profile/telecomeCenters
+                component: require('../view/profile/telecomeCenters/index').default,
+                name: 'telecomeCenters',
+
             }
         ]
     }

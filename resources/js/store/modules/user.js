@@ -28,13 +28,14 @@ export default {
             state.user.isMobileVerified = payload.status ? 2 : 1;
             state.user.isVerified = 1;
 
-        }
+        },
+
 
 
     },
     actions: {
         logout({commit}) {
-           return  axios.post('/logout').then(() => {
+            return axios.post('/logout').then(() => {
                 commit('LOGOUT');
             })
         },
@@ -64,6 +65,8 @@ export default {
                 commit('MOBILE_VERIFY', response.data);
                 return (response);
             })
-        }
+        },
+
+
     }
 }
