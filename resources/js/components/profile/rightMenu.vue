@@ -91,6 +91,13 @@ export default {
                         {id: 7, name: 'مشاهده مراکز مخابراتی',to: {name:'telecomeCenters'}},
                     ],
                 },
+                {
+                    id: 7,
+                    name: 'پیش شماره ها',
+                    children: [
+                        {id: 8, name: 'مشاهده پیش شماره ها',to: {name:'areacode'}},
+                    ],
+                },
 
             ],
         }

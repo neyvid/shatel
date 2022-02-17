@@ -32,6 +32,9 @@ Route::get('/password/reset/{token}', function () {
 })->name('password.reset');
 Route::post('/mobileVerify/resend', [App\Http\Controllers\Auth\MobileVerificationController::class, 'resend'])->name('mobile.verify.resend');
 Route::post('/mobile/verify/{hash}', [App\Http\Controllers\Auth\MobileVerificationController::class, 'verify'])->name('mobile.verify');
+Route::post('/adsl/support/check', [\App\Http\Controllers\Front\AdslCheck::class, 'adslSupportCheck'])->name('adsl.support.check');
+Route::get('/adsl/support/getProvinces', [\App\Http\Controllers\Front\AdslCheck::class, 'getProvinces'])->name('adsl.support.check.getProvinces');
+Route::get('/adsl/support/getCititesOfProvince/{id}', [\App\Http\Controllers\Front\AdslCheck::class, 'getCitiesOfProvince'])->name('adsl.support.check.getCitiesOfProvince');
 
 
 //Admin
@@ -45,12 +48,21 @@ Route::prefix('admin')->group(function (){
     Route::post('/cities/create', [App\Http\Controllers\Admin\CityController::class, 'create'])->name('cities.create');
     Route::get('/city/edit/{id}', [App\Http\Controllers\Admin\CityController::class, 'edit'])->name('cities.edit.show');
     Route::post('/city/edit/{id}', [App\Http\Controllers\Admin\CityController::class, 'update'])->name('cities.edit.update');
-    Route::get('/city/delete/{id}', [App\Http\Controllers\Admin\CityController::class, 'delete'])->name('cities.edit.delete');
+
+
+    Route::get('/city/delete/{id}', [App\Http\Controllers\Admin\CityController::class, 'delete'])->name('cities.delete');
+
     Route::get('/telecomcenters', [App\Http\Controllers\Admin\TelecomCenterController::class, 'all'])->name('TelecomCenters');
     Route::post('/telecomcenter/create', [App\Http\Controllers\Admin\TelecomCenterController::class, 'create'])->name('TelecomCenters.create');
     Route::get('/telecomcenter/delete/{id}', [App\Http\Controllers\Admin\TelecomCenterController::class, 'delete'])->name('TelecomCenters.delete');
     Route::get('/telecomcenter/edit/{id}', [App\Http\Controllers\Admin\TelecomCenterController::class, 'edit'])->name('TelecomCenters.edit.show');
     Route::post('/telecomcenter/edit/{id}', [App\Http\Controllers\Admin\TelecomCenterController::class, 'update'])->name('TelecomCenters.edit.update');
+    Route::get('/areacodes', [App\Http\Controllers\Admin\AreacodeController::class, 'all'])->name('areacodes');
+    Route::get('/areacode/getInfo', [App\Http\Controllers\Admin\AreacodeController::class, 'getInfoForCreateItem'])->name('areacodes.getInfoForCreateItem');
+    Route::post('/areacode/create', [App\Http\Controllers\Admin\AreacodeController::class, 'create'])->name('areacodes.create');
+    Route::get('/areacode/delete/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'delete'])->name('areacode.delete');
+    Route::get('/areacode/edit/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'edit'])->name('areacode.edit.show');
+    Route::post('/areacode/edit/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'update'])->name('areacode.edit.update');
 
     Route::post('/telecomcenter/delete/all', [App\Http\Controllers\Admin\TelecomCenterController::class, 'deleteAll'])->name('TelecomCenters.deleteAll');
 });

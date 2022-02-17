@@ -44,15 +44,11 @@ export default {
     setup() {
         const drawer = ref(true);
 
-
         function logout() {
-            axios.post('/logout').then(() => {
-
-                store.state.isLoggedIn = false;
-                store.state.user = '';
+            store.dispatch('logout').then(()=>{
                 router.push({name: 'home'})
-
             })
+
         }
 
         return {

@@ -37,9 +37,9 @@ export function loginModule() {
             loading.value = true;
             store.dispatch('login', LoginInfo.value)
                 .then(() => {
-                    router.push('/')
+                    router.push({name:'home'})
                 }).catch((error) => {
-                // console.log(error.response)
+
                 errors.value.username = error.response.data.errors.username != undefined ? error.response.data.errors.username[0] : '';
                 errors.value.password = error.response.data.errors.password != undefined ? error.response.data.errors.password[0] : '';
 

@@ -7,19 +7,25 @@ abstract class BaseRepository
 
     protected $model;
 
-    public function search(string $serachValue,$searchFiled)
+    public function search(string $serachValue, $searchFiled)
     {
-        return $this->model::where($searchFiled,'like','%'.$serachValue.'%')->get();
+        return $this->model::where($searchFiled, 'like', '%' . $serachValue . '%')->get();
 
     }
 
-    public function all(string $with=null)
+    public function allWith()
     {
-        if($with!=null){
+       return $this->model::with('city','province','telecomcenter')->get();
+    }
+
+    public function all(string $with = null)
+    {
+        if ($with != null) {
             return $this->model::with($with)->get();
         }
         return $this->model::all();
     }
+
     public function find(int $id)
     {
         return $this->model::find($id);
@@ -54,7 +60,7 @@ abstract class BaseRepository
     public function findBy(array $criteria, $single = true, string $condition = '=')
     {
         $query = $this->model::query();
-        foreach ($query as $key => $item) {
+        foreach ($criteria as $key => $item) {
             $query->where($key, $condition, $item);
         }
         if ($single) {
@@ -63,5 +69,6 @@ abstract class BaseRepository
         return $query->get();
 
     }
+
 
 }

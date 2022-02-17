@@ -298,6 +298,7 @@ export default {
     created() {
 
         axios.get('/admin/provinces').then(({data}) => {
+     ;
             this.provinceData = data;
 
         })

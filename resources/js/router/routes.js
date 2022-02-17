@@ -1,3 +1,5 @@
+import store from "../store";
+
 export default [
     //FRONT END ROUTES
     {
@@ -64,38 +66,48 @@ export default [
     {
         path: '/profile',
         component: require('../view/profile/layout/index-layout').default,
+
         children: [
             {
                 path: '',
                 component: require('../view/profile/home').default,
-                name: '',
+                name: 'profile',
+                meta: {auth: true},
 
             },
             {
                 path: 'cities', //profile/cities
                 component: require('../view/profile/cities/index').default,
                 name: 'cities',
-
+                meta: {auth: true},
             },
             {
                 path: 'provinces', //profile/cities
                 component: require('../view/profile/provinces/index').default,
                 name: 'provinces',
-
+                meta: {auth: true},
             },
             {
                 path: 'editor', //profile/cities
                 component: require('../view/profile/editor/editor').default,
                 name: 'editor',
-
+                meta: {auth: true},
             },
             {
                 path: 'telecomeCenters', //profile/telecomeCenters
                 component: require('../view/profile/telecomeCenters/index').default,
                 name: 'telecomeCenters',
+                meta: {auth: true},
+            },
+            {
+                path: 'areacode', //profile/telecomeCenters
+                component: require('../view/profile/areacode/index').default,
+                name: 'areacode',
+                meta: {auth: true},
+            },
 
-            }
-        ]
+        ],
+
     }
 
 ]

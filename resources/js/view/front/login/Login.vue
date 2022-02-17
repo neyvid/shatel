@@ -101,10 +101,13 @@
 
 import {required,moreThan} from "../../../rules/frontRules";
 import {loginModule} from "../../../Module/Common/loginModule";
+import store from '../../../store';
+
 export default {
     name: "Login",
     setup() {
         return {
+
              required,moreThan, ...loginModule()
         }
     },

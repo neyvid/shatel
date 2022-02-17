@@ -17,7 +17,7 @@ class CityFactory extends Factory
     {
         return [
             'name'=>$this->faker->city(),
-//            'province_id'=>2
+            'province_id'=>6
         ];
     }
 
