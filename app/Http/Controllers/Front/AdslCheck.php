@@ -30,13 +30,15 @@ class AdslCheck extends Controller
             'city_id' => $request->city_id,
         ];
         $isAreacode = $this->areacodeRepository->findBy($adslCheckData);
-        if ($isAreacode) {
+
+        if ($isAreacode!=' ') {
             $isAreacode->city;
             $isAreacode->telecomcenter;
             $isAreacode->province;
+            return $isAreacode;
         }
 
-        return $isAreacode;
+        return false;
 
     }
 

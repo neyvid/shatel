@@ -35,6 +35,8 @@ Route::post('/mobile/verify/{hash}', [App\Http\Controllers\Auth\MobileVerificati
 Route::post('/adsl/support/check', [\App\Http\Controllers\Front\AdslCheck::class, 'adslSupportCheck'])->name('adsl.support.check');
 Route::get('/adsl/support/getProvinces', [\App\Http\Controllers\Front\AdslCheck::class, 'getProvinces'])->name('adsl.support.check.getProvinces');
 Route::get('/adsl/support/getCititesOfProvince/{id}', [\App\Http\Controllers\Front\AdslCheck::class, 'getCitiesOfProvince'])->name('adsl.support.check.getCitiesOfProvince');
+Route::post('/adsl/buy/online', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'buyOnline'])->name('adsl.buy.online.first');
+Route::get('/adsl/buy/online/get/session', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'getOrderDetailsSession'])->name('adsl.buy.online.getOrderDetailsSession');
 
 
 //Admin
@@ -63,6 +65,16 @@ Route::prefix('admin')->group(function (){
     Route::get('/areacode/delete/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'delete'])->name('areacode.delete');
     Route::get('/areacode/edit/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'edit'])->name('areacode.edit.show');
     Route::post('/areacode/edit/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'update'])->name('areacode.edit.update');
+    Route::get('/oprators', [App\Http\Controllers\Admin\OpratorController::class, 'all'])->name('oprators');
+    Route::get('/oprator/delete/{id}', [App\Http\Controllers\Admin\OpratorController::class, 'delete'])->name('oprators.delete');
+    Route::post('/oprator/create', [App\Http\Controllers\Admin\OpratorController::class, 'create'])->name('oprators.create');
+    Route::get('/oprator/edit/{id}', [App\Http\Controllers\Admin\OpratorController::class, 'edit'])->name('oprators.edit.show');
+    Route::post('/oprator/edit/{id}', [App\Http\Controllers\Admin\OpratorController::class, 'update'])->name('oprators.edit.update');
+    Route::get('/services', [App\Http\Controllers\Admin\ServiceController::class, 'all'])->name('services');
+    Route::post('/service/create', [App\Http\Controllers\Admin\ServiceController::class, 'create'])->name('service.create');
+    Route::get('/service/delete/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'delete'])->name('service.delete');
+    Route::get('/service/edit/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'edit'])->name('service.edit.show');
+    Route::post('/service/edit/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'update'])->name('service.edit.update');
 
     Route::post('/telecomcenter/delete/all', [App\Http\Controllers\Admin\TelecomCenterController::class, 'deleteAll'])->name('TelecomCenters.deleteAll');
 });

@@ -109,9 +109,21 @@
                                         </tbody>
                                     </template>
                                 </v-simple-table>
-                                <v-btn class="mt-4 success"> خرید آنلاین</v-btn>
+                                <v-btn class="mt-4 success" @click="buyAdslBtn"> خرید آنلاین</v-btn>
                             </v-col>
                         </v-row>
+
+                    </v-expand-transition>
+                    <!--                    online Order Table end-->
+                    <!--                    online Order Table start-->
+                    <v-expand-transition>
+                        <v-row v-if="adslCheckFail">
+                            <v-col cols="10">
+                                <p>متاسفانه در استان و شهر شما ، این شماره برای دریافت خدمات اینترنت پر سرعت تعریف نشده
+                                    است.</p>
+                            </v-col>
+                        </v-row>
+
                     </v-expand-transition>
                     <!--                    online Order Table end-->
 
@@ -155,13 +167,15 @@
 
 <script>
 import {required, code} from "../../../rules/frontRules";
-
+import router from "../../../router/router";
+import Swal from "sweetalert2";
 export default {
     name: "AdslServiceAvailabilityCheck",
     data() {
 
         return {
             orderTableShow: false,
+            adslCheckFail: false,
             required,
             code,
             provinceValue: null,
@@ -217,10 +231,16 @@ export default {
             if (this.$refs.adslCheckForm.validate()) {
                 this.loading = true;
                 axios.post('/adsl/support/check', this.checkAdslInfo).then(({data}) => {
-                    this.orderTableShow = true;
-                    this.areacodeData = data;
-                    this.loading = false;
+                    if (data !== '') {
+                        this.orderTableShow = true;
+                        this.adslCheckFail = false;
+                        this.areacodeData = data;
+                    }
                 }).catch(() => {
+                    this.adslCheckFail = true;
+                    this.orderTableShow = false;
+                }).finally(() => {
+                    this.loading = false;
                 })
             }
         },
@@ -228,6 +248,16 @@ export default {
             axios.get('/adsl/support/getCititesOfProvince/' + provinceId).then(({data}) => {
                 this.cityData = data
 
+            })
+        },
+        buyAdslBtn() {
+            axios.post('/adsl/buy/online', this.areacodeData).then(({data}) => {
+                if (data !== '') {
+                    router.push({name: 'adsl-register'})
+                }
+            }).catch(() => {
+
+                Swal.fire('خطایی رخ داده است لطفا مجددا تلاش کنید!')
             })
         }
     },

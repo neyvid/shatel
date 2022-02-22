@@ -105,6 +105,18 @@ export default [
                 name: 'areacode',
                 meta: {auth: true},
             },
+            {
+                path: 'oprator', //profile/oprator
+                component: require('../view/profile/oprator/index').default,
+                name: 'oprator',
+                meta: {auth: true},
+            },
+            {
+                path: 'service', //profile/oprator
+                component: require('../view/profile/service/index').default,
+                name: 'service',
+                meta: {auth: true},
+            },
 
         ],
 

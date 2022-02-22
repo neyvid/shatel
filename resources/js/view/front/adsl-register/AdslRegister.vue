@@ -83,16 +83,38 @@ import StepTwo from "../../../components/front/adslRegister/StepTwo";
 import StepThree from "../../../components/front/adslRegister/StepThree/StepThree";
 import StepFour from "../../../components/front/adslRegister/StepFour";
 import StepFive from "../../../components/front/adslRegister/StepFive";
+import router from "../../../router/router";
+import Swal from "sweetalert2";
 
 export default {
     name: "AdslRegister",
-    components: {StepFive, StepThree, StepOne, StepTwo,StepFour},
+    components: {StepFive, StepThree, StepOne, StepTwo, StepFour},
 
     data() {
         return {
-            e1: 5,
+            e1: 1,
+            orderDetails: [],
         }
     },
+    created() {
+        axios.get('/adsl/buy/online/get/session/').then(({data}) => {
+            if (data.status) {
+                this.orderDetails = data.orderDetails;
+            } else {
+                Swal.fire({
+                    title: " ! خطا",
+                    text: ".خطایی رخ داده است، لطفا مجددا تلاش کنید",
+                    type: "success",
+                    confirmButtonText:'باشه'
+                }).then(() => {
+                    router.push({name: 'adsl-availability-check'})
+                });
+
+            }
+
+
+        })
+    }
 }
 </script>
 

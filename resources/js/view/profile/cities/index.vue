@@ -244,9 +244,7 @@ export default {
                 confirmButtonText: '!بله مطمئن هستم'
             }).then((result) => {
                 if (result.isConfirmed) {
-
                     axios.get('/admin/city/delete/' + id).then((response) => {
-
                         const index = this.cityData.map(function (obj) {
                             return obj.id;
                         }).indexOf(id);

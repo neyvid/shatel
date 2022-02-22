@@ -98,6 +98,20 @@ export default {
                         {id: 8, name: 'مشاهده پیش شماره ها',to: {name:'areacode'}},
                     ],
                 },
+                {
+                    id: 9,
+                    name: 'اپراتور ها',
+                    children: [
+                        {id: 10, name: 'مشاهده اپراتورها',to: {name:'oprator'}},
+                    ],
+                },
+                {
+                    id: 11,
+                    name: 'سرویس ها',
+                    children: [
+                        {id: 12, name: 'مشاهده سرویس ها',to: {name:'service'}},
+                    ],
+                },
 
             ],
         }
