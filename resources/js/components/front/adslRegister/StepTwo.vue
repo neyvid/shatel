@@ -55,10 +55,17 @@
 
                 <v-btn
                     color="primary"
-                    @click="$emit('nextStep')"
+                    @click="nextToStep3"
                     class="mt-8"
                 >
                     Continue
+                </v-btn>
+                <v-btn
+                    color="warning"
+                    @click="$emit('backStep')"
+                    class="mt-8"
+                >
+                    back
                 </v-btn>
 
                 <v-btn text class="mt-8">
@@ -73,11 +80,24 @@
 </template>
 
 <script>
+import store from '../../../store'
+import router from "../../../router/router";
+
 export default {
     name: "StepTwo",
+
     data: () => ({
         items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     }),
+
+    methods: {
+        nextToStep3() {
+
+            this.$emit('nextStep');
+
+
+        }
+    }
 }
 </script>
 

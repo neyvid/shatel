@@ -30,26 +30,31 @@
                                 lazy-validation
                             >
 
-                                <v-autocomplete
+<!--                                <v-autocomplete-->
+<!--                                    outlined-->
+<!--                                    :items="provinceData"-->
+<!--                                    label="استان"-->
+<!--                                    item-text="name"-->
+<!--                                    item-value="id"-->
+<!--                                    v-model="checkAdslInfo.province_id"-->
+<!--                                    :rules="[required('استان')]"-->
+<!--                                    @change="changeProvince(checkAdslInfo.province_id)"-->
+<!--                                ></v-autocomplete>-->
+<!--                                <v-autocomplete-->
+<!--                                    outlined-->
+<!--                                    :items="cityData"-->
+<!--                                    label="شهر"-->
+<!--                                    item-text="name"-->
+<!--                                    item-value="id"-->
+<!--                                    :rules="[required('شهر')]"-->
+<!--                                    v-model="checkAdslInfo.city_id"-->
+<!--                                ></v-autocomplete>-->
+                                <v-text-field
                                     outlined
-                                    :items="provinceData"
-                                    label="استان"
-                                    item-text="name"
-                                    item-value="id"
-                                    v-model="checkAdslInfo.province_id"
-                                    :rules="[required('استان')]"
-                                    @change="changeProvince(checkAdslInfo.province_id)"
-                                ></v-autocomplete>
-                                <v-autocomplete
-                                    outlined
-                                    :items="cityData"
-                                    label="استان"
-                                    item-text="name"
-                                    item-value="id"
-                                    :rules="[required('شهر')]"
-                                    v-model="checkAdslInfo.city_id"
-                                ></v-autocomplete>
-
+                                    label="کد شهر"
+                                    :rules="[required('کد'),code()]"
+                                    v-model="checkAdslInfo.city_code"
+                                ></v-text-field>
                                 <v-text-field
                                     label="شماره تلفن"
                                     required
@@ -57,12 +62,7 @@
                                     :rules="[required('شماره تلفن')]"
                                     v-model="checkAdslInfo.phone_number"
                                 ></v-text-field>
-                                <v-text-field
-                                    outlined
-                                    label="کد شهر"
-                                    :rules="[required('کد'),code()]"
-                                    v-model="checkAdslInfo.city_code"
-                                ></v-text-field>
+
 
                                 <v-btn
                                     color="primary"
@@ -226,7 +226,8 @@ export default {
             areacodeData: [],
         }
     },
-    methods: {
+    methods:
+        {
         checkAdslSupport() {
             if (this.$refs.adslCheckForm.validate()) {
                 this.loading = true;
@@ -264,8 +265,8 @@ export default {
     created() {
         axios.get('/adsl/support/getProvinces').then(({data}) => {
             this.provinceData = data;
-
         })
+        axios.get('/resetSession');
     }
 }
 </script>

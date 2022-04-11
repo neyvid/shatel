@@ -17,7 +17,7 @@
                         >
                             <v-text-field
                                 label="نام شرکت"
-
+                                v-model="companyFormData.companyName"
                                 outlined
                                 dense
                             ></v-text-field>
@@ -27,6 +27,7 @@
                                 label="نام رابط"
                                 required
                                 outlined
+                                v-model="companyFormData.companySupervisorName"
                                 dense
                             ></v-text-field>
 
@@ -36,14 +37,15 @@
                                 required
                                 outlined
                                 dense
+                                v-model="companyFormData.companySupervisorLastname"
                             ></v-text-field>
                             <v-text-field
-
+                                v-model="companyFormData.mobile"
+                                @change="changeMobile"
                                 label="شماره موبایل"
                                 required
                                 outlined dense
                             ></v-text-field>
-
                             <v-select
 
                                 label="نحوه آشنایی با صبانت"
@@ -86,7 +88,18 @@
 
 <script>
 export default {
-    name: "CompanyForm"
+    name: "CompanyForm",
+
+    data(){
+        return {
+            companyFormData:{}
+        }
+    },
+    methods:{
+        changeMobile(event){
+            this.$emit()
+        }
+    }
 }
 </script>
 

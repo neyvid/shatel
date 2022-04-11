@@ -18,6 +18,20 @@ class Service extends Model
     {
         return $this->belongsTo(Oprator::class);
     }
+    public function telecomcenter()
+    {
+        return $this->belongsTo(Telecomcenter::class);
+    }
+//
+//    public function category()
+//    {
+//        return $this->belongsTo(Category::class);
+//
+//    }
+    public function categories()
+    {
+        return $this->morphToMany(Category::class, 'categoryable');
+    }
 
     public function getTypeNameAttribute()
     {

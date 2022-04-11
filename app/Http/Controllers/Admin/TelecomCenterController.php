@@ -20,7 +20,7 @@ class TelecomCenterController extends Controller
 
     public function all()
     {
-        $telecomCenters = $this->telecomcenterRepository->all('city');
+        $telecomCenters = $this->telecomcenterRepository->all(['city']);
         $cities = $this->cityRepository->all();
         return ['cities' => $cities, 'telecomCenters' => $telecomCenters];
 

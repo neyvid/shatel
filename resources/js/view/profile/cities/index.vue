@@ -26,7 +26,7 @@
                                             cols="12">
                                             <v-text-field
                                                 label="نام شهر"
-                                                :rules="[required('نام شهر'),persianCharachter()]"
+                                                :rules="[required('نام شهر'),persianCharachter('نام شهر')]"
                                                 v-model="createItem.name"
                                                 :error-messages="errors.name"
 
@@ -116,7 +116,7 @@
                                             cols="12">
                                             <v-text-field
                                                 label="نام استان"
-                                                :rules="[required('نام استان'),persianCharachter()]"
+                                                :rules="[required('نام استان'),persianCharachter('نام استان')]"
                                                 v-model="editItem.name"
                                                 :error-messages="errors.name"
 

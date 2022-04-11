@@ -34,11 +34,11 @@ Route::post('/mobileVerify/resend', [App\Http\Controllers\Auth\MobileVerificatio
 Route::post('/mobile/verify/{hash}', [App\Http\Controllers\Auth\MobileVerificationController::class, 'verify'])->name('mobile.verify');
 Route::post('/adsl/support/check', [\App\Http\Controllers\Front\AdslCheck::class, 'adslSupportCheck'])->name('adsl.support.check');
 Route::get('/adsl/support/getProvinces', [\App\Http\Controllers\Front\AdslCheck::class, 'getProvinces'])->name('adsl.support.check.getProvinces');
+Route::get('resetSession', [\App\Http\Controllers\Front\AdslCheck::class, 'resetSession'])->name('adslCheck.resetSession');
 Route::get('/adsl/support/getCititesOfProvince/{id}', [\App\Http\Controllers\Front\AdslCheck::class, 'getCitiesOfProvince'])->name('adsl.support.check.getCitiesOfProvince');
 Route::post('/adsl/buy/online', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'buyOnline'])->name('adsl.buy.online.first');
 Route::get('/adsl/buy/online/get/session', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'getOrderDetailsSession'])->name('adsl.buy.online.getOrderDetailsSession');
-
-
+Route::get('/order/verifyPayment', [\App\Http\Controllers\Admin\OrderController::class,'verifyPayment'])->name('verifyPayment');
 //Admin
 Route::prefix('admin')->group(function (){
     Route::get('/provinces', [App\Http\Controllers\Admin\ProvinceController::class, 'all'])->name('provinces');
@@ -75,6 +75,17 @@ Route::prefix('admin')->group(function (){
     Route::get('/service/delete/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'delete'])->name('service.delete');
     Route::get('/service/edit/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'edit'])->name('service.edit.show');
     Route::post('/service/edit/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'update'])->name('service.edit.update');
+    Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'all'])->name('categories');
+    Route::post('/category/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('category.create');
+    Route::get('/category/edit/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('category.edit.show');
+    Route::post('/category/edit/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('category.edit.update');
+    Route::get('/category/delete/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'delete'])->name('category.delete');
+    Route::get('/products', [App\Http\Controllers\Admin\ProductController::class, 'all'])->name('products');
+    Route::post('/product/create', [App\Http\Controllers\Admin\ProductController::class, 'create'])->name('product.create');
+    Route::get('/product/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('product.edit.show');
+    Route::post('/product/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('product.edit.update');
+    Route::get('/product/delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'delete'])->name('product.delete');
+    Route::post('/adslRegister/save/order', [App\Http\Controllers\Admin\OrderController::class, 'create'])->name('order.create');
 
     Route::post('/telecomcenter/delete/all', [App\Http\Controllers\Admin\TelecomCenterController::class, 'deleteAll'])->name('TelecomCenters.deleteAll');
 });

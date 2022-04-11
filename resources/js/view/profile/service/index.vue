@@ -30,6 +30,14 @@
                                                 :error-messages="errors.name"
 
                                             ></v-text-field>
+
+                                            <v-text-field
+                                                label="شناسه سرویس"
+                                                :rules="[required('شناسه سرویس')]"
+                                                v-model="createItem.service_id"
+                                                :error-messages="errors.service_id"
+
+                                            ></v-text-field>
                                             <v-autocomplete
                                                 :items="opratorData"
                                                 label="اپراتور سرویس دهنده"
@@ -56,9 +64,30 @@
                                             ></v-autocomplete>
 
                                             <v-text-field
-                                                label="قیمت سرویس (تومان)"
+                                                label="قیمت پایه (تومان)"
+                                                :rules="[required('قیمت پایه')]"
+                                                v-model="createItem.base_price"
+                                                :error-messages="errors.base_price"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="قیمت فروش (تومان)"
+                                                :rules="[required('قیمت فروش')]"
+                                                v-model="createItem.sell_price"
+                                                :error-messages="errors.sell_price"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="مبنای محاسبه پورسانت (تومان)"
+                                                :rules="[required('مبنای محاسبه پورسانت')]"
+                                                v-model="createItem.commission_price"
+                                                :error-messages="errors.commission_price"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="قیمت کل (تومان)"
                                                 :rules="[required('قیمت سرویس')]"
-                                                v-model="createItem.price"
+                                                v-model="createItem.total_price"
                                                 :error-messages="errors.price"
 
                                             ></v-text-field>
@@ -98,19 +127,54 @@
 
                                             ></v-text-field>
                                             <v-text-field
+                                                label=" شناسه قیمت "
+                                                :rules="[required('شناسه فروش')]"
+                                                v-model="createItem.price_id"
+                                                :error-messages="errors.price_id"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label=" شناسه دسترسی "
+                                                :rules="[required('شناسه دسترسی')]"
+                                                v-model="createItem.available_id"
+                                                :error-messages="errors.available_id"
+
+                                            ></v-text-field>
+                                            <v-text-field
                                                 label=" میزان ترافیک بین المللی(MB) "
                                                 :rules="[required('میزان ترافیک بین المللی ')]"
                                                 v-model="createItem.international_trafic"
                                                 :error-messages="errors.international_trafic"
 
                                             ></v-text-field>
-                                            <v-text-field
+                                            <!--sell zone is telecomcenter_id-->
+                                            <v-autocomplete
+                                                :items="telecomcenterData"
+                                                label="منطقه فروش"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="createItem.telecomcenter_id"
+                                                :rules="[required('منطقه فروش')]"
+                                            ></v-autocomplete>
+                                            <v-autocomplete
+                                                :items="categoryData"
+                                                label="دسته بندی سرویس"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="createItem.category_id"
+                                                :rules="[required('دسته بندی سرویس')]"
+                                            ></v-autocomplete>
+                                            <date-picker v-model="createItem.expire_date"
+                                                         label="اعتبار سرویس تا :"
+                                            ></date-picker>
+                                            <v-textarea
+                                                class="mt-4"
                                                 label="توضیحات"
                                                 :rules="[required('توضیحات')]"
                                                 v-model="createItem.description"
                                                 :error-messages="errors.description"
+                                            ></v-textarea>
 
-                                            ></v-text-field>
 
                                         </v-col>
 
@@ -146,9 +210,20 @@
                         :headers="headers"
                         :items="servicesData"
                         :items-per-page="20"
-
                         class="elevation-1"
+
+                        :expanded.sync="expanded"
+                        show-expand
                     >
+                        <template v-slot:expanded-item="{ headers, item }">
+                            <td :colspan="headers.length">
+                                <tr>توضیحات: {{ item.description }}</tr>
+                                <tr>شناسه قیمت: {{ item.price_id }}</tr>
+                                <tr>قیمت پایه:{{ item.base_price }}</tr>
+                                <tr>قیمت فروش:{{ item.sell_price }}</tr>
+                            </td>
+
+                        </template>
                         <template v-slot:item.actions="{ item }">
                             <v-icon
                                 small
@@ -179,7 +254,7 @@
 
                     <v-card>
                         <v-card-title>
-                            <span class="text-h5">ویرایش استان</span>
+                            <span class="text-h5">ویرایش سرویس</span>
                         </v-card-title>
                         <v-card-text>
                             <v-form ref="editForm">
@@ -192,6 +267,13 @@
                                                 :rules="[required('نام سرویس'),persianCharachter()]"
                                                 v-model="editItem.name"
                                                 :error-messages="errors.name"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="شناسه سرویس"
+                                                :rules="[required('شناسه سرویس')]"
+                                                v-model="editItem.service_id"
+                                                :error-messages="errors.service_id"
 
                                             ></v-text-field>
                                             <v-autocomplete
@@ -218,11 +300,31 @@
                                                 v-model="editItem.plan"
                                                 :rules="[required('طرح سرویس')]"
                                             ></v-autocomplete>
-
                                             <v-text-field
-                                                label="قیمت سرویس (تومان)"
+                                                label="قیمت پایه (تومان)"
+                                                :rules="[required('قیمت پایه')]"
+                                                v-model="editItem.base_price"
+                                                :error-messages="errors.base_price"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="قیمت فروش (تومان)"
+                                                :rules="[required('قیمت فروش')]"
+                                                v-model="editItem.sell_price"
+                                                :error-messages="errors.sell_price"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="مبنای محاسبه پورسانت (تومان)"
+                                                :rules="[required('مبنای محاسبه پورسانت')]"
+                                                v-model="editItem.commission_price"
+                                                :error-messages="errors.commission_price"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="قیمت کل (تومان)"
                                                 :rules="[required('قیمت سرویس')]"
-                                                v-model="editItem.price"
+                                                v-model="editItem.total_price"
                                                 :error-messages="errors.price"
 
                                             ></v-text-field>
@@ -262,19 +364,53 @@
 
                                             ></v-text-field>
                                             <v-text-field
+                                                label=" شناسه قیمت "
+                                                :rules="[required('شناسه فروش')]"
+                                                v-model="editItem.price_id"
+                                                :error-messages="errors.price_id"
+
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label=" شناسه دسترسی "
+                                                :rules="[required('شناسه دسترسی')]"
+                                                v-model="editItem.available_id"
+                                                :error-messages="errors.available_id"
+
+                                            ></v-text-field>
+                                            <v-text-field
                                                 label=" میزان ترافیک بین المللی(MB) "
                                                 :rules="[required('میزان ترافیک بین المللی ')]"
                                                 v-model="editItem.international_trafic"
                                                 :error-messages="errors.international_trafic"
 
                                             ></v-text-field>
-                                            <v-text-field
+                                            <v-autocomplete
+                                                :items="telecomcenterData"
+                                                label="منطقه فروش"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="editItem.telecomcenter_id"
+                                                :rules="[required('منطقه فروش')]"
+                                            ></v-autocomplete>
+                                            <v-autocomplete
+                                                :items="categoryData"
+                                                label="دسته بندی سرویس"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="editItem.category_id"
+                                                :rules="[required('دسته بندی سرویس')]"
+                                            ></v-autocomplete>
+                                            <date-picker v-model="editItem.expire_date"
+                                                         label="اعتبار سرویس تا :"
+                                            ></date-picker>
+
+                                            <v-textarea
+                                                class="mt-4"
                                                 label="توضیحات"
                                                 :rules="[required('توضیحات')]"
                                                 v-model="editItem.description"
                                                 :error-messages="errors.description"
-
-                                            ></v-text-field>
+                                            ></v-textarea>
 
                                         </v-col>
 
@@ -312,18 +448,22 @@
 <script>
 import {required, code, persianCharachter} from '../../../rules/frontRules'
 import Swal from "sweetalert2";
+import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
 
 export default {
     name: "index",
     data() {
         return {
             required, code, persianCharachter,
+            expanded: [],
             servicesData: [],
             createDialog: false,
             editDialog: false,
             typeData: {},
             planData: {},
             opratorData: {},
+            telecomcenterData: {},
+            categoryData: {},
             createItem: {},
             editItem: {},
             headers: [
@@ -334,17 +474,27 @@ export default {
                     value: 'name',
                 },
 
+                {text: 'شناسه سرویس', value: 'service_id', sortable: false,},
                 {text: 'اپراتور', value: 'oprator.name', sortable: false,},
                 {text: 'نوع', value: 'type', sortable: false,},
                 {text: 'طرح', value: 'plan', sortable: false,},
-                {text: 'قیمت', value: 'price', sortable: false,},
+                // {text: 'شناسه قیمت', value: 'price_id', sortable: false,},
+                // {text: ' قیمت پایه', value: 'base_price', sortable: false,},
+                // {text: ' قیمت فروش', value: 'sell_price', sortable: false,},
+                {text: 'دسته سرویس', value: 'categories[0].name', sortable: false,},
+                {text: ' مبنای پورسانت', value: 'commission_price', sortable: false,},
+                {text: ' قیمت کل', value: 'total_price', sortable: false,},
                 {text: 'تخفیف (%)', value: 'discount', sortable: false,},
+                {text: ' منطقه فروش', value: 'telecomcenter.name', sortable: false,},
+                {text: 'تاریخ اعتبار', value: 'expire_date', sortable: false,},
                 {text: 'زمان', value: 'period', sortable: false,},
+                {text: 'شناسه قیمت', value: 'price_id', sortable: false,},
+                {text: 'شناسه دسترسی', value: 'available_id', sortable: false,},
                 {text: 'ترافیک شبانه', value: 'night_trafic', sortable: false,},
                 {text: 'سرعت', value: 'speed', sortable: false,},
                 {text: 'میزان محدودیت', value: 'limit_amount', sortable: false,},
                 {text: 'ترافیک بین المللی', value: 'international_trafic', sortable: false,},
-                {text: 'توضیحات', value: 'description', sortable: false,},
+                // {text: 'توضیحات', value: 'description', sortable: false,},
                 {text: 'عملیات', value: 'actions', sortable: false,},
 
             ],
@@ -352,17 +502,23 @@ export default {
                 name: null,
                 province: null
             },
+
+            menu2: false,
         }
 
+    },
+    components: {
+        datePicker: VuePersianDatetimePicker
     },
     methods: {
         createService() {
             axios.post('/admin/service/create', this.createItem).then(({data}) => {
+                console.log(data);
                 this.servicesData.push(data);
                 this.createDialog = false;
             })
         },
-        deleteItem(id){
+        deleteItem(id) {
             console.log(id);
             Swal.fire({
                 title: 'از حذف این گزینه مطمئن هستید؟',
@@ -400,12 +556,13 @@ export default {
             axios.get('/admin/service/edit/' + id).then(({data}) => {
                 // console.log(data.oprator.name);
 
-                this.editItem=data;
+                this.editItem = data;
                 this.editDialog = true;
             })
         },
         updateItem() {
-            axios.post('/admin/service/edit/'+this.editItem.id,this.editItem).then(({data})=>{
+            axios.post('/admin/service/edit/' + this.editItem.id, this.editItem).then(({data}) => {
+                console.log(data);
                 const index = this.servicesData.map(function (obj) {
                     return obj.id;
                 }).indexOf(this.editItem.id);
@@ -413,14 +570,26 @@ export default {
                 this.servicesData[index].name = data.name;
                 this.servicesData[index].type = data.type_name;
                 this.servicesData[index].plan = data.plan_name;
-                this.servicesData[index].price = data.price;
-                this.servicesData[index].discount= data.discount;
+                this.servicesData[index].discount = data.discount;
                 this.servicesData[index].period = data.period;
+                this.servicesData[index].expire_date = data.expire_date;
                 this.servicesData[index].night_trafic = data.night_trafic;
                 this.servicesData[index].limit_amount = data.limit_amount;
                 this.servicesData[index].speed = data.speed;
                 this.servicesData[index].international_trafic = data.international_trafic;
                 this.servicesData[index].description = data.description;
+                this.servicesData[index].commission_price = data.commission_price;
+                this.servicesData[index].total_price = data.total_price;
+                this.servicesData[index].sell_price = data.sell_price;
+                this.servicesData[index].base_price = data.base_price;
+                this.servicesData[index].available_id = data.available_id;
+                this.servicesData[index].price_id = data.price_id;
+                this.servicesData[index].service_id = data.service_id;
+                this.servicesData[index].telecomcenter = data.telecomcenter;
+                this.servicesData[index].category_id = data.category_id;
+                this.servicesData[index].categories = data.categories;
+
+
                 this.editDialog = false;
 
             })
@@ -429,11 +598,14 @@ export default {
     },
     created() {
         axios.get('/admin/services/').then(({data}) => {
-
+            console.log(data);
             this.servicesData = data.services;
             this.typeData = data.type;
             this.planData = data.plan;
             this.opratorData = data.oprators;
+            this.telecomcenterData = data.telecomcentes;
+            this.categoryData = data.categories;
+
         })
     }
 }

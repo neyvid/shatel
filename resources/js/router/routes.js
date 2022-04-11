@@ -35,7 +35,9 @@ export default [
     {
         path: '/registerAdsl',
         component: require('../view/front/adsl-register/AdslRegister').default,
-        name: 'adsl-register'
+        name: 'adsl-register',
+
+
     },
     {
         path: '/verify-email',
@@ -115,6 +117,18 @@ export default [
                 path: 'service', //profile/oprator
                 component: require('../view/profile/service/index').default,
                 name: 'service',
+                meta: {auth: true},
+            },
+            {
+                path: 'category', //profile/oprator
+                component: require('../view/profile/category/index').default,
+                name: 'category',
+                meta: {auth: true},
+            },
+            {
+                path: 'product',
+                component: require('../view/profile/product/index').default,
+                name: 'product',
                 meta: {auth: true},
             },
 

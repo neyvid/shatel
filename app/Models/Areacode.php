@@ -22,6 +22,11 @@ class Areacode extends Model
         return $this->belongsTo(Province::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function telecomcenter()
     {
         return $this->belongsTo(Telecomcenter::class);

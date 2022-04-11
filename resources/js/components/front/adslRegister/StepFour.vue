@@ -12,19 +12,21 @@
                             <div class="review-customer-info-wrap">
                                 <ul>
                                     <li>نام اشتراک:
-                                        <span>شخصی</span>
+                                        <span>{{personalFormInfo.name? personalFormInfo.name : companyFormInfo.name}}</span>
                                     </li>
                                     <li>نام و نام خانوادگی:
-                                        <span>نوید سخی طبع</span>
+                                        <span>{{personalFormInfo.lastName? personalFormInfo.lastName : companyFormInfo.agentName}}</span>
+
                                     </li>
                                     <li>شماره تلفن:
-                                        <span>34342773</span>
+                                        <span>{{orderDetails.phoneNumber}}</span>
                                     </li>
                                     <li>شماره موبایل:
-                                        <span>09131011538</span>
+                                        <span>{{personalFormInfo.mobile? personalFormInfo.mobile : companyFormInfo.mobile}}</span>
+
                                     </li>
                                     <li>ایمیل:
-                                        <span>n.sakhitabe@gmail.com</span>
+                                        <span>{{personalFormInfo.email? personalFormInfo.email :''}}</span>
                                     </li>
                                     <li>مودم انتخابی:
                                         <span>TP-LINK Wd2500</span>
@@ -48,21 +50,26 @@
                                     <div class="suggestion-image-service"></div>
                                     <div class="suggestion-service-content pa-2">
                                         <p class="ma-0 py-1   fs-13">
+                                            <span>نام سرویس : </span>
+                                            {{ serviceSelectedDetail.name }}
+                                        </p>
+                                        <p class="ma-0 py-1   fs-13">
                                             <span>سرعت : </span>
-                                            16384 کیلوبیت بر ثانیه
+                                            {{ serviceSelectedDetail.speed }} کیلوبیت بر ثانیه
                                         </p>
                                         <p class="ma-0 py-1 pr-1  fs-13">
                                             <span>دوره: </span>
-                                            12 ماهه
+                                            {{ serviceSelectedDetail.period }} ماهه
                                         </p>
                                         <p class="ma-0 py-1 pr-2  fs-13">
                                             <span>حد آستانه مصرف: </span>
-                                            ماهانه 120 گیگ ترافیک ایران
+                                            ماهانه {{ serviceSelectedDetail.limit_amount }} گیگ ترافیک ایران
                                         </p>
                                         <p class="ma-0 py-1 pr-3 fs-13">
-                                            معادل 60 گیگ ترافیک بین الملل
+                                            معادل {{ serviceSelectedDetail.international_trafic }} گیگ ترافیک بین الملل
                                         </p>
-                                        <p class="ma-0 fs-14 pr-5 font-weight-bold subtitle-1">8,750,000
+                                        <p class="ma-0 fs-14 pr-5 font-weight-bold font-shabnam subtitle-1">
+                                            {{ formatPrice(serviceSelectedDetail.total_price)}}
                                             <span>ریال</span>
                                         </p>
                                     </div>
@@ -89,21 +96,27 @@
 
                             <v-checkbox
 
-                                label=" آخرین قبض خط 36283165 پرداخت شده است"
+                                :label=" ' آخرین قبض خط ' +orderDetails.phoneNumber+' پرداخت شده است. '"
                                 color="blue"
                                 value=""
                                 hide-details
-
+                                v-model="lastPayStatus"
+                                @change="ChangeLastPayStatus"
                             ></v-checkbox>
                             <v-checkbox
-                                v-model="checked"
+                                v-model="smsStatus"
                                 label="مایلم پیامک‌های خودکار اطلاع‌رسانی شاتل را دریافت کنم."
                                 color="blue"
                                 value=""
                                 hide-details
-                                checked
+                                @change="ChangeSmsStatus"
+
                             ></v-checkbox>
-                            <p>درخواست سرویس شما برای شماره تلفن 36283165 است. </p>
+                            <p>درخواست سرویس شما برای شماره تلفن
+                                <span class="red--text">
+                                    {{orderDetails.phoneNumber}}
+                                </span>
+                                است. </p>
                             <p>سپاس گزار خواهیم بود اگر صحت اطلاعات بالا را برای ثبت نهایی تایید فرمایید.</p>
                             <p> دوست گرامی، در سفارش شما تجهیزات مورد نیاز برای استفاده از خدمات اینترنت پرسرعت ثبت نشده
                                 است. در صورت تمایل می‌توانید تجهیزات مورد نیاز خود را از فهرست پیشنهادی شاتل انتخاب
@@ -121,7 +134,13 @@
                     >
                         Continue
                     </v-btn>
-
+                    <v-btn
+                        color="warning"
+                        @click="$emit('backStep')"
+                        class="mt-8"
+                    >
+                        back
+                    </v-btn>
                     <v-btn text class="mt-8">
                         Cancel
                     </v-btn>
@@ -136,10 +155,28 @@
 <script>
 export default {
     name: "StepFour",
+    props: ['serviceSelectedDetail', 'personalFormInfo', 'companyFormInfo','orderDetails'],
+
     data() {
         return {
-            checked: true,
+            lastPayStatus:false,
+            smsStatus:false,
         }
+    },
+    methods:{
+        formatPrice(value) {
+           return  new Intl.NumberFormat('fa-IR').format(value)
+        },
+        ChangeLastPayStatus(event){
+
+            this.$emit('ChangeLastPayStatus',event)
+        },
+
+        ChangeSmsStatus(event){
+
+            this.$emit('ChangeSmsStatus',event)
+        }
+
     }
 }
 </script>
@@ -151,6 +188,9 @@ export default {
     border-radius: 5px;
     padding: 25px;
 
+}
+.font-shabnam{
+    font-family: Shabnam !important;
 }
 
 .review-customer-info-wrap > ul > li {

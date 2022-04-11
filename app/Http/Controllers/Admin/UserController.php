@@ -42,7 +42,7 @@ class UserController extends Controller
             $file_extention = Str::afterLast($request->image_name, '.');
             $new_file_name = \Illuminate\Support\Carbon::now()->format('Y-m-d') . Str::random('6') . '.' . $file_extention;
             if (!File::exists(public_path('profiles/') . $request->user()->id)) {
-                File::makeDirectory(public_path('profiles/') . $request->user()->id);
+                File::makeDirectory(public_path('profiles/') . $request->user()->id,0777,true,true);
             }
             if (!empty($request->image)) {
                 unlink(public_path('profiles/') . $request->user()->id . '/' . $request->image);

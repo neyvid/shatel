@@ -19,7 +19,6 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->integer('type');
             $table->integer('plan');
-            $table->integer('price');
             $table->integer('discount');
             $table->integer('period');
             $table->integer('night_trafic');

@@ -112,6 +112,20 @@ export default {
                         {id: 12, name: 'مشاهده سرویس ها',to: {name:'service'}},
                     ],
                 },
+                {
+                    id: 13,
+                    name: 'دسته بندی ها',
+                    children: [
+                        {id: 14, name: 'مشاهده دسته بندی ها',to: {name:'category'}},
+                    ],
+                },
+                {
+                    id: 14,
+                    name: 'محصولات و تجهیزات',
+                    children: [
+                        {id: 15, name: 'مشاهده تجهیزات و محصولات',to: {name:'product'}},
+                    ],
+                },
 
             ],
         }

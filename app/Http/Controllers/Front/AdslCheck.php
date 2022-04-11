@@ -26,15 +26,16 @@ class AdslCheck extends Controller
         $adslCheckData = [
             'code' => $request->city_code,
             'areacode' => substr($request->phone_number, 0, 4),
-            'province_id' => $request->province_id,
-            'city_id' => $request->city_id,
+//            'province_id' => $request->province_id,
+//            'city_id' => $request->city_id,
         ];
         $isAreacode = $this->areacodeRepository->findBy($adslCheckData);
 
-        if ($isAreacode!=' ') {
+        if ($isAreacode != ' ') {
             $isAreacode->city;
             $isAreacode->telecomcenter;
             $isAreacode->province;
+            $isAreacode['phoneNumber'] = $request->phone_number;
             return $isAreacode;
         }
 
@@ -54,5 +55,13 @@ class AdslCheck extends Controller
         $province = $this->provinceRepository->find($request->id);
         $citiesOfProvince = $province->cities;
         return $citiesOfProvince;
+    }
+
+    public function resetSession()
+    {
+        if (session()->has('orderDetails')) {
+            session()->forget('orderDetails');
+        }
+
     }
 }

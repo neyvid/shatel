@@ -14,8 +14,6 @@
 <body>
 @auth()
     <script>
-
-
         window.user = {
             name: '{{auth('sanctum')->user()->name}}',
             email: '{{(auth('sanctum')->user()->email)}}',

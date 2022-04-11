@@ -9,7 +9,7 @@
                     <v-col cols="8">
                         <div class="select-customer-type-wrap d-flex justify-center">
                             <v-radio-group
-                                v-model="row"
+
                                 row
                                 mandatory
                             >
@@ -29,19 +29,397 @@
                     </v-col>
 
                 </v-row>
-                <personal-form v-if="personalForm"></personal-form>
-                <company-form v-if="companyForm"></company-form>
+                <v-row v-if="personalForm" class="mt-15">
+                    <v-col cols="12" md="8">
+                        <v-row>
+                            <v-col cols="12">
+                                <div class="person-info-customer-form">
+
+                                    <v-form
+                                        class="pa-15"
+                                        ref="personalForm"
+                                        lazy-validation
+                                        block
+                                        dense
+                                    >
+                                        <v-text-field
+                                            label="نام"
+                                            @input="changePersonalFrm"
+                                            v-model="personalFormData.name"
+                                            :rules="[required('نام الزامیست'),persianCharachter('نام')]"
+                                            :error-messages="errors.name"
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+
+                                        <v-text-field
+                                            v-model="personalFormData.lastname"
+                                            @input="changePersonalFrm"
+                                            label="نام خانوادگی"
+                                            :rules="[required('نام خانوادگی الزامیست') ,persianCharachter('نام خانوادگی')]"
+                                            :error-messages="errors.lastname"
+                                            required
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+                                        <v-select
+                                            label="جنسیت "
+                                            required
+                                            outlined
+                                            dense
+                                            @input="changePersonalFrm"
+                                            :items="gender"
+                                            item-value="value"
+                                            item-text="name"
+                                            v-model="personalFormData.gender"
+                                        ></v-select>
+                                        <v-text-field
+                                            v-model="personalFormData.father_name"
+                                            @input="changePersonalFrm"
+                                            label="نام پدر"
+                                            :rules="[required('نام پدر الزامیست') ,persianCharachter('نام پدر')]"
+                                            :error-messages="errors.father_name"
+                                            required
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+                                        <date-picker v-model="personalFormData.birthday_date"
+                                                     label="تاریخ تولد :"
+                                                     color="dimgray" simple
+                                                     @input="changePersonalFrm"
+                                        ></date-picker>
+                                        <v-text-field
+                                            v-model="personalFormData.national_code"
+                                            @input="changePersonalFrm"
+                                            label="کد ملی"
+                                            :rules="[codeCheck]"
+                                            :error-messages="errors.national_code"
+                                            required
+                                            outlined
+                                            dense
+                                            class="mt-5"
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="personalFormData.postal_code"
+                                            @input="changePersonalFrm"
+                                            label="کد پستی"
+                                            :rules="[required('کد پستی الزامیست') ]"
+                                            :error-messages="errors.postal_code"
+                                            required
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+
+
+                                        <v-text-field
+                                            v-model="personalFormData.mobile"
+                                            @input="changePersonalFrm"
+                                            label="شماره موبایل"
+                                            :rules="[required('شماره موبایل الزامیست')]"
+                                            :error-messages="errors.mobile"
+                                            required
+                                            outlined
+                                            dense
+
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="personalFormData.email"
+                                            @input="changePersonalFrm"
+                                            label="ایمیل"
+
+                                            :rules="[required('ایمیل الزامیست')]"
+                                            :error-messages="errors.email"
+                                            required
+                                            outlined dense
+                                        ></v-text-field>
+                                        <v-file-input
+                                            label="تصویر کارت ملی"
+                                            outlined
+                                            dense
+                                            @change="uploadPic"
+
+                                        ></v-file-input>
+                                        <v-textarea
+                                            v-model="personalFormData.address"
+                                            @input="changePersonalFrm"
+                                            label="آدرس پستی"
+                                            :rules="[required('آدرس پستی الزامیست') ,persianCharachter()]"
+                                            :error-messages="errors.address"
+                                            required
+                                            outlined
+                                            dense
+                                        ></v-textarea>
+
+
+                                    </v-form>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col cols="12" md="4" class="online-chat-base">
+
+                        <div class="online-chat-wraper text-center">
+                            <v-img class="online-chat-img" src="images/front/adslRegister/online-chat-pic.png"
+                                   width="80"
+                                   height="80" contain></v-img>
+                            <h4 class="mt-15 mx-5">
+                                لطفا به موارد زیر توجه فرمایید:
+                            </h4>
+                            <p class="mx-5 mt-5">یک آدرس ایمیل معتبر وارد کنید.</p>
+                            <p class="mx-5 mt-5">
+                                به راهنمایی نیاز دارید؟
+
+                            </p>
+
+                            <p class="online-chat-btn">
+                                <a href="#" class="d-inline-block">
+                                    <v-icon color="blue">mdi-chat</v-icon>
+                                    <span>
+                                       گفتگوی آنلاین با کارشناسان فروش
+                                </span>
+                                </a>
+                            </p>
+                        </div>
+                    </v-col>
+                </v-row>
+                <v-row v-if="companyForm" class="mt-15">
+                    <v-col cols="12" md="8">
+                        <v-row>
+
+
+                            <v-col cols="12">
+                                <div class="person-info-customer-form">
+
+                                    <v-form
+                                        class="pa-15"
+                                        ref="companyForm"
+                                        lazy-validation
+                                        block
+                                        dense
+                                    >
+                                        <v-text-field
+                                            label="نام شرکت"
+                                            v-model="companyFormData.company_name"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('نام شرکت الزامیست'),persianCharachter('نام شرکت')]"
+                                            :error-messages="companyFormErrors.name"
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+                                        <v-text-field
+                                            label="شماره ثبت"
+                                            v-model="companyFormData.registration_number"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('شماره ثبت الزامیست')]"
+                                            :error-messages="companyFormErrors.registration_number"
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+                                        <date-picker v-model="companyFormData.registration_number_date"
+                                                     label="تاریخ ثبت:"
+                                                     color="dimgray" simple
+                                                     @input="changeCompanyFrm"
+
+                                        ></date-picker>
+                                        <v-text-field
+                                            class="mt-5"
+                                            label="شماره اقتصادی"
+                                            v-model="companyFormData.economic_number"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('شماره اقتصادی الزامیست')]"
+                                            :error-messages="companyFormErrors.economic_number"
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+
+                                        <v-text-field
+                                            v-model="companyFormData.name"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('نام نماینده الزامیست'),persianCharachter()]"
+                                            :error-messages="companyFormErrors.name"
+                                            label="نام نماینده"
+                                            required
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+
+                                        <v-text-field
+                                            v-model="companyFormData.lastname"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('نام خانوادگی نماینده الزامیست'),persianCharachter()]"
+                                            :error-messages="companyFormErrors.lastname"
+                                            label="نام خانوادگی نماینده"
+                                            required
+                                            outlined
+                                            dense
+
+                                        ></v-text-field>
+
+                                        <v-text-field
+                                            label="نام پدر نماینده"
+                                            @input="changeCompanyFrm"
+                                            v-model="companyFormData.father_name"
+                                            :rules="[required('نام  پدر الزامیست')]"
+                                            :error-messages="errors.father_name"
+                                            outlined
+                                            dense
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="companyFormData.national_code"
+                                            @input="changeCompanyFrm"
+                                            label="کد ملی نماینده"
+                                            :rules="[codeCheck]"
+                                            :error-messages="errors.national_code"
+                                            required
+                                            outlined
+                                            dense
+
+                                        ></v-text-field>
+                                        <v-file-input
+                                            label="تصویر کارت ملی"
+                                            outlined
+                                            dense
+                                            @change="uploadPic"
+
+                                        ></v-file-input>
+                                        <date-picker v-model="companyFormData.birthday_date"
+                                                     label="تاریخ تولد نمایده:"
+                                                     color="dimgray" simple
+                                                     @input="changeCompanyFrm"
+                                        ></date-picker>
+                                        <v-text-field
+                                            v-model="companyFormData.mobile"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('موبایل الزامیست')]"
+                                            :error-messages="companyFormErrors.mobile"
+                                            label=" شماره موبایل نماینده"
+                                            required
+                                            outlined dense
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="companyFormData.email"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('ایمیل نماینده الزامیست')]"
+                                            :error-messages="companyFormErrors.email"
+                                            label="ایمیل  نماینده"
+                                            required
+                                            outlined dense
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="companyFormData.user_phone_number"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('شماره ثابت الزامیست')]"
+                                            :error-messages="companyFormErrors.user_phone_number"
+                                            label=" شماره ثابت نماینده"
+                                            required
+                                            outlined dense
+                                        ></v-text-field>
+                                        <v-select
+                                            v-model="companyFormData.agent_nationality"
+                                            label="ملیت نماینده"
+                                            required
+                                            outlined
+                                            dense
+                                            @input="changeCompanyFrm"
+                                            :items="agent_nationality"
+                                            item-value="value"
+                                            item-text="name"
+                                        ></v-select>
+                                        <v-select
+                                            label="نوع شرکت"
+                                            required
+                                            outlined
+                                            dense
+                                            @input="changeCompanyFrm"
+                                            :items="companyType"
+                                            item-value="value"
+                                            item-text="name"
+                                            v-model="companyFormData.company_type"
+                                        ></v-select>
+                                        <v-select
+                                            label="جنسیت نماینده"
+                                            required
+                                            outlined
+                                            dense
+                                            @input="changeCompanyFrm"
+                                            :items="gender"
+                                            item-value="value"
+                                            item-text="name"
+                                            v-model="companyFormData.gender"
+                                        ></v-select>
+                                        <v-text-field
+                                            v-model="companyFormData.postal_code"
+                                            @input="changeCompanyFrm"
+                                            :rules="[required('کدپستی الزامیست')]"
+                                            :error-messages="companyFormErrors.postal_code"
+                                            label="کد پستی"
+                                            required
+                                            outlined dense
+                                        ></v-text-field>
+                                        <v-textarea
+                                            v-model="companyFormData.address"
+                                            @input="changeCompanyFrm"
+                                            label="آدرس پستی"
+                                            :rules="[required('آدرس پستی الزامیست') ,persianCharachter()]"
+                                            :error-messages="errors.address"
+                                            required
+                                            outlined
+                                            dense
+                                        ></v-textarea>
+
+                                    </v-form>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col cols="12" md="4" class="online-chat-base">
+
+                        <div class="online-chat-wraper text-center">
+                            <v-img class="online-chat-img" src="images/front/adslRegister/online-chat-pic.png"
+                                   width="80"
+                                   height="80" contain></v-img>
+                            <h4 class="mt-15 mx-5">
+                                لطفا به موارد زیر توجه فرمایید:
+                            </h4>
+                            <p class="mx-5 mt-5">یک آدرس ایمیل معتبر وارد کنید.</p>
+                            <p class="mx-5 mt-5">
+                                به راهنمایی نیاز دارید؟
+
+                            </p>
+
+                            <p class="online-chat-btn">
+                                <a href="#" class="d-inline-block">
+                                    <v-icon color="blue">mdi-chat</v-icon>
+                                    <span>
+                                       گفتگوی آنلاین با کارشناسان فروش
+                                </span>
+                                </a>
+                            </p>
+                        </div>
+                    </v-col>
+                </v-row>
+
                 <v-btn
                     color="primary"
-                    @click="$emit('nextStep')"
+                    @click="nextToStep4"
                     class="mt-8"
                 >
-                    Continue
+                    مرحله بعد
+                    <v-icon>mdi-chevron-left</v-icon>
+
+                </v-btn>
+                <v-btn
+                    color="warning"
+                    @click="$emit('backStep')"
+                    class="mt-8"
+                >
+                    back
                 </v-btn>
 
                 <v-btn text class="mt-8">
-                    Cancel
+                    خروج
                 </v-btn>
+
             </v-stepper-content>
 
 
@@ -51,32 +429,105 @@
 </template>
 
 <script>
-import PersonalForm from "./PersonalForm";
-import CompanyForm from "./CompanyForm";
+import {required, persianCharachter, codeCheck} from '../../../../rules/frontRules'
+import store from '../../../../store'
 
 export default {
     name: "StepThree",
-    components: {CompanyForm, PersonalForm},
+    props: ['userInfo'],
     data() {
         return {
+            required, persianCharachter, codeCheck,
+            companyType: [
+                {name: 'خصوصی', value : 1},
+                {name: 'سهامی عام', value : 2}
+            ],
+            agent_nationality: [
+                {name: 'ایرانی', value : 1},
+                {name: 'غیر ایرانی', value : 2}
+            ],
+            gender: [
+                {name: 'زن', value : 0},
+                {name: 'مرد', value : 1}
+            ],
             personalForm: true,
             companyForm: false,
+            companyFormData: {},
+            personalFormData: {},
+            errors: {},
+            companyFormErrors: {},
+            nationalCodePic: {},
+
+
         }
     },
-    methods:{
-        showPersonalForm(){
-           if(!this.personalForm){
-               this.personalForm=true;
-               this.companyForm=false;
-           }
+
+    methods: {
+        nextToStep4() {
+            const refForm = this.$refs;
+            if (refForm.hasOwnProperty('personalForm') && refForm.personalForm !== undefined) {
+                refForm.personalForm.validate() ? this.$emit('nextStep') : '';
+            }
+
+            // if (refForm.hasOwnProperty('companyForm') && refForm.companyForm !== undefined) {
+            refForm.companyForm.validate() ? this.$emit('nextStep') : '';
+            // }
+
+
         },
-        showCompanyForm(){
-           if(!this.companyForm){
-               this.companyForm=true;
-               this.personalForm=false;
-           }
+        changePersonalFrm() {
+            this.$emit('personalFormChange', this.personalFormData);
+        },
+        changeCompanyFrm() {
+            this.$emit('companyFormChange', this.companyFormData);
+        },
+        showPersonalForm() {
+            if (!this.personalForm) {
+
+                this.$refs.companyForm.resetValidation();
+                this.personalForm = true;
+                this.companyForm = false;
+                this.companyFormData = {};
+                this.$emit('deleteCompanyFormData');
+            }
+        },
+        showCompanyForm() {
+            if (!this.companyForm) {
+                this.$refs.personalForm.resetValidation();
+
+                this.companyForm = true;
+                this.personalForm = false;
+                this.personalFormData = {};
+
+
+                this.$emit('deletePersonalFormData');
+            }
+        },
+        uploadPic(event) {
+            const file = event;
+            const reader = new FileReader();
+            reader.onload = (image) => {
+                //Name of Image
+                if(this.personalForm){
+                    this.personalFormData.national_code_pic_name = event.name;
+                    // BASE64 Imgae result (self)
+                    this.personalFormData.national_code_pic_src = image.target.result;
+                    this.changePersonalFrm();
+                }else{
+                    this.companyFormData.national_code_pic_name = event.name;
+                    // BASE64 Imgae result (self)
+                    this.companyFormData.national_code_pic_src = image.target.result;
+                    this.changeCompanyFrm();
+                }
+
+            };
+            reader.readAsDataURL(file);
         }
-    }
+
+
+    },
+
+
 }
 </script>
 
@@ -88,4 +539,77 @@ export default {
 }
 
 
+.select-customer-type-wrap {
+    border: 1px solid #dadada;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.person-info-customer-form {
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.online-chat-wraper {
+
+    border: 1px solid #dadada;
+    background-color: #f9f9f9;
+
+    border-radius: 10px;
+}
+
+.online-chat-base {
+    position: relative;
+}
+
+.online-chat-img {
+    position: absolute;
+    top: -30px;
+
+}
+
+.online-chat-btn {
+    text-align: center;
+    border: 1px solid blue;
+    margin: 10px;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.online-chat-btn > a {
+    text-decoration: none;
+}
+
+
+/*Personal Form*/
+.select-customer-type-wrap {
+    border: 1px solid #dadada;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.person-info-customer-form {
+    border: 1px solid #dadada;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.online-chat-wraper {
+
+    border: 1px solid #dadada;
+    background-color: #f9f9f9;
+
+    border-radius: 10px;
+}
+
+.online-chat-base {
+    position: relative;
+}
+
+.my-custom-date-picker {
+    border-color: #9f9c9c !important;
+    border-bottom-left-radius: 5px !important;
+    border-top-left-radius: 5px !important;
+}
 </style>

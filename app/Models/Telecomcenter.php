@@ -16,4 +16,8 @@ class Telecomcenter extends Model
     {
         return $this->belongsTo(City::class);
     }
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }

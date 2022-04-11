@@ -21,7 +21,7 @@ class CityController extends Controller
 
     public function all()
     {
-        $cities = $this->cityRepository->all('province');
+        $cities = $this->cityRepository->all(['province']);
         $provinces = $this->provinceRepository->all();
         return ['cities' => $cities, 'provinces' => $provinces];
     }

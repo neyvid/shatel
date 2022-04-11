@@ -26,6 +26,8 @@
                             <v-stepper-step
                                 :complete="e1 > 1"
                                 step="1"
+
+
                             >
                                 انتخاب سرویس و مودم
                             </v-stepper-step>
@@ -62,12 +64,28 @@
                             </v-stepper-step>
                         </v-stepper-header>
 
-                        <step-one @nextStep="e1=2"></step-one>
-                        <step-two @nextStep="e1=3"></step-two>
-                        <step-three @nextStep="e1=4"></step-three>
-                        <step-four @nextStep="e1=5"></step-four>
-                        <step-five @nextStep="e1=6"></step-five>
+                        <step-one :orderDetails="orderDetails" :serviceDetails="serviceDetails"
+                                  :produtDetails="productData"
+                                  @selectServ="selectServ" @selectProd="selectProd" @nextStep="e1=2"></step-one>
+                        <step-two @nextStep="nextStepToThree" @backStep="e1=1"></step-two>
+                        <step-three
+                            @deletePersonalFormData="deletePersonalData"
+                            @deleteCompanyFormData="deleteCompanyData"
+                            @personalFormChange="changePersonalForm"
+                            @companyFormChange="changeCompanyForm"
+                            @nextStep="e1=4"
+                            @backStep="e1=2">
 
+                        </step-three>
+                        <step-four :orderDetails="orderDetails" :serviceSelectedDetail="selectService"
+                                   :personalFormInfo="personalData? personalData : ''"
+                                   @ChangeLastPayStatus="changePayStatus"
+                                   @ChangeSmsStatus="smsStatus"
+                                   :companyFormInfo="companyData? companyData : ''" @nextStep="e1=5"
+                                   @backStep="e1=3"></step-four>
+                        <step-five @nextStep="nextStepTo6" @confirmContract="changeContractStatus"
+                                   @backStep="e1=4"></step-five>
+                        <step-six :loadingForOpenGatway="loadingOpenGateWay"></step-six>
                     </v-stepper>
 
 
@@ -85,27 +103,120 @@ import StepFour from "../../../components/front/adslRegister/StepFour";
 import StepFive from "../../../components/front/adslRegister/StepFive";
 import router from "../../../router/router";
 import Swal from "sweetalert2";
+import store from "../../../store"
+import StepSix from "../../../components/front/adslRegister/StepSix";
 
 export default {
     name: "AdslRegister",
-    components: {StepFive, StepThree, StepOne, StepTwo, StepFour},
+    components: {StepSix, StepFive, StepThree, StepOne, StepTwo, StepFour},
 
     data() {
         return {
             e1: 1,
+            loadingOpenGateWay: false,
             orderDetails: [],
+            productData: [],
+            serviceDetails: [],
+            selectService: {},
+            selectProduct: null,
+            companyData: null,
+            personalData: {},
+            confirmContract: null,
+            payStatus: null,
+            sendsms: null,
+        }
+    },
+    methods: {
+        nextStepTo6() {
+            this.e1 = 6;
+            this.loadingOpenGateWay = true;
+            axios.post('/admin/adslRegister/save/order',
+                {
+                    orderDetails: this.orderDetails,
+                    personalData: this.personalData,
+                    selectProduct: this.selectProduct,
+                    selectService: this.selectService,
+                    sendsms: this.sendsms,
+                    companyData: this.companyData,
+                    confirmContract: this.confirmContract
+                }).then(({data}) => {
+
+                window.location.href = 'https://sandbox.zarinpal.com/pg/StartPay/' + data;
+            })
+
+        },
+        nextStepToThree() {
+            this.e1 = 3;
+        },
+        selectServ(item) {
+            this.selectService = item;
+
+        },
+        selectProd(item) {
+            this.selectProduct = item;
+
+        },
+        changePersonalForm(personalFormData) {
+
+            this.personalData = personalFormData;
+
+        },
+        changeCompanyForm(companyFormData) {
+            this.companyData = companyFormData;
+        },
+        deleteCompanyData() {
+            this.companyData = {};
+        },
+        deletePersonalData() {
+            this.personalData = {};
+        },
+
+        changeContractStatus(status) {
+            this.confirmContract = status;
+        },
+        changePayStatus(status) {
+            this.payStatus = status;
+
+        },
+        smsStatus(status) {
+            this.sendsms = status;
+
+        }
+
+
+    },
+    watch: {
+        e1: function (step) {
+            if (Object.keys(this.selectService).length > 0) {
+                this.e1 = step;
+            } else {
+                Swal.fire({
+                    title: 'لطفا یکی از سرویس ها را انتخاب نمایید',
+                    confirmButtonText: ' ! باشه',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                })
+                this.e1 = 1;
+            }
         }
     },
     created() {
+
         axios.get('/adsl/buy/online/get/session/').then(({data}) => {
             if (data.status) {
                 this.orderDetails = data.orderDetails;
+                this.productData = data.products;
+                this.serviceDetails = data.servicesDetails;
             } else {
                 Swal.fire({
                     title: " ! خطا",
                     text: ".خطایی رخ داده است، لطفا مجددا تلاش کنید",
                     type: "success",
-                    confirmButtonText:'باشه'
+                    confirmButtonText: 'باشه'
                 }).then(() => {
                     router.push({name: 'adsl-availability-check'})
                 });
@@ -114,7 +225,8 @@ export default {
 
 
         })
-    }
+    },
+
 }
 </script>
 

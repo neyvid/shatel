@@ -18,7 +18,7 @@ abstract class BaseRepository
        return $this->model::with('city','province','telecomcenter')->get();
     }
 
-    public function all(string $with = null)
+    public function all(array $with = [])
     {
         if ($with != null) {
             return $this->model::with($with)->get();

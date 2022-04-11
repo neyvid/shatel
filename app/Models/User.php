@@ -52,13 +52,22 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new \App\Notifications\VerifyEmail());
     }
 
+    public function areacode()
+    {
+        return $this->hasOne(Areacode::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
     public function getImageSrcAttribute()
     {
 //        return public_path('profiles/').$this->id.'/'.$this->image;
-        if(!empty($this->image)){
+        if (!empty($this->image)) {
 
-            return 'profiles/' .Auth::user()->id.'/'. $this->image;
+            return 'profiles/' . Auth::user()->id . '/' . $this->image;
         }
     }
 
