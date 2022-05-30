@@ -64,6 +64,28 @@ export default [
         name: 'reset-password',
         meta: {guest: true}
     },
+//    user Panel Routes
+    {
+        path: '/panel',
+        component: require('../view/profile/layout/index-layout').default,
+
+        children: [
+            {
+                path: '',
+                component: require('../view/profile/home').default,
+                name: 'userprofile',
+                meta: {auth: true,canSeeUser:true},
+            },
+            {
+                path: 'my-order',
+                component: require('../view/panel/order/index').default,
+                name: 'my-order',
+                meta: {auth: true,canSeeUser:true},
+            },
+
+        ],
+
+    },
 //    Admin Routes
     {
         path: '/profile',
@@ -74,62 +96,73 @@ export default [
                 path: '',
                 component: require('../view/profile/home').default,
                 name: 'profile',
-                meta: {auth: true},
-
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'cities', //profile/cities
                 component: require('../view/profile/cities/index').default,
                 name: 'cities',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'provinces', //profile/cities
                 component: require('../view/profile/provinces/index').default,
                 name: 'provinces',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'editor', //profile/cities
                 component: require('../view/profile/editor/editor').default,
                 name: 'editor',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'telecomeCenters', //profile/telecomeCenters
                 component: require('../view/profile/telecomeCenters/index').default,
                 name: 'telecomeCenters',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'areacode', //profile/telecomeCenters
                 component: require('../view/profile/areacode/index').default,
                 name: 'areacode',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'oprator', //profile/oprator
                 component: require('../view/profile/oprator/index').default,
                 name: 'oprator',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'service', //profile/oprator
                 component: require('../view/profile/service/index').default,
                 name: 'service',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'category', //profile/oprator
                 component: require('../view/profile/category/index').default,
                 name: 'category',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
             },
             {
                 path: 'product',
                 component: require('../view/profile/product/index').default,
                 name: 'product',
-                meta: {auth: true},
+                meta: {auth: true,canSeeUser:false},
+            },
+            {
+                path: 'order',
+                component: require('../view/profile/order/index').default,
+                name: 'order',
+                meta: {auth: true,canSeeUser:false},
+            },
+            {
+                path: 'menu',
+                component: require('../view/profile/menu/index').default,
+                name: 'menu',
+                meta: {auth: true,canSeeUser:false},
             },
 
         ],

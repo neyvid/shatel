@@ -237,7 +237,7 @@ export default {
     },
     created() {
         axios.get('/admin/oprators/').then(({data}) => {
-            console.log(data);
+
             this.opratorData = data;
         })
     }

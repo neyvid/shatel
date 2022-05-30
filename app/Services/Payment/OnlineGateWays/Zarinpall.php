@@ -64,6 +64,8 @@ class Zarinpall extends OnlineGateWay
                     $currentOrder->status = OrderStatus::PAID;
                     $currentOrder->refId = $result->RefID;
                     $currentOrder->save();
+//                    return redirect()->to('/profile')->with('status','okkkkkk');
+
                     return view('frontend.Order.returnOkGateway', ['status' => $result]);
 //                return 'Transaction success. RefID:'.$result->RefID.Carbon::now()->format('Y');
                 } else {

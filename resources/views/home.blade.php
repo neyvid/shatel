@@ -16,7 +16,8 @@
     <script>
         window.user = {
             name: '{{auth('sanctum')->user()->name}}',
-            email: '{{(auth('sanctum')->user()->email)}}',
+            email: '{{auth('sanctum')->user()->email}}',
+            role:   '{{auth('sanctum')->user()->role}}',
             mobile: '{{auth('sanctum')->user()->mobile}}',
             authType: '{{auth('sanctum')->user()->mobile===null? 'email':'mobile'}}',
             isVerified: {{auth('sanctum')->user()->email_verified_at===null? 1:2}},
@@ -25,13 +26,12 @@
     </script>
 @endauth
 {{--{{auth('sanctum')->user()}}--}}
-<div id="app">
 
+<div id="app">
     <v-app>
         <router-view></router-view>
+
     </v-app>
-
-
 </div>
 <script src="{{asset('js/app.js')}}">
 

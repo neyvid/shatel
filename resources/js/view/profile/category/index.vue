@@ -217,8 +217,6 @@ export default {
                 if (data.parent === null) {
                     data.parent = {name: 'بدون والد'}
                 }
-
-
                 this.createDialog = false
             })
         },
@@ -226,7 +224,6 @@ export default {
             axios.get('/admin/category/edit/' + id).then(({data}) => {
                 console.log(data);
                 this.categoryDataForUpdate = data.categories;
-
                 this.editItem.name = data.category.name;
                 this.editItem.id = data.category.id;
                 this.editItem.parent_id = data.category.parent_id;
@@ -315,8 +312,11 @@ export default {
 
             })
             //
+
             this.categoryDataForCreate = data;
+
         })
+
 
     }
 }

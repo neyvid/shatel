@@ -8,13 +8,7 @@ use Intervention\Image\Facades\Image;
 
 class UploadImageService
 {
-//    public static function is_image_in_request($request)
-//    {
-//        if ($request->image_src && ($request->image_name||$request->image_name_update)) {
-//            return true;
-//        }
-//        return false;
-//    }
+
 
     public static function is_image($image_src,$image_name,$image_name_update=null)
     {

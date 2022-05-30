@@ -19,25 +19,35 @@
         </template>
 
         <v-divider></v-divider>
-        <v-treeview :items="treeitems"
-                    activatable
-                    transition
-                    open-on-click
-
+        <v-treeview
+            :items="treeitems"
+            activatable
+            transition
+            open-on-click
+            v-if="$store.state.user.user.role==='1'"
         >
             <template slot="label" slot-scope="props">
-                <router-link :to="props.item.to"  v-if="props.item.to">{{ props.item.name }}</router-link>
+                <router-link :to="props.item.to" v-if="props.item.to">{{ props.item.name }}</router-link>
                 <span v-else>{{ props.item.name }}</span>
             </template>
-
-
+        </v-treeview> <v-treeview
+            :items="treeitemsForNormoalUser"
+            activatable
+            transition
+            open-on-click
+            v-else
+        >
+            <template slot="label" slot-scope="props">
+                <router-link :to="props.item.to" v-if="props.item.to">{{ props.item.name }}</router-link>
+                <span v-else>{{ props.item.name }}</span>
+            </template>
         </v-treeview>
         <v-list dense>
             <v-list-item
                 v-for="item in items"
                 :key="item.title"
             >
-                <v-list-item-icon>
+                <v-list-item-icon >
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
 
@@ -67,66 +77,89 @@ export default {
                     id: 1,
                     name: 'شهر ها',
                     children: [
-                        {id: 2, name: 'مشاهده شهر ها',to: {name:'cities'}},
+                        {id: 2, name: 'مشاهده شهر ها', to: {name: 'cities'}},
                     ],
                 },
                 {
                     id: 3,
                     name: 'استان ها',
                     children: [
-                        {id: 4, name: 'مشاهده استان ها',to: {name:'provinces'}},
+                        {id: 4, name: 'مشاهده استان ها', to: {name: 'provinces'}},
                     ],
                 },
                 {
                     id: 5,
                     name: 'ادیتور',
                     children: [
-                        {id: 6, name: 'ادیتور',to: {name:'editor'}},
+                        {id: 6, name: 'ادیتور', to: {name: 'editor'}},
                     ],
                 },
                 {
                     id: 6,
                     name: 'مراکز مخابراتی',
                     children: [
-                        {id: 7, name: 'مشاهده مراکز مخابراتی',to: {name:'telecomeCenters'}},
+                        {id: 7, name: 'مشاهده مراکز مخابراتی', to: {name: 'telecomeCenters'}},
                     ],
                 },
                 {
                     id: 7,
                     name: 'پیش شماره ها',
                     children: [
-                        {id: 8, name: 'مشاهده پیش شماره ها',to: {name:'areacode'}},
+                        {id: 8, name: 'مشاهده پیش شماره ها', to: {name: 'areacode'}},
                     ],
                 },
                 {
                     id: 9,
                     name: 'اپراتور ها',
                     children: [
-                        {id: 10, name: 'مشاهده اپراتورها',to: {name:'oprator'}},
+                        {id: 10, name: 'مشاهده اپراتورها', to: {name: 'oprator'}},
                     ],
                 },
                 {
                     id: 11,
                     name: 'سرویس ها',
                     children: [
-                        {id: 12, name: 'مشاهده سرویس ها',to: {name:'service'}},
+                        {id: 12, name: 'مشاهده سرویس ها', to: {name: 'service'}},
                     ],
                 },
                 {
                     id: 13,
                     name: 'دسته بندی ها',
                     children: [
-                        {id: 14, name: 'مشاهده دسته بندی ها',to: {name:'category'}},
+                        {id: 14, name: 'مشاهده دسته بندی ها', to: {name: 'category'}},
                     ],
                 },
                 {
                     id: 14,
                     name: 'محصولات و تجهیزات',
                     children: [
-                        {id: 15, name: 'مشاهده تجهیزات و محصولات',to: {name:'product'}},
+                        {id: 15, name: 'مشاهده تجهیزات و محصولات', to: {name: 'product'}},
                     ],
                 },
+                {
+                    id: 16,
+                    name: 'سفارشات',
+                    children: [
+                        {id: 17, name: 'مشاهده سفارش ها', to: {name: 'order'}},
+                    ],
+                },
+                {
+                    id: 18,
+                    name: 'منو ها',
+                    children: [
+                        {id: 19, name: 'مشاهده منو ها', to: {name: 'menu'}},
+                    ],
+                },
+            ],
+            treeitemsForNormoalUser:[
+                {
 
+                    id: 18,
+                    name: 'سفارش های من',
+                    children: [
+                        {id: 19, name: 'مشاهده سفارش ها', to: {name: 'my-order'}},
+                    ],
+                }
             ],
         }
     },

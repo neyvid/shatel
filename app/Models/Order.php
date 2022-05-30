@@ -21,4 +21,12 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getStatusAttribute($value)
+    {
+        if($value==1){
+            return 'پرداخت شده';
+        }
+        return  'پرداخت نشده';
+    }
 }

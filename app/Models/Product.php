@@ -15,4 +15,5 @@ class Product extends Model
     {
         return $this->morphToMany(Category::class, 'categoryable');
     }
+
 }

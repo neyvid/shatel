@@ -29,6 +29,7 @@ class AddColumnToUser extends Migration
             $table->text('address')->after('postal_code');
             $table->integer('user_type')->after('name'); //haghighi =0 , hoghoghi=1
             $table->string('phone_number_request')->after('user_phone_number');
+            $table->integer('role')->after('name')->default(0);
 
         });
     }
@@ -56,7 +57,8 @@ class AddColumnToUser extends Migration
                 'postal_code',
                 'address',
                 'user_type',
-                'phone_number_request'
+                'phone_number_request',
+                'role'
             ]);
         });
     }

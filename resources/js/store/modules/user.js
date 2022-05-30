@@ -8,7 +8,7 @@ export default {
     mutations: {
         LOGOUT(state) {
             state.isLoggedIn = false;
-            state.user = '';
+            state.user = ' ';
         },
         LOGIN(state, payload) {
             state.isLoggedIn = true;
@@ -45,9 +45,12 @@ export default {
                     commit('LOGIN', {
                         'name': response.data.data.name,
                         'email': response.data.data.email,
+                        'role': response.data.data.role===1 ? "1":"0",
                         'mobile': response.data.data.mobile,
                         'email_verified_at': response.data.data.email_verified_at,
                         'mobile_verified_at': response.data.data.mobile_verified_at,
+
+
                     })
 
                 })

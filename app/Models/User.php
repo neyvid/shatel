@@ -9,10 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -68,6 +69,15 @@ class User extends Authenticatable implements MustVerifyEmail
         if (!empty($this->image)) {
 
             return 'profiles/' . Auth::user()->id . '/' . $this->image;
+        }
+    }
+
+    public function getFullNameAttribute()
+    {
+
+        if (!empty($this->lastname)) {
+
+            return $this->name.' '.$this->lastname;
         }
     }
 

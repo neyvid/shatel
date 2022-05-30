@@ -17,12 +17,12 @@ class CategoryController extends Controller
 
     public function all()
     {
-        $categories = $this->categoryRepository->all();
-        foreach ($categories as $key => $category) {
-            if ($category->parent !== null) {
-                $category->parent;
-            }
-        }
+        $categories = $this->categoryRepository->all(['parent']);
+//        foreach ($categories as $key => $category) {
+//            if ($category->parent !== null) {
+//                $category->parent;
+//            }
+//        }
 
         return $categories;
     }
@@ -41,7 +41,7 @@ class CategoryController extends Controller
     public function edit(Request $request)
     {
         $category = $this->categoryRepository->find($request->id);
-        $categories=$this->categoryRepository->all()->except($request->id);;
+        $categories=$this->categoryRepository->all()->except($request->id);
         $category['parent'] = $category->parent;
         return ['category'=>$category,'categories'=>$categories];
     }
@@ -58,10 +58,8 @@ class CategoryController extends Controller
         $category->parent;
         return $category;
     }
-
     public function delete(Request $request)
     {
-
         $category=$this->categoryRepository->find($request->id);
         $categories=$this->categoryRepository->all()->where('parent_id',$request->id);
         if(count($categories)!=0){

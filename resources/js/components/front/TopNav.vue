@@ -76,7 +76,8 @@
                   <v-list-item>
 
                     <v-list-item-title >
-                      <router-link style="cursor: pointer" class='btnLink' :to="{name:'profile'}">پروفایل</router-link>
+                      <router-link style="cursor: pointer"   v-if="$store.state.user.user.role==='1'"  class='btnLink' :to="{name:'profile'}">پروفایل</router-link>
+                      <router-link style="cursor: pointer" v-else class='btnLink' :to="{name:'userprofile'}">پروفایل</router-link>
                     </v-list-item-title>
 
                   </v-list-item>

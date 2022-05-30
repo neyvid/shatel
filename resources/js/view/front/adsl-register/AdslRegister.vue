@@ -128,9 +128,10 @@ export default {
     },
     methods: {
         nextStepTo6() {
+
             this.e1 = 6;
             this.loadingOpenGateWay = true;
-            axios.post('/admin/adslRegister/save/order',
+            axios.post('/adslRegister/save/order',
                 {
                     orderDetails: this.orderDetails,
                     personalData: this.personalData,
@@ -140,8 +141,8 @@ export default {
                     companyData: this.companyData,
                     confirmContract: this.confirmContract
                 }).then(({data}) => {
-
                 window.location.href = 'https://sandbox.zarinpal.com/pg/StartPay/' + data;
+
             })
 
         },

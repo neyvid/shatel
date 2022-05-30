@@ -11,7 +11,7 @@
                                 v-if="loadingForOpenGatway"
                                 :size="70"
                                 :width="7"
-                                color="purple"
+                                color="green"
                                 indeterminate
                             ></v-progress-circular>
                             <p class="mt-5">لطفا کمی تامل نمایید ! </p>

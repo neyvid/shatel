@@ -38,9 +38,18 @@ Route::get('resetSession', [\App\Http\Controllers\Front\AdslCheck::class, 'reset
 Route::get('/adsl/support/getCititesOfProvince/{id}', [\App\Http\Controllers\Front\AdslCheck::class, 'getCitiesOfProvince'])->name('adsl.support.check.getCitiesOfProvince');
 Route::post('/adsl/buy/online', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'buyOnline'])->name('adsl.buy.online.first');
 Route::get('/adsl/buy/online/get/session', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'getOrderDetailsSession'])->name('adsl.buy.online.getOrderDetailsSession');
-Route::get('/order/verifyPayment', [\App\Http\Controllers\Admin\OrderController::class,'verifyPayment'])->name('verifyPayment');
+Route::get('/order/verifyPayment', [\App\Http\Controllers\Front\OrderController::class, 'verifyPayment'])->name('verifyPayment');
+Route::post('/adslRegister/save/order', [\App\Http\Controllers\Front\OrderController::class, 'create'])->name('order.create');
+//For Create Role and Permission and Assign Role And Permission
+//Route::get('/create/role', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'CreateRole']);
+//Route::get('/create/permission', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'CreatePermission']);
+//Route::get('/create/assignPermissionToRole', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'assignPermissionToRole']);
+//Route::get('/create/assingRoleToUser', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'assingRoleToUser']);
+//Route::get('/create/assignPermissionToUser', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'assignPermissionToUser']);
+Route::get('/menus/all', [\App\Http\Controllers\Front\MenuController::class, 'all'])->name('menus.all');
+
 //Admin
-Route::prefix('admin')->group(function (){
+Route::prefix('admin')->group(function () {
     Route::get('/provinces', [App\Http\Controllers\Admin\ProvinceController::class, 'all'])->name('provinces');
     Route::get('/provinces/edit/{id}', [App\Http\Controllers\Admin\ProvinceController::class, 'edit'])->name('provinces.edit.show');
     Route::post('/provinces/edit/{id}', [App\Http\Controllers\Admin\ProvinceController::class, 'update'])->name('provinces.update');
@@ -85,9 +94,22 @@ Route::prefix('admin')->group(function (){
     Route::get('/product/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('product.edit.show');
     Route::post('/product/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('product.edit.update');
     Route::get('/product/delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'delete'])->name('product.delete');
-    Route::post('/adslRegister/save/order', [App\Http\Controllers\Admin\OrderController::class, 'create'])->name('order.create');
+    Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'all'])->name('orders');
+    Route::get('/order/detail/{id}', [App\Http\Controllers\Admin\OrderController::class, 'orderDetail'])->name('orders.detail');
 
     Route::post('/telecomcenter/delete/all', [App\Http\Controllers\Admin\TelecomCenterController::class, 'deleteAll'])->name('TelecomCenters.deleteAll');
-});
+    Route::post('/order/import', [\App\Http\Controllers\Admin\OrderController::class, 'import'])->name('panel.orders.import');
 
+    Route::get('/menus', [App\Http\Controllers\Admin\MenusController::class, 'all'])->name('menus');
+    Route::post('/menu/create', [App\Http\Controllers\Admin\MenusController::class, 'create'])->name('menu.create');
+    Route::get('/menu/edit/{id}', [App\Http\Controllers\Admin\MenusController::class, 'edit'])->name('menu.edit.show');
+    Route::post('/menu/edit/{id}', [App\Http\Controllers\Admin\MenusController::class, 'update'])->name('menu.update');
+
+});
+//User panel
+Route::prefix('panel')->group(function () {
+    Route::get('/orders', [\App\Http\Controllers\Panel\OrderController::class, 'all'])->name('panel.order.all');
+    Route::get('/order/detail/{id}', [\App\Http\Controllers\Panel\OrderController::class, 'orderDetail'])->name('panel.orders.detail');
+
+});
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');sh

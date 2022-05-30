@@ -25,7 +25,8 @@ export default {
     components: {
 
         Carousel,OnlineServices,OurServices, OurNews,
-    }
+    },
+
 }
 </script>
 
