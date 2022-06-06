@@ -214,7 +214,7 @@ export default {
             menuData: [],
             createDialog: false,
             menuDataForCreate: [],
-            menuDataForUpdate:[],
+            menuDataForUpdate: [],
             editDialog: false,
             createItem: {},
             editItem: {},
@@ -258,56 +258,24 @@ export default {
                 console.log(data);
             })
         },
-        deleteItem({id}) {
-            Swal.fire({
-                title: 'از حذف این گزینه مطمئن هستید؟',
-                text: "درصورت حذف، قابل برگشت نمی باشد",
-                icon: 'اخطار',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'انصراف',
-                confirmButtonText: '!بله مطمئن هستم'
-            }).then((result) => {
-                if (result.isConfirmed) {
 
-                    axios.get('/admin/menu/delete/' + id).then((response) => {
 
-                        const index = this.menuData.map(function (obj) {
-                            return obj.id;
-                        }).indexOf(id);
-                        this.menuDate.splice(index, 1);
 
-                    }).catch((error) => {
-                        alert('خطایی در حذف رخ داده است لطفا مجددا تلاش کنید.')
-
-                    })
-                    Swal.fire(
-                        {
-                            title: '!حذف شد',
-                            text: '.گزینه مورد نظر با موفقیت حذف شد',
-                            type: 'success',
-                            confirmButtonText: 'باشه!'
-                        }
-                    )
-                }
-            })
-        },
         showEditItem({id}) {
             axios.get('/admin/menu/edit/' + id).then(({data}) => {
                 this.editDialog = true;
-                this.menuDataForUpdate=data.menus
+                this.menuDataForUpdate = data.menus
                 this.editItem.name = data.menu.name
                 this.editItem.link = data.menu.link
                 this.editItem.parent_id = data.menu.parent_id;
                 this.editItem.id = data.menu.id
-                    if (data.menu.parent === null) {
-                        this.hasParent = false;
-                        this.editItem.parent = {name: 'بدون والد'};
-                    } else {
-                        this.hasParent = true;
-                        this.editItem.parent = data.parent;
-                    }
+                if (data.menu.parent === null) {
+                    this.hasParent = false;
+                    this.editItem.parent = {name: 'بدون والد'};
+                } else {
+                    this.hasParent = true;
+                    this.editItem.parent = data.parent;
+                }
                 console.log(data);
             })
         },
@@ -327,10 +295,55 @@ export default {
                 }
                 this.editDialog = false;
             })
+        },
+        deleteItem({id}) {
+            Swal.fire({
+                title: 'از حذف این گزینه مطمئن هستید؟',
+                text: "درصورت حذف، قابل برگشت نمی باشد",
+                icon: 'اخطار',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'انصراف',
+                confirmButtonText: '!بله مطمئن هستم'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.get('/admin/menu/delete/' + id).then(({data}) => {
+                        console.log(data);
+                        if (data.hasParent) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'خطای سیستم',
+                                text: 'دسته بندی انتخاب شده برای حذف دارای فرزند(فرزندان) هست و با حذف آن سیستم دچار اشکال می گردد، لذا ابتدا فرزندان را حذف نمایید و سپس برای حذف این مورد اقدام فرمایید!',
+                            })
+                        } else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: '.دسته بندی مورد نظر با موفقیت حذف گردید',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            const index = this.menuData.map(function (obj) {
+                                return obj.id;
+                            }).indexOf(id);
+                            this.menuData.splice(index, 1);
+
+                        }
+
+
+                    }).catch((error) => {
+                        alert('خطایی در حذف رخ داده است لطفا مجددا تلاش کنید.')
+
+                    })
+
+                }
+            })
         }
     },
     created() {
         axios.get('/admin/menus/').then(({data}) => {
+            console.log(data);
             this.menuData = data;
             this.menuDataForCreate = data;
         })

@@ -96,6 +96,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/product/delete/{id}', [App\Http\Controllers\Admin\ProductController::class, 'delete'])->name('product.delete');
     Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'all'])->name('orders');
     Route::get('/order/detail/{id}', [App\Http\Controllers\Admin\OrderController::class, 'orderDetail'])->name('orders.detail');
+    Route::get('/order/createDialog/show', [App\Http\Controllers\Admin\OrderController::class, 'getDataForCreateNewOrder'])->name('orders.create.show');
+    Route::post('/order/create', [App\Http\Controllers\Admin\OrderController::class, 'create'])->name('orders.create');
+    Route::get('/order/edit/{id}', [App\Http\Controllers\Admin\OrderController::class, 'edit'])->name('orders.edit.show');
 
     Route::post('/telecomcenter/delete/all', [App\Http\Controllers\Admin\TelecomCenterController::class, 'deleteAll'])->name('TelecomCenters.deleteAll');
     Route::post('/order/import', [\App\Http\Controllers\Admin\OrderController::class, 'import'])->name('panel.orders.import');
@@ -104,6 +107,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/menu/create', [App\Http\Controllers\Admin\MenusController::class, 'create'])->name('menu.create');
     Route::get('/menu/edit/{id}', [App\Http\Controllers\Admin\MenusController::class, 'edit'])->name('menu.edit.show');
     Route::post('/menu/edit/{id}', [App\Http\Controllers\Admin\MenusController::class, 'update'])->name('menu.update');
+    Route::get('/menu/delete/{id}', [App\Http\Controllers\Admin\MenusController::class, 'delete'])->name('menu.delete');
 
 });
 //User panel

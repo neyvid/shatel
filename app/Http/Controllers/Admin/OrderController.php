@@ -37,11 +37,11 @@ class OrderController extends Controller
     public function all()
     {
         $orders = $this->orderRepository->all(['user', 'order_items']);
-
+        $users = $this->userRepository->all();
         $services = $this->serviceRepository->all();
         $products = $this->productRepository->all();
 
-        return ['orders' => $orders, 'services' => $services, 'products' => $products];
+        return ['orders' => $orders, 'services' => $services, 'products' => $products, 'users' => $users];
     }
 
     public function orderDetail(Request $request)
@@ -70,4 +70,71 @@ class OrderController extends Controller
         Excel::import(new OrdersImport, $file);
         return $this->all();
     }
+
+    public function create(Request $request)
+    {
+        $OrderPayableAmount = 0;
+        $products = [];
+        $services = [];
+        $orderItems = [];
+        if ($request->products) {
+            foreach ($request->products as $key => $product_id) {
+                $product = $this->productRepository->find($product_id);
+                $products[$key] = $product;
+                $OrderPayableAmount += $product->price;
+            }
+        }
+        if ($request->services) {
+            foreach ($request->services as $key => $service_id) {
+                $service = $this->serviceRepository->find($service_id);
+                $services[$key] = $service;
+                $OrderPayableAmount += $service->total_price;
+            }
+        }
+        $orderCreated = $this->orderRepository->create([
+            'user_id' => $request->user_id,
+            'price' => $OrderPayableAmount,
+            'payable_amount' => $OrderPayableAmount - (($OrderPayableAmount * $request->discount_amount) / 100),
+            'discount_amount' => $request->discount_amount,
+            'status' => 0,
+        ]);
+
+        foreach ($products as $key => $product) {
+            $orderItems[] = [
+                'order_id' => $orderCreated->id,
+                'price' => $product->price,
+                'discount' => $product->discount,
+                'payable_amount' => $product->price,
+                'item_id' => $product->id,
+                'item_type' => 'product'
+            ];
+        }
+        foreach ($services as $key => $service) {
+
+            $orderItems[] = [
+                'order_id' => $orderCreated->id,
+                'price' => $service->total_price,
+                'discount' => $service->discount,
+                'payable_amount' => $service->total_price,
+                'item_id' => $service->id,
+                'item_type' => 'service'
+            ];
+        }
+
+        $orderCreateItems = $orderCreated->order_items()->createMany($orderItems);
+        $orderCreated->user;
+        $orderCreated->order_items;
+        return ['order' => $orderCreated, 'orderItems' => $orderCreateItems];
+
+    }
+
+    public function edit(Request $request)
+    {
+        $order=$this->orderRepository->find($request->id);
+        $order->order_items;
+        $order->user;
+        return $order;
+    }
+
+
 }

@@ -24,9 +24,9 @@ class Order extends Model
 
     public function getStatusAttribute($value)
     {
-        if($value==1){
-            return 'پرداخت شده';
+        if ($value == 1) {
+            return config('orderStatus.confirmPay');
         }
-        return  'پرداخت نشده';
+        return config('orderStatus.notConfirmPay');
     }
 }

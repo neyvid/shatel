@@ -19,6 +19,7 @@ class MenusController extends Controller
     public function all()
     {
         $menus = $this->menuRepository->all(['childrens']);
+
         foreach ($menus as $key => $menu) {
             if ($menu->parent_id == 0) {
                 $menus[$key]->parent = ['name' => 'منوی اصلی'];
@@ -69,5 +70,15 @@ class MenusController extends Controller
         return $menu;
 
 
+    }
+
+    public function delete(Request $request)
+    {
+        $menu=$this->menuRepository->find($request->id);
+        $menus=$this->menuRepository->all()->where('parent_id',$request->id);
+        if(count($menus)!=0){
+            return ['hasParent'=>true];
+        }
+        $menu->delete();
     }
 }

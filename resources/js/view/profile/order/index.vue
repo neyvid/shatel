@@ -23,11 +23,38 @@
                                     <v-row>
                                         <v-col
                                             cols="12">
+
+                                            <v-autocomplete
+
+                                                :items="uersInfo"
+                                                label="کاربر سفارش دهنده"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="createItem.user_id">
+                                            </v-autocomplete>
+                                            <v-autocomplete
+                                                :items="productData"
+                                                label="محصول انتخابی"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="createItem.products"
+                                                multiple
+                                            >
+                                            </v-autocomplete>
+                                            <v-autocomplete
+                                                :items="serviceData"
+                                                label="سرویس انتخابی"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="createItem.services"
+                                                multiple
+                                            >
+                                            </v-autocomplete>
                                             <v-text-field
-                                                label="نام اپراتور"
-                                                :rules="[required('نام شهر'),persianCharachter()]"
-                                                v-model="createItem.name"
-                                                :error-messages="errors.name"
+                                                label="درصد تخفیف"
+                                                :rules="[required('درصد تخفیف'),]"
+                                                v-model="createItem.discount_amount"
+                                                :error-messages="errors.discount_amount"
 
                                             ></v-text-field>
                                         </v-col>
@@ -49,7 +76,7 @@
                             <v-btn
                                 color="blue darken-1"
                                 text
-                                @click="createCity"
+                                @click="createOrder"
                             >
                                 ذخیره
                             </v-btn>
@@ -60,9 +87,10 @@
             </v-row>
             <v-row>
                 <v-row>
-                    <v-col cols="10" >
+                    <v-col cols="10">
                         <form class="d-flex align-center" @submit="formSubmit" enctype="multipart/form-data">
-                            <v-file-input label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید"  v-on:change="onFileChange"></v-file-input>
+                            <v-file-input label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید"
+                                          v-on:change="onFileChange"></v-file-input>
                             <v-btn type="submit" class="mr-4" color="success">انتقال از اکسل به پایگاه داده</v-btn>
                         </form>
                     </v-col>
@@ -129,13 +157,13 @@
 
                                     <v-card-text>
 
-                                        <v-simple-table dense  class="order_detail_dialog">
+                                        <v-simple-table dense class="order_detail_dialog">
                                             <thead>
                                             <tr>
                                                 <th class="text-center">نوع سفارش</th>
-                                                <th  class="text-center">نام سفارش</th>
-                                                <th  class="text-center">قیمت سفارش</th>
-                                                <th  class="text-center">توضیحات سفارش</th>
+                                                <th class="text-center">نام سفارش</th>
+                                                <th class="text-center">قیمت سفارش</th>
+                                                <th class="text-center">توضیحات سفارش</th>
 
                                             </tr>
 
@@ -143,17 +171,18 @@
                                             </thead>
                                             <tbody class="text-center">
                                             <tr v-for="orderItem in orderItems">
-                                                <td >
-                                                    {{orderItem.order_type==='service' ? 'سرویس':'محصول'}}
+                                                <td>
+                                                    {{ orderItem.order_type === 'service' ? 'سرویس' : 'محصول' }}
                                                 </td>
-                                                <td >
-                                                    {{orderItem.name}}
+                                                <td>
+                                                    {{ orderItem.name }}
                                                 </td>
-                                                <td >
-                                                    {{orderItem.order_type==='service' ? orderItem.total_price : orderItem.price}}
+                                                <td>
+                                                    {{ orderItem.order_type === 'service' ? orderItem.total_price :
+                                                    orderItem.price }}
                                                 </td>
-                                                <td >
-                                                    {{orderItem.description}}
+                                                <td>
+                                                    {{ orderItem.description }}
                                                 </td>
 
 
@@ -191,7 +220,7 @@
 
                     <v-card>
                         <v-card-title>
-                            <span class="text-h5">ویرایش استان</span>
+                            <span class="text-h5">ویرایش سفارش</span>
                         </v-card-title>
                         <v-card-text>
                             <v-form ref="editForm">
@@ -200,12 +229,14 @@
                                         <v-col
                                             cols="12">
                                             <v-text-field
-                                                label="نام اپراتور"
-                                                :rules="[required('نام اپراتور'),persianCharachter()]"
-                                                v-model="editItem.name"
+                                                label="نام سفارش دهنده"
+                                                :rules="[required('نام سفارش دهنده'),persianCharachter()]"
+                                                v-model="editItem.user"
                                                 :error-messages="errors.name"
 
+
                                             ></v-text-field>
+
                                         </v-col>
 
 
@@ -218,7 +249,7 @@
                             <v-btn
                                 color="blue darken-1"
                                 text
-                                @click="editDialog=false"
+                                @click="editDialog=false,editItem=[]"
                             >
                                 انصراف
                             </v-btn>
@@ -249,6 +280,9 @@ export default {
         return {
             required, code, persianCharachter,
             orderData: [],
+            uersInfo: [],
+            // createProductItem:[],
+            // createServiceItem:{},
             orderItems: null,
             userData: [],
             dialog: false,
@@ -256,7 +290,11 @@ export default {
             productData: {},
             createDialog: false,
             editDialog: false,
-            createItem: {},
+            createItem: {
+                products: null,
+                services: null,
+
+            },
             editItem: {},
             exelFile: {},
             headers: [
@@ -300,9 +338,11 @@ export default {
             })
 
         },
-        createCity() {
-            axios.post('/admin/oprator/create', this.createItem).then(({data}) => {
-                this.orderData.push(data);
+        createOrder() {
+            axios.post('/admin/order/create', this.createItem).then(({data}) => {
+
+                this.orderData.push(data.order);
+
                 this.createDialog = false;
             })
         },
@@ -342,13 +382,12 @@ export default {
             })
         },
         showEditItem({id}) {
-            axios.get('/admin/oprator/edit/' + id).then(({data}) => {
+            axios.get('/admin/order/edit/' + id).then(({data}) => {
+                console.log(data);
                 this.editDialog = true;
-                this.editItem.name = data.name
-                this.editItem.id = data.id
+                this.editItem = data;
             })
         },
-
         onFileChange(event) {
             this.exelFile = event;
         },
@@ -371,12 +410,14 @@ export default {
 
         }
     },
+
     created() {
         axios.get('/admin/orders/').then(({data}) => {
             console.log(data);
             this.orderData = data.orders;
             this.productData = data.products;
             this.serviceData = data.services;
+            this.uersInfo = data.users;
 
             // const indexx = this.productData.map(function (obj) {
             //     return obj.id;
