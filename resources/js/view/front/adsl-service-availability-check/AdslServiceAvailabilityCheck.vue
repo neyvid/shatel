@@ -54,13 +54,15 @@
                                     label="کد شهر"
                                     :rules="[required('کد'),code()]"
                                     v-model="checkAdslInfo.city_code"
+                                    maxlength="3"
                                 ></v-text-field>
                                 <v-text-field
                                     label="شماره تلفن"
                                     required
                                     outlined
-                                    :rules="[required('شماره تلفن')]"
+                                    :rules="[required('شماره تلفن'),phoneNumber()]"
                                     v-model="checkAdslInfo.phone_number"
+                                    maxlength="8"
                                 ></v-text-field>
 
 
@@ -166,7 +168,7 @@
 </template>
 
 <script>
-import {required, code} from "../../../rules/frontRules";
+import {required, code,moreThan,phoneNumber} from "../../../rules/frontRules";
 import router from "../../../router/router";
 import Swal from "sweetalert2";
 export default {
@@ -178,6 +180,8 @@ export default {
             adslCheckFail: false,
             required,
             code,
+             moreThan,
+            phoneNumber,
             provinceValue: null,
             loading: false,
             checkAdslInfo: {},
@@ -236,6 +240,15 @@ export default {
                         this.orderTableShow = true;
                         this.adslCheckFail = false;
                         this.areacodeData = data;
+                    }else{
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            text: 'برای این شماره تلفن قبلا درخواست ارسال شده است',
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+
                     }
                 }).catch(() => {
                     this.adslCheckFail = true;
@@ -257,7 +270,6 @@ export default {
                     router.push({name: 'adsl-register'})
                 }
             }).catch(() => {
-
                 Swal.fire('خطایی رخ داده است لطفا مجددا تلاش کنید!')
             })
         }
@@ -265,6 +277,7 @@ export default {
     created() {
         axios.get('/adsl/support/getProvinces').then(({data}) => {
             this.provinceData = data;
+
         })
         axios.get('/resetSession');
     }

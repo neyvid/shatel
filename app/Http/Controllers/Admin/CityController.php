@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CityImport;
 use App\Models\City;
 use App\Repositories\CityRepository\CityRepository;
 use App\Repositories\ProvinceRepository\ProvinceRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CityController extends Controller
 {
@@ -51,7 +54,7 @@ class CityController extends Controller
             'name' => $request->name,
             'province_id' => $request->province_id
         ];
-        $city=$this->cityRepository->find($request->id);
+        $city = $this->cityRepository->find($request->id);
         $city->update($cityData);
         $city->province;
         return $city;
@@ -60,7 +63,23 @@ class CityController extends Controller
     public function delete(Request $request)
     {
 
-        $cityDeleted=$this->cityRepository->delete($request->id);
+        $cityDeleted = $this->cityRepository->delete($request->id);
         return $cityDeleted;
+    }
+
+    public function import(Request $request)
+    {
+
+        if ($request->file->getClientOriginalExtension() === 'xlsx') {
+            $fileName = time() . '.' . $request->file->getClientOriginalExtension();
+            if (File::exists(public_path() . '/cityImport')) {
+                File::deleteDirectory(public_path() . '/cityImport');
+            };
+            $file = $request->file->move(public_path() . '/cityImport', $fileName);
+            Excel::import(new CityImport, $file);
+            return ['status'=>true,'allData'=>$this->all()];
+        } else {
+            return ['status'=>false,'message'=> '(پسوند قابل قبول xlsx. می باشد)  فرمت فایل انتخابی صحیح نمی باشد.  '];
+        }
     }
 }

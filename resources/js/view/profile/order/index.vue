@@ -178,8 +178,10 @@
                                                     {{ orderItem.name }}
                                                 </td>
                                                 <td>
-                                                    {{ orderItem.order_type === 'service' ? orderItem.total_price :
-                                                    orderItem.price }}
+                                                    {{
+                                                        orderItem.order_type === 'service' ? orderItem.total_price :
+                                                            orderItem.price
+                                                    }}
                                                 </td>
                                                 <td>
                                                     {{ orderItem.description }}
@@ -231,12 +233,34 @@
                                             <v-text-field
                                                 label="نام سفارش دهنده"
                                                 :rules="[required('نام سفارش دهنده'),persianCharachter()]"
-                                                v-model="editItem.user"
+                                                v-model="orderUserDetail.name"
                                                 :error-messages="errors.name"
-
-
+                                            ></v-text-field>
+                                            <v-text-field
+                                                label="نام سفارش دهنده"
+                                                :rules="[required('نام سفارش دهنده'),persianCharachter()]"
+                                                v-model="orderUserDetail.lastname"
+                                                :error-messages="errors.name"
                                             ></v-text-field>
 
+                                            <v-autocomplete
+                                                :items="serviceData"
+                                                label="سرویس انتخابی"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="serviceEdit"
+                                                multiple
+                                            >
+                                            </v-autocomplete>
+                                            <v-autocomplete
+                                                :items="productData"
+                                                label="محصول انتخابی"
+                                                item-text="name"
+                                                item-value="id"
+                                                v-model="productEdit"
+                                                multiple
+                                            >
+                                            </v-autocomplete>
                                         </v-col>
 
 
@@ -295,7 +319,12 @@ export default {
                 services: null,
 
             },
-            editItem: {},
+            editItem: {
+
+                services: null,
+            },
+            productEdit: [],
+            serviceEdit: [],
             exelFile: {},
             headers: [
 
@@ -383,9 +412,19 @@ export default {
         },
         showEditItem({id}) {
             axios.get('/admin/order/edit/' + id).then(({data}) => {
-                console.log(data);
+                this.productEdit = [];
+                this.serviceEdit = [];
                 this.editDialog = true;
                 this.editItem = data;
+                this.editItem.order_items.forEach(function (item, index, arr) {
+                    if (arr[index].item_type === 'product') {
+                        this.productEdit.push(arr[index].item_id);
+                    }
+                    if (arr[index].item_type === 'service') {
+                        this.serviceEdit.push(arr[index].item_id);
+                    }
+
+                }, this)
             })
         },
         onFileChange(event) {
@@ -410,7 +449,6 @@ export default {
 
         }
     },
-
     created() {
         axios.get('/admin/orders/').then(({data}) => {
             console.log(data);
@@ -429,8 +467,20 @@ export default {
             // console.log(result);
             // console.log(indexx);
         })
-    }
+    },
+    computed: {
+        orderUserDetail() {
+            return this.editItem.user ? this.editItem.user : '';
+        },
+        // orderItemDetail() {
+        //     this.editItem.order_items.forEach(function (item, index, arr) {
+        //         return item.name;
+        //     })
+        //
+        // }
+    },
 }
+
 </script>
 
 <style scoped>

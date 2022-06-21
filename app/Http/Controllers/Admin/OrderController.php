@@ -66,7 +66,7 @@ class OrderController extends Controller
     public function import(Request $request)
     {
         $fileName = time() . '.' . $request->file->getClientOriginalExtension();
-        $file = $request->file->move(public_path(), $fileName);
+        $file = $request->file->move(public_path().'/orderImport/', $fileName);
         Excel::import(new OrdersImport, $file);
         return $this->all();
     }

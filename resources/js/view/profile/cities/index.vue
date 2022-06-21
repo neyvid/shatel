@@ -68,7 +68,39 @@
                 </v-dialog>
                 <!--                End Modal For create Item-->
             </v-row>
+
+
             <v-row>
+                <v-col cols="10">
+                    <v-form class="d-flex align-center" ref="exelFormInput"
+                            enctype="multipart/form-data">
+                        <v-file-input
+                            accept=".xlsx"
+                            label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید(پسوند xlsx.)"
+                            :rules="[required('فایل مورد نظر'),]"
+                            :error-messages="errors.name"
+                            v-on:change="onFileChange"
+                        ></v-file-input>
+
+                    </v-form>
+                    <v-btn @click="importCity" class="mr-4 exelBtn" color="success">
+                        <template v-if="loading">
+                            <v-progress-circular
+                                indeterminate
+                                color="white"
+                            ></v-progress-circular>
+                            درحال انتفال
+                        </template>
+                        <template v-else>
+                            انتقال از اکسل به پایگاه داده
+                        </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
+
+            <v-row>
+
+
                 <v-col>
                     <v-data-table
                         :headers="headers"
@@ -170,16 +202,18 @@
 
 import {required, code, persianCharachter} from "../../../rules/frontRules";
 import Swal from 'sweetalert2'
+
 export default {
     name: "index",
     data() {
         return {
-
+            exelFormInput: null,
             required, code, persianCharachter,
             cityData: [],
             createDialog: false,
             editDialog: false,
             provinceData: [],
+            loading: false,
             editItem: {},
             headers: [
                 {
@@ -264,8 +298,45 @@ export default {
                     )
                 }
             })
-        }
+        },
+        onFileChange(event) {
+            this.exelFile = event;
 
+        },
+        importCity() {
+            if (this.$refs.exelFormInput.validate()) {
+
+                let currentObj = this;
+                this.loading = true;
+                const config = {
+                    headers: {'content-type': 'multipart/form-data'}
+                }
+                let formData = new FormData();
+                formData.append('file', this.exelFile);
+
+                axios.post('/admin/city/import', formData, config).then(({data}) => {
+                    if (!data.status) {
+                        Swal.fire(
+                            {
+                                title: 'خطایی رخ داده!',
+                                text: data.message,
+                                type: 'warning',
+                                confirmButtonText: 'متوجه شدم!'
+                            }
+                        )
+                    } else {
+                        this.cityData = data.allData.cities;
+                        this.provinceData = data.allData.provinces;
+                    }
+
+                }).finally(() => {
+
+                    this.loading = false;
+                })
+            }
+
+
+        }
     },
     created() {
         axios.get('/admin/cities').then(({data}) => {

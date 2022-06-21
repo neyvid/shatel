@@ -13,6 +13,7 @@ abstract class BaseRepository
 
     }
 
+
     public function allWith()
     {
        return $this->model::with('city','province','telecomcenter')->get();
@@ -30,6 +31,8 @@ abstract class BaseRepository
     {
         return $this->model::find($id);
     }
+
+
 
     public function create(array $data)
     {

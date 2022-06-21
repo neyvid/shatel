@@ -7,6 +7,7 @@ use App\Repositories\AreacodeRepository\AreacodeRepository;
 use App\Repositories\ProductRepository\ProductRepository;
 use App\Repositories\ServiceRepository\ServiceRepository;
 use App\Repositories\TelecomcenterRepository\TelecomcenterRepository;
+use App\Services\Sms\SendSms;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
 use function MongoDB\BSON\toJSON;
@@ -16,6 +17,7 @@ class BuyOnlineAdslController extends Controller
     protected $areacodeRepository;
     protected $serviceRepository;
     protected $productRepository;
+
     public function __construct()
     {
         $this->areacodeRepository = new AreacodeRepository();
@@ -40,7 +42,7 @@ class BuyOnlineAdslController extends Controller
             $isAreacode->city;
             $isAreacode->telecomcenter;
             $isAreacode->province;
-            $isAreacode['phoneNumber']=$request->phoneNumber;
+            $isAreacode['phoneNumber'] = $request->phoneNumber;
             session(['orderDetails' => $isAreacode]);
             return $isAreacode;
         }
@@ -51,15 +53,22 @@ class BuyOnlineAdslController extends Controller
 
     public function getOrderDetailsSession()
     {
+
         if (session()->has('orderDetails')) {
-            $services=$this->serviceRepository->all()->where('telecomcenter_id',session('orderDetails')->telecomcenter_id);
-            $products=$this->productRepository->all();
-            return ['status' => true, 'orderDetails' => session('orderDetails'),'servicesDetails'=>$services,'products'=>$products];
+            $services = $this->serviceRepository->all()->where('telecomcenter_id', session('orderDetails')->telecomcenter_id);
+            $products = $this->productRepository->all();
+            return ['status' => true, 'orderDetails' => session('orderDetails'), 'servicesDetails' => $services, 'products' => $products];
         }
         return ['status' => false];
     }
 
-
+    public function cancelPurchase()
+    {
+        if (session()->has('orderDetails')) {
+            session()->forget('orderDetails');
+        }
+        return true;
+    }
 
     private static function checkSession()
     {
@@ -76,4 +85,5 @@ class BuyOnlineAdslController extends Controller
         }
 
     }
+
 }

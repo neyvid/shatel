@@ -38,8 +38,10 @@ Route::get('resetSession', [\App\Http\Controllers\Front\AdslCheck::class, 'reset
 Route::get('/adsl/support/getCititesOfProvince/{id}', [\App\Http\Controllers\Front\AdslCheck::class, 'getCitiesOfProvince'])->name('adsl.support.check.getCitiesOfProvince');
 Route::post('/adsl/buy/online', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'buyOnline'])->name('adsl.buy.online.first');
 Route::get('/adsl/buy/online/get/session', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'getOrderDetailsSession'])->name('adsl.buy.online.getOrderDetailsSession');
+Route::get('/adsl/buy/online/cancel', [\App\Http\Controllers\Front\BuyOnlineAdslController::class, 'cancelPurchase'])->name('adsl.cancel.purchase');
 Route::get('/order/verifyPayment', [\App\Http\Controllers\Front\OrderController::class, 'verifyPayment'])->name('verifyPayment');
 Route::post('/adslRegister/save/order', [\App\Http\Controllers\Front\OrderController::class, 'create'])->name('order.create');
+Route::post('/adslRegister/save/check', [\App\Http\Controllers\Front\OrderController::class, 'isExistMobileOrEmailCheck'])->name('order.create.check');
 //For Create Role and Permission and Assign Role And Permission
 //Route::get('/create/role', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'CreateRole']);
 //Route::get('/create/permission', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'CreatePermission']);
@@ -59,6 +61,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/cities/create', [App\Http\Controllers\Admin\CityController::class, 'create'])->name('cities.create');
     Route::get('/city/edit/{id}', [App\Http\Controllers\Admin\CityController::class, 'edit'])->name('cities.edit.show');
     Route::post('/city/edit/{id}', [App\Http\Controllers\Admin\CityController::class, 'update'])->name('cities.edit.update');
+    Route::post('/city/import', [\App\Http\Controllers\Admin\CityController::class, 'import'])->name('panel.cities.import');
 
 
     Route::get('/city/delete/{id}', [App\Http\Controllers\Admin\CityController::class, 'delete'])->name('cities.delete');

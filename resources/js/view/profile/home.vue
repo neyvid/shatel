@@ -58,10 +58,24 @@
 
                         <div>
                             <span>ایمیل:</span>
-                            <v-btn v-if="isEmailExist && $store.state.user.user.isVerified!==2" rounded small outlined
-                                   class="success">تایید
-                                ایمیل
-                            </v-btn>
+                            <template v-if="!isClickInVerifyEmail">
+                                <v-progress-circular
+                                    indeterminate
+                                    color="red"
+                                    v-show="isEmailVerifyLoading"
+                                ></v-progress-circular>
+
+                            </template>
+                            <template v-if="!isEmailVerifyLoading">
+                                <v-btn v-if="isEmailExist && $store.state.user.user.isVerified!==2"
+                                       @click="emailConfirmation(user.email)" rounded small outlined
+                                       class="success">تایید
+                                    ایمیل
+                                </v-btn>
+                            </template>
+
+
+
                             <v-text-field
                                 v-model="user.email"
                                 :disabled="disabled"
@@ -94,7 +108,8 @@
                                         v-model="verifyMobileCode"
                                     ></v-otp-input>
 
-                                    <v-btn :disabled="isClick" @click="verifyMobile" rounded outlined small class="success">
+                                    <v-btn :disabled="isClick" @click="verifyMobile" rounded outlined small
+                                           class="success">
 
                                         <v-progress-circular
                                             indeterminate
@@ -139,7 +154,7 @@
                     </v-btn>
 
                 </v-col>
-                <v-col cols="4">dasdasa</v-col>
+
             </v-row>
         </v-container>
     </v-main>
@@ -150,6 +165,7 @@
 <script>
 
 import userProfile from "../../Module/Admin/userProfile";
+import {mapState} from "vuex";
 
 
 export default {

@@ -6,7 +6,9 @@ import router from "../../router/router";
 
 export default function userProfile() {
     const isClickInVerifyMobile = ref(false);
+    const isClickInVerifyEmail = ref(false);
     const isLoading = ref(false);
+    const isEmailVerifyLoading = ref(false);
     const userInfoForm = ref(null);
     const user = ref(null);
     const disabled = ref(true);
@@ -34,7 +36,8 @@ export default function userProfile() {
     const isClick = ref(false);
 
     function getUser() {
-        axios.get('api/user').then(({data}) => {
+        axios.get('/api/user').then(({data}) => {
+
             user.value = data;
             isEmailExist.value = !!user.value.email;
             isMobileExist.value = !!user.value.mobile;
@@ -60,7 +63,8 @@ export default function userProfile() {
 
     function userUpdate() {
         if (userInfoForm.value.validate()) {
-            axios.patch('api/user/update', user.value).then((response) => {
+
+            axios.patch('/api/user/update', user.value).then((response) => {
                 disabled.value = true;
                 user.value = response.data;
                 isMobileExist.value=true;
@@ -80,6 +84,15 @@ export default function userProfile() {
         axios.post('/mobileVerify/resend').then((responsse) => {
             isClickInVerifyMobile.value = true;
             isLoading.value = false;
+        }).catch(() => {
+
+        })
+    }
+    function emailConfirmation() {
+        isEmailVerifyLoading.value = true;
+        axios.post('/email/resend').then((responsse) => {
+            isClickInVerifyEmail.value = true;
+            isEmailVerifyLoading.value = false;
         }).catch(() => {
 
         })
@@ -121,6 +134,7 @@ export default function userProfile() {
         form_data,
         old_form_data,
         isLoading,
+        isEmailVerifyLoading,
         verifyMobileCode,
         verifyMobile,
         errors,
@@ -131,6 +145,8 @@ export default function userProfile() {
         userUpdate,
         getUser,
         mobileConfirmation,
-        isClickInVerifyMobile
+        emailConfirmation,
+        isClickInVerifyMobile,
+        isClickInVerifyEmail,
     }
 }

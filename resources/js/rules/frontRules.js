@@ -7,9 +7,21 @@ export function moreThan(field, length) {
     return v => (v ? v.length >= length : false) || `${field} باید بیشتر از ${length} کاراکتر باشد.`
 }
 
+export function postalCode(){
+    return v => /^[0-9]{10}$/.test(v) || 'کد پستی معتبر نمیباشد(کد پستی ده رقمی را وارد نمایید)'
+
+}
+export function email(){
+    return v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'ایمیل وارد شده معتبر نمی باشد، لطفا ایمیل معتبر وارد نمایید'
+
+}
+
 export function code() {
     return v => /^0[0-9][0-9]$/.test(v) || 'کد شهر معتبر نمیباشد(کد شهر سه رقمی و با صفر شروع می شود)'
-    return v => /^[ض ص ث ق ف غ ع ه خ ح ج چ پ گ ک م ن ت ا ل ب ی س ش ظ ط ز ر ذد ئ و ژي آ\s]+$/.test(v) || 'کد شهر معتبر نمیباشد(کد شهر سه رقمی و با صفر شروع می شود)'
+}
+
+export function phoneNumber() {
+    return v => /^[1-9][0-9]{7}$/.test(v) || 'شماره تلفن معتبر نمی باشد'
 }
 
 export function persianCharachter(text) {

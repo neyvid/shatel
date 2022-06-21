@@ -105,12 +105,12 @@
                     @click="$emit('nextStep')"
                     class="mt-8"
                 >
-                    مرحله بعد
+                    ادامه
                     <v-icon>mdi-chevron-left</v-icon>
 
                 </v-btn>
 
-                <v-btn text class="mt-8">
+                <v-btn text class="mt-8" @click="$emit('exit')">
                     خروج
                 </v-btn>
 

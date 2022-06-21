@@ -57,7 +57,7 @@
               شاتل کلاب
             </v-btn>
             <template v-if="!auth">
-              <v-btn class="success mr-2 ml-2" to="login">
+              <v-btn class="success mr-2 ml-2" to="/login">
                 <v-icon>mdi-lock</v-icon>
                 مای شاتل
               </v-btn>

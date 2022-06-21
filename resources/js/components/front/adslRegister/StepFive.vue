@@ -43,17 +43,17 @@
                         class="mt-8"
                         :disabled="!confirmContract"
                     >
-                        Continue
+                        ادامه
                     </v-btn>
                     <v-btn
                         color="warning"
                         @click="$emit('backStep')"
                         class="mt-8"
                     >
-                        back
+                        برگشت
                     </v-btn>
-                    <v-btn text class="mt-8">
-                        Cancel
+                    <v-btn text class="mt-8"  @click="$emit('exit')">
+                        خروج
                     </v-btn>
                 </v-stepper-content>
 

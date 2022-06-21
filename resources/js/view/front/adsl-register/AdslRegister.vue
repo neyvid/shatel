@@ -66,25 +66,30 @@
 
                         <step-one :orderDetails="orderDetails" :serviceDetails="serviceDetails"
                                   :produtDetails="productData"
-                                  @selectServ="selectServ" @selectProd="selectProd" @nextStep="e1=2"></step-one>
-                        <step-two @nextStep="nextStepToThree" @backStep="e1=1"></step-two>
+                                  @selectServ="selectServ" @selectProd="selectProd" @nextStep="e1=2"
+                                  @exit="exit"></step-one>
+                        <step-two @nextStep="nextStepToThree" @backStep="e1=1" @exit="exit"></step-two>
                         <step-three
                             @deletePersonalFormData="deletePersonalData"
                             @deleteCompanyFormData="deleteCompanyData"
                             @personalFormChange="changePersonalForm"
                             @companyFormChange="changeCompanyForm"
-                            @nextStep="e1=4"
-                            @backStep="e1=2">
+                            @nextStep="nextStepTo4"
+                            @backStep="e1=2"
+                            @exit="exit">
 
                         </step-three>
                         <step-four :orderDetails="orderDetails" :serviceSelectedDetail="selectService"
                                    :personalFormInfo="personalData? personalData : ''"
                                    @ChangeLastPayStatus="changePayStatus"
                                    @ChangeSmsStatus="smsStatus"
-                                   :companyFormInfo="companyData? companyData : ''" @nextStep="e1=5"
-                                   @backStep="e1=3"></step-four>
+                                   :companyFormInfo="companyData? companyData : ''"
+                                   @nextStep="nextStepTo5"
+                                   @backStep="e1=3"
+                                   @exit="exit"></step-four>
                         <step-five @nextStep="nextStepTo6" @confirmContract="changeContractStatus"
-                                   @backStep="e1=4"></step-five>
+                                   @backStep="e1=4"
+                                   @exit="exit"></step-five>
                         <step-six :loadingForOpenGatway="loadingOpenGateWay"></step-six>
                     </v-stepper>
 
@@ -128,29 +133,109 @@ export default {
     },
     methods: {
         nextStepTo6() {
+            if (this.confirmContract) {
+                this.e1 = 6;
+                this.loadingOpenGateWay = true;
+                axios.post('/adslRegister/save/order',
+                    {
+                        orderDetails: this.orderDetails,
+                        personalData: this.personalData,
+                        selectProduct: this.selectProduct,
+                        selectService: this.selectService,
+                        sendsms: this.sendsms,
+                        companyData: this.companyData,
+                        confirmContract: this.confirmContract
+                    }).then(({data}) => {
+                    if (!data.status) {
+                        console.log(data.message);
+                    } else {
+                        window.location.href = 'https://sandbox.zarinpal.com/pg/StartPay/' + data.Authority;
+                    }
 
-            this.e1 = 6;
-            this.loadingOpenGateWay = true;
-            axios.post('/adslRegister/save/order',
-                {
-                    orderDetails: this.orderDetails,
-                    personalData: this.personalData,
-                    selectProduct: this.selectProduct,
-                    selectService: this.selectService,
-                    sendsms: this.sendsms,
-                    companyData: this.companyData,
-                    confirmContract: this.confirmContract
-                }).then(({data}) => {
-                window.location.href = 'https://sandbox.zarinpal.com/pg/StartPay/' + data;
 
-            })
+                })
+
+            } else {
+                Swal.fire(
+                    {
+                        title: 'اخطار',
+                        text: 'لطفا تیک پرداخت آخرین قبض خط را تایید کنید.',
+                        type: 'warning',
+                        confirmButtonText: 'باشه!'
+                    }
+                )
+            }
 
         },
         nextStepToThree() {
             this.e1 = 3;
         },
+        nextStepTo4() {
+            if (this.personalData != null && (!this.personalData.birthday_date || this.personalData.birthday_date === '')) {
+                Swal.fire(
+                    {
+                        title: 'اخطار',
+                        text: 'تاریخ تولد را وارد نمایید',
+                        type: 'warning',
+                        confirmButtonText: 'باشه!'
+                    }
+                )
+            } else {
+                axios.post('/adslRegister/save/check', {
+                    personalData: this.personalData,
+                    companyData: this.companyData
+                }).then(({data}) => {
+                    if (data) {
+                        Swal.fire(
+                            {
+                                title: 'خطا',
+                                text: 'ایمیل و یا شماره موبایل وارد شده در سیستم موجود می باشد؛لطفا با ایمیل ویا شماره موبایل دیگری اقدام نمایید.',
+                                type: 'warning',
+                                confirmButtonText: 'باشه!'
+                            }
+                        )
+
+                    } else {
+                        this.e1 = 4;
+                    }
+                })
+
+            }
+
+
+        },
+        nextStepTo5() {
+            if (this.payStatus) {
+                this.e1 = 5;
+            } else {
+                Swal.fire(
+                    {
+                        title: 'اخطار',
+                        text: 'لطفا تیک پرداخت آخرین قبض خط را تایید کنید.',
+                        type: 'warning',
+                        confirmButtonText: 'باشه!'
+                    }
+                )
+            }
+        },
         selectServ(item) {
             this.selectService = item;
+
+        },
+        exit() {
+            axios.get('/adsl/buy/online/cancel').then(({data}) => {
+                if (data) {
+                    Swal.fire({
+                        title: "اخطار",
+                        text: "آیا از خروج روند خرید مطمئن هستید؟",
+                        icon: "warning",
+                        confirmButtonText: 'بله'
+                    }).then(() => {
+                        router.push('/services/adsl/availability-check')
+                        location.reload();
+                    });
+                }
+            })
 
         },
         selectProd(item) {
@@ -160,10 +245,12 @@ export default {
         changePersonalForm(personalFormData) {
 
             this.personalData = personalFormData;
+            this.companyData = null;
 
         },
         changeCompanyForm(companyFormData) {
             this.companyData = companyFormData;
+            this.personalData = null;
         },
         deleteCompanyData() {
             this.companyData = {};
@@ -220,6 +307,7 @@ export default {
                     confirmButtonText: 'باشه'
                 }).then(() => {
                     router.push({name: 'adsl-availability-check'})
+                    location.reload();
                 });
 
             }
