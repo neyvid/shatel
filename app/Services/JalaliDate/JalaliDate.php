@@ -19,6 +19,7 @@ class JalaliDate
         $mount = substr($date, 5, 2);
         $day = substr($date, 8, 2);
         $expire_date_jalali = Verta::getJalali("$year", "$mount", "$day");
+
         return $expire_date_jalali;
     }
 
@@ -28,7 +29,8 @@ class JalaliDate
         $mount = substr($miladiDate, 5, 2);
         $day = substr($miladiDate, 8, 2);
         $expire_date_jalali = Verta::getJalali("$year", "$mount", "$day");
-        $expire_date_farsi = Carbon::createFromDate($expire_date_jalali[0], $expire_date_jalali[1], $expire_date_jalali[2], 'Asia/Tehran')->toDateString();
+        $expire_date_farsi = Carbon::createFromDate($expire_date_jalali[0], $expire_date_jalali[1], $expire_date_jalali[2], 'Asia/Tehran')->format('Y/m/d');
+
         return $expire_date_farsi;
     }
 
@@ -39,7 +41,13 @@ class JalaliDate
         $day = substr($jalaliDate, 8, 2);
 //        convert from Jalali Date to Miladdi for insert to Db
         $expire_date_milladi = Verta::getGregorian("$year", "$mount", "$day");
-        $expire_date_english = Carbon::createFromDate($expire_date_milladi[0], $expire_date_milladi[1], $expire_date_milladi[2], 'Asia/Tehran')->toDateString();
+        $expire_date_english = Carbon::createFromDate($expire_date_milladi[0], $expire_date_milladi[1], $expire_date_milladi[2], 'Asia/Tehran')->format('Y/m/d');
         return $expire_date_english;
+    }
+
+    public static function greaterThan($date1,$date2)
+    {
+        //Date2 greaterThan Date1
+        return Verta($date2)->gt(Verta($date1));
     }
 }

@@ -163,19 +163,25 @@ export default {
         value: {
             type: String,
             default: ''
-        }
+        },
+
+
     },
     methods: {
         openModal(imageCommand){
+
             this.$refs.dropzoneModal.showModal(imageCommand);
         },
         uploadImage(data){
+            console.log(data);
             data.imageCommand(data.attrs);
-        }
+        },
+
     },
     beforeDestroy() {
         this.editor.destroy();
     }
+
 
 }
 </script>

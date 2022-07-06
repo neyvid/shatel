@@ -47,6 +47,8 @@ export default {
                         'email': response.data.data.email,
                         'role': response.data.data.role===1 ? "1":"0",
                         'mobile': response.data.data.mobile,
+                        'lastname': response.data.data.lastname,
+                        'image': response.data.data.image,
                         'email_verified_at': response.data.data.email_verified_at,
                         'mobile_verified_at': response.data.data.mobile_verified_at,
 

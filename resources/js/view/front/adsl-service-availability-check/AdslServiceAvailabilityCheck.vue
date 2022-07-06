@@ -1,9 +1,9 @@
 <template>
     <v-main>
         <v-container fluid class="border-bottom">
-            <v-container>
+            <v-container fluid>
                 <v-row>
-                    <v-col class="pa-0">
+                    <v-col cols="12"  class="pa-0">
                         <v-breadcrumbs
                             class="pa-0"
                             :items="items">
@@ -20,35 +20,15 @@
         <v-container>
             <v-row class="mt-5 mb-5 ">
                 <v-col cols="12" md="8">
-                    <h2>بررسی وضعیت دسترسی به ADSL2+</h2>
+                    <h2 :class="{'text-center':$vuetify.breakpoint.smAndDown}">بررسی وضعیت دسترسی به ADSL2+</h2>
                     <v-row>
-                        <v-col cols="6">
+                        <v-col cols="12" md="6">
                             <v-form
+                                :class="{'text-center pb-4':$vuetify.breakpoint.smAndDown}"
                                 class="mt-8"
                                 ref="adslCheckForm"
-
                                 lazy-validation
                             >
-
-<!--                                <v-autocomplete-->
-<!--                                    outlined-->
-<!--                                    :items="provinceData"-->
-<!--                                    label="استان"-->
-<!--                                    item-text="name"-->
-<!--                                    item-value="id"-->
-<!--                                    v-model="checkAdslInfo.province_id"-->
-<!--                                    :rules="[required('استان')]"-->
-<!--                                    @change="changeProvince(checkAdslInfo.province_id)"-->
-<!--                                ></v-autocomplete>-->
-<!--                                <v-autocomplete-->
-<!--                                    outlined-->
-<!--                                    :items="cityData"-->
-<!--                                    label="شهر"-->
-<!--                                    item-text="name"-->
-<!--                                    item-value="id"-->
-<!--                                    :rules="[required('شهر')]"-->
-<!--                                    v-model="checkAdslInfo.city_id"-->
-<!--                                ></v-autocomplete>-->
                                 <v-text-field
                                     outlined
                                     label="کد شهر"

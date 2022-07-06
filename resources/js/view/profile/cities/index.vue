@@ -9,15 +9,24 @@
                 <!--             Start   Modal For create Item-->
                 <v-dialog
                     v-model="createDialog"
-                    persistent
-                    max-width="600px"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
 
                 >
 
                     <v-card>
-                        <v-card-title>
-                            <span class="text-h5">ایجاد شهر جدید</span>
-                        </v-card-title>
+                        <v-toolbar
+                            dark
+                            class="orange darken-1"
+                        >
+
+                            <v-toolbar-title>
+                                <span class="text-h5">ایجاد شهر جدید </span>
+                            </v-toolbar-title>
+                            <v-spacer></v-spacer>
+
+                        </v-toolbar>
                         <v-card-text>
                             <v-form ref="createForm">
                                 <v-container>
@@ -71,7 +80,7 @@
 
 
             <v-row>
-                <v-col cols="10">
+                <v-col cols="12"  :class="{'text-center':$vuetify.breakpoint.smAndDown}">
                     <v-form class="d-flex align-center" ref="exelFormInput"
                             enctype="multipart/form-data">
                         <v-file-input
@@ -102,11 +111,20 @@
 
 
                 <v-col>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="جسنجو کنید..."
+                        single-line
+                        hide-details
+                        class="mb-8"
+                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="cityData"
                         :items-per-page="20"
                         class="elevation-1"
+                        :search="search"
                     >
                         <template v-slot:item.actions="{ item }">
                             <v-icon
@@ -210,6 +228,7 @@ export default {
             exelFormInput: null,
             required, code, persianCharachter,
             cityData: [],
+            search:'',
             createDialog: false,
             editDialog: false,
             provinceData: [],

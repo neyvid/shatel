@@ -164,6 +164,17 @@ export default [
                 name: 'menu',
                 meta: {auth: true,canSeeUser:false},
             },
+            {
+                path: 'slider',
+                component: require('../view/profile/slider/index').default,
+                name: 'slider',
+                meta: {auth: true,canSeeUser:false},
+            }, {
+                path: 'news',
+                component: require('../view/profile/news/index').default,
+                name: 'news',
+                meta: {auth: true,canSeeUser:false},
+            },
 
         ],
 

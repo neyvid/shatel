@@ -25,6 +25,9 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^34.1.0",
+        "@ckeditor/ckeditor5-upload": "^34.1.0",
+        "@ckeditor/ckeditor5-vue2": "^3.0.1",
         "@vue/composition-api": "^1.4.4",
         "animate.css": "^4.1.1",
         "shabnam-font": "^5.0.0",

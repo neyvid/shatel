@@ -1,66 +1,21 @@
 <template>
+    <v-container fluid class="onlineServiceWrap">
     <v-container>
         <v-row>
             <v-col cols="12" md="4" class="d-flex justify-center">
                 <v-card
-                    class="mx-auto my-12"
+                    class="mx-auto my-12 onlineServiceWrap"
                     max-width="374"
                 >
                     <v-img
                         height="110"
                         contain
-                        src="images/front/checkAdsl.svg"
+                       class="my-6"
+                        src="images/front/f1.png"
                     ></v-img>
 
                     <v-card-title class=" fs-16 d-flex justify-center">بررسی پوشش خدمات +ADSL2</v-card-title>
                     <v-card-text>
-
-                        <!--                        <v-form-->
-                        <!--                            ref="adslCheckForm"-->
-
-                        <!--                            lazy-validation-->
-                        <!--                        >-->
-                        <!--                            <v-container>-->
-
-                        <!--                                <v-row>-->
-                        <!--                                    <v-col cols="7" class="px-0 pl-1">-->
-                        <!--                                        <v-text-field-->
-                        <!--                                            label="شماره تلفن ثابت"-->
-                        <!--                                            placeholder="شماره تلفن ثابت"-->
-                        <!--                                            outlined-->
-                        <!--                                            dense-->
-                        <!--                                            v-model="checkAdslInfo.phone_number"-->
-                        <!--                                            :rules="[required('شماره تلقن')]"-->
-
-                        <!--                                        ></v-text-field>-->
-                        <!--                                    </v-col>-->
-                        <!--                                    <v-col cols="5" class="px-0">-->
-                        <!--                                        <v-text-field-->
-                        <!--                                            label="پیش شماره شهر"-->
-                        <!--                                            placeholder="پیش شماره شهر"-->
-                        <!--                                            outlined-->
-                        <!--                                            dense-->
-                        <!--                                            v-model="checkAdslInfo.city_code"-->
-                        <!--                                            :rules="[required('کد شهر'),code()]"-->
-                        <!--                                        ></v-text-field>-->
-                        <!--                                    </v-col>-->
-
-                        <!--                                </v-row>-->
-                        <!--                            </v-container>-->
-
-
-                        <!--                            <v-btn-->
-                        <!--                                block-->
-                        <!--                                color="success"-->
-                        <!--                                @click="checkAdslSupport"-->
-                        <!--                                :loading="loading"-->
-                        <!--                                :disabled="loading"-->
-                        <!--                            >-->
-                        <!--                                ثبت-->
-                        <!--                            </v-btn>-->
-
-
-                        <!--                        </v-form>-->
 
 
                         <div class="text-center">
@@ -68,7 +23,7 @@
                             نمایید.
                         </div>
 
-                        <v-btn depressed large block color="success darken-3 mt-2"
+                        <v-btn depressed large block color="buyOnlineBtn darken-3 mt-2"
                                :to="{name:'adsl-availability-check'}">خرید آنلاین
                         </v-btn>
 
@@ -79,13 +34,15 @@
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-center">
                 <v-card
-                    class="mx-auto my-12"
+                    class="mx-auto my-12 onlineServiceWrap"
                     max-width="374"
+
                 >
                     <v-img
                         height="110"
                         contain
-                        src="images/front/priceOfAdsl.svg"
+                       class="my-6"
+                        src="images/front/work2.png"
                     ></v-img>
 
                     <v-card-title class="fs-16 d-flex justify-center">تعرفه خدمات +ADSL2</v-card-title>
@@ -103,13 +60,14 @@
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-center">
                 <v-card
-                    class="mx-auto my-12"
+                    class="mx-auto my-12 onlineServiceWrap"
                     max-width="374"
                 >
                     <v-img
                         height="110"
                         contain
-                        src="images/front/onlineOrder.svg"
+                       class="my-6"
+                        src="images/front/work3.png"
                     ></v-img>
 
                     <v-card-title class="fs-16 d-flex justify-center">سفارش آنلاین خدمات +ADSL2</v-card-title>
@@ -129,6 +87,7 @@
 
         </v-row>
     </v-container>
+    </v-container>
 </template>
 
 <script>
@@ -140,5 +99,8 @@ export default {
 </script>
 
 <style scoped>
-
+.buyOnlineBtn{
+    background-color: #f95114 !important;
+    color: #FFFFFF !important;
+}
 </style>

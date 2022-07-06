@@ -4,20 +4,30 @@
             <v-row>
                 <v-col>
                     <v-btn rounded class="primary" @click="createDialog=true">ایجاد محصول جدید</v-btn>
-
                 </v-col>
                 <!--             Start   Modal For create Item-->
+
                 <v-dialog
                     v-model="createDialog"
-                    persistent
-                    max-width="600px"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
+
 
                 >
 
                     <v-card>
-                        <v-card-title>
-                            <span class="text-h5">ایجاد محصول/تجهیزات جدید</span>
-                        </v-card-title>
+                        <v-toolbar
+                            dark
+                            class="orange darken-1"
+                        >
+
+                            <v-toolbar-title>
+                                <span class="text-h5">ایجاد محصول جدید </span>
+                            </v-toolbar-title>
+                            <v-spacer></v-spacer>
+
+                        </v-toolbar>
                         <v-card-text>
                             <v-form ref="createForm">
                                 <v-container>
@@ -96,11 +106,20 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="جسنجو کنید..."
+                        single-line
+                        hide-details
+                        class="mb-8"
+                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="productData"
                         :items-per-page="20"
                         class="elevation-1"
+                        :search="search"
                     >
                         <template v-slot:item.image_name="{ item }">
                             <v-img
@@ -238,6 +257,7 @@ export default {
             editDialog: false,
             productData: [],
             createItem: {},
+            search:'',
             editItem: {},
             categoryData: [],
             errors: [],

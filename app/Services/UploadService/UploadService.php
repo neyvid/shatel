@@ -18,7 +18,9 @@ class UploadService
         $newFileName = $newName . '.' . $fileExtension;
         $file->move(config('upload.image_path'), $newFileName);
         return response([
-            'data' => '/images/'. $newFileName
+            'data' => '/images/'. $newFileName,
+            'newFileName' =>  $newFileName,
+
         ]);
 
     }

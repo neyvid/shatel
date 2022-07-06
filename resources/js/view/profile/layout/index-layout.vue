@@ -3,15 +3,16 @@
         <v-main>
             <v-container fluid>
                 <v-row class="mb-2 mt-3">
-                    <v-col cols="4" class="d-flex align-center">
+                    <v-col cols="2" class="d-flex align-center">
                         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
                     </v-col>
 
-                    <v-col cols="4" class="d-flex justify-center">
-                        <h1>پنل مدیریت</h1>
+                    <v-col cols="8" class="d-flex justify-center">
+                        <h1 v-if="$store.state.user.user.role==='1'">پنل مدیریت</h1>
+                        <h1 v-else>پنل کاربری</h1>
                     </v-col>
 
-                    <v-col cols="4" class="d-flex justify-end align-center">
+                    <v-col cols="2" class="d-flex justify-end align-center">
                         <v-btn class="warning" @click.prevent="logout" rounded>خروج</v-btn>
                     </v-col>
                 </v-row>

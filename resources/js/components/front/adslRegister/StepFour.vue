@@ -79,7 +79,7 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col col="6" offset="6">
+                        <v-col cols="12"  >
                             <div class="discount-code-input pa-6">
                                 <p>کد تخفیف (پیمانی)</p>
                                 <v-text-field
@@ -93,24 +93,21 @@
                     </v-row>
                     <v-row>
                         <v-col class="review-register-description-wrap">
-
                             <v-checkbox
-
                                 :label=" ' آخرین قبض خط ' +orderDetails.phoneNumber+' پرداخت شده است. '"
                                 color="blue"
-                                value=""
                                 hide-details
                                 v-model="lastPayStatus"
                                 @change="ChangeLastPayStatus"
+                                class="checkbox_step4"
                             ></v-checkbox>
                             <v-checkbox
                                 v-model="smsStatus"
                                 label="مایلم پیامک‌های خودکار اطلاع‌رسانی شاتل را دریافت کنم."
                                 color="blue"
-                                value=""
                                 hide-details
                                 @change="ChangeSmsStatus"
-
+                                class="checkbox_step4"
                             ></v-checkbox>
                             <p>درخواست سرویس شما برای شماره تلفن
                                 <span class="red--text">
@@ -229,5 +226,8 @@ export default {
 
 .review-register-description-wrap {
 
+}
+.checkbox_step4{
+    text-align:right !important;
 }
 </style>

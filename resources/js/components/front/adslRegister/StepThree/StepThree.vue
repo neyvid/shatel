@@ -6,7 +6,7 @@
                 <p class="mt-8">تکمیل اطلاعات </p>
                 <v-divider></v-divider>
                 <v-row class="mt-15">
-                    <v-col cols="8">
+                    <v-col cols="12" md="8">
                         <div class="select-customer-type-wrap d-flex justify-center">
                             <v-radio-group
 
@@ -30,13 +30,14 @@
 
                 </v-row>
                 <v-row v-if="personalForm" class="mt-15">
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" md="8" >
                         <v-row>
                             <v-col cols="12">
                                 <div class="person-info-customer-form">
 
                                     <v-form
-                                        class="pa-15"
+
+                                        :class="{'pa-5': $vuetify.breakpoint.smAndDown, 'pa-12': $vuetify.breakpoint.mdAndUp}"
                                         ref="personalForm"
                                         lazy-validation
                                         block
@@ -91,7 +92,6 @@
 
                                                      color="dimgray" simple
                                                      @input="changePersonalFrm"
-
                                         >
 
 
@@ -204,7 +204,7 @@
                                 <div class="person-info-customer-form">
 
                                     <v-form
-                                        class="pa-15"
+                                        :class="{'pa-5': $vuetify.breakpoint.smAndDown, 'pa-12': $vuetify.breakpoint.mdAndUp}"
                                         ref="companyForm"
                                         lazy-validation
                                         block
@@ -301,6 +301,7 @@
                                         <date-picker v-model="companyFormData.birthday_date"
                                                      label="تاریخ تولد نمایده:"
                                                      color="dimgray" simple
+                                                     class="agent-birthday_date"
                                                      @input="changeCompanyFrm"
                                         ></date-picker>
                                         <v-text-field
@@ -310,6 +311,7 @@
                                             :error-messages="companyFormErrors.mobile"
                                             label=" شماره موبایل نماینده"
                                             required
+                                            class="py-5 pb-0"
                                             maxlength="11"
                                             outlined dense
                                         ></v-text-field>
@@ -637,5 +639,9 @@ export default {
     border-color: #9f9c9c !important;
     border-bottom-left-radius: 5px !important;
     border-top-left-radius: 5px !important;
+    width: 183px !important;
+}
+.agent-birthday_date input{
+    width: 133px !important;
 }
 </style>

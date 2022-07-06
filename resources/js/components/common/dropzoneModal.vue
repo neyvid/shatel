@@ -52,11 +52,13 @@ export default {
             const data = {
                 imageCommand: this.imageCommand,
                 attrs: {
-                    src: response.data
+                    src: response.data,
+                    base64:file.dataURL,
+                    name:file.name,
+                    newFileName:response.newFileName,
                 }
             }
             this.$emit('image', data);
-
             this.imageModal = false;
             this.imageCommand=null;
             this.$refs.dropzone.removeFile(file);

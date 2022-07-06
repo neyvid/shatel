@@ -3,20 +3,31 @@
         <v-container fluid>
             <v-row>
                 <v-col>
-                    <v-btn rounded class="primary" @click="createDialog=true">ایجاد شهر جدید</v-btn>
+                    <v-btn rounded class="primary" @click="createDialog=true">ایجاد اپراتور جدید</v-btn>
 
                 </v-col>
                 <!--             Start   Modal For create Item-->
+
                 <v-dialog
                     v-model="createDialog"
-                    persistent
-                    max-width="600px"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
+
                 >
 
                     <v-card>
-                        <v-card-title>
-                            <span class="text-h5">ایجاد شهر جدید</span>
-                        </v-card-title>
+                        <v-toolbar
+                            dark
+                            class="orange darken-1"
+                        >
+
+                            <v-toolbar-title>
+                                <span class="text-h5">ایجاد اپراتور جدید </span>
+                            </v-toolbar-title>
+                            <v-spacer></v-spacer>
+
+                        </v-toolbar>
                         <v-card-text>
                             <v-form ref="createForm">
                                 <v-container>
@@ -25,7 +36,7 @@
                                             cols="12">
                                             <v-text-field
                                                 label="نام اپراتور"
-                                                :rules="[required('نام شهر'),persianCharachter()]"
+                                                :rules="[required('نام شهر')]"
                                                 v-model="createItem.name"
                                                 :error-messages="errors.name"
 
@@ -60,11 +71,20 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="جسنجو کنید..."
+                        single-line
+                        hide-details
+                        class="mb-8"
+                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="opratorData"
                         :items-per-page="20"
                         class="elevation-1"
+                        :search="earch"
                     >
                         <template v-slot:item.actions="{ item }">
                             <v-icon
@@ -155,6 +175,7 @@ export default {
             required, code, persianCharachter,
             opratorData: [],
             createDialog: false,
+            search:'',
             editDialog: false,
             createItem: {},
             editItem: {},

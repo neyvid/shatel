@@ -8,9 +8,9 @@
                 <v-col cols="12" md="8" class="d-flex align-center justify-end justify-sm-center">
 
                     <p class="ma-0 pa-3 fs-14 d-inline "><span>ENGLISH Version</span></p>
-                    <p class="ma-0 pa-3 fs-14 d-inline "><span>شماره سراسری : 09131011538</span></p>
+                    <p class="ma-0 pa-3 fs-14 d-inline "><span>شماره سراسری : 1707 007 0930</span></p>
                     <p class="ma-0 pa-3 fs-14 d-inline "><span>ارتباط با ما</span></p>
-                    <v-btn class="success">سایت صبانت</v-btn>
+                    <v-btn class="success" :to="{name:'home'}">سایت صبانت</v-btn>
 
                 </v-col>
             </v-row>

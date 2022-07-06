@@ -5,7 +5,7 @@
             <v-row>
                 <v-col>
                     <div class="d-flex flex-row align-center">
-                        <h3 class="ml-4">اطلاعات کاربری شما:</h3>
+                        <h3 class="ml-4 mb-0">اطلاعات کاربری شما:</h3>
                         <v-btn outlined v-show="disabled" rounded class="primary ml-2" color="white"
                                @click="startEdit(user)">
                             ویرایش
@@ -30,7 +30,7 @@
 
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row  class="d-flex justify-center">
                 <v-col cols="12" md="8">
                     <v-form ref="userInfoForm">
 
@@ -142,6 +142,7 @@
                             <v-text-field
                                 v-model="user.password"
                                 :disabled="disabled"
+                                type="password"
 
                             >
 

@@ -9,15 +9,24 @@
                 <!--             Start   Modal For create Item-->
                 <v-dialog
                     v-model="createDialog"
-                    persistent
-                    max-width="600px"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
 
                 >
 
                     <v-card>
-                        <v-card-title>
-                            <span class="text-h5">ایجاد پیش شماره جدید</span>
-                        </v-card-title>
+                        <v-toolbar
+                            dark
+                            class="orange darken-1"
+                        >
+
+                            <v-toolbar-title>
+                                <span class="text-h5">ایجاد پیش شماره جدید </span>
+                            </v-toolbar-title>
+                            <v-spacer></v-spacer>
+
+                        </v-toolbar>
 
                         <v-card-text>
                             <v-form ref="createForm">

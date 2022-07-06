@@ -1,9 +1,9 @@
 <template>
-    <v-container fluid>
+    <v-container fluid class="my-15">
         <v-container>
             <v-row class=" ourServicesTitle">
                 <v-col class="d-flex justify-center ">
-                    <h2>خبرها </h2>
+                    <h3>خبرها </h3>
                 </v-col>
             </v-row>
             <v-divider class="my-2">
@@ -19,7 +19,7 @@
                         <v-list-item three-line>
                             <v-list-item-content>
 
-                                <v-list-item-title class="title mb-1 text-wrap font-weight-bold">
+                                <v-list-item-title class="newsTitle mb-1 text-wrap font-weight-bold">
                                     تا ۵۰ درصد تخفیف برای استفاده از محصولات ژاکت ویژه‌ی شاتلی‌ها
                                 </v-list-item-title>
                                 <div class="my-4 caption text--secondary">
@@ -45,7 +45,7 @@
                         <v-list-item three-line>
                             <v-list-item-content>
 
-                                <v-list-item-title class="title mb-1 text-wrap font-weight-bold">
+                                <v-list-item-title class="newsTitle mb-1 text-wrap font-weight-bold">
                                     تا ۵۰ درصد تخفیف برای استفاده از محصولات ژاکت ویژه‌ی شاتلی‌ها
                                 </v-list-item-title>
                                 <div class="my-4 caption text--secondary">
@@ -71,7 +71,7 @@
                         <v-list-item three-line>
                             <v-list-item-content>
 
-                                <v-list-item-title class="title mb-1 text-wrap font-weight-bold">
+                                <v-list-item-title class="newsTitle mb-1 text-wrap font-weight-bold">
                                     تا ۵۰ درصد تخفیف برای استفاده از محصولات ژاکت ویژه‌ی شاتلی‌ها
                                 </v-list-item-title>
                                 <div class="my-4 caption text--secondary">
@@ -97,7 +97,7 @@
                         <v-list-item three-line>
                             <v-list-item-content>
 
-                                <v-list-item-title class="title mb-1 text-wrap font-weight-bold">
+                                <v-list-item-title class="newsTitle mb-1 text-wrap font-weight-bold">
                                     تا ۵۰ درصد تخفیف برای استفاده از محصولات ژاکت ویژه‌ی شاتلی‌ها
                                 </v-list-item-title>
                                 <div class="my-4 caption text--secondary">
@@ -130,5 +130,9 @@ export default {
 .v-list-item__title{
     font-family: Shabnam !important;
 
+}
+.newsTitle{
+    font-size: 1rem !important; ;
+    text-align: center !important;
 }
 </style>

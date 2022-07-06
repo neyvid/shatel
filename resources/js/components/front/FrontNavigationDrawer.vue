@@ -4,6 +4,7 @@
         absolute
         left
         temporary
+
     >
         <v-list
             nav
@@ -36,7 +37,9 @@
 <script>
 export default {
     name: "FrontNavigationDrawer",
-    props:['drawer']
+
+    props: ['drawer'],
+
 }
 </script>
 

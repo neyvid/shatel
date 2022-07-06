@@ -4,16 +4,19 @@
         right
         v-model="drawer"
         app
+
     >
         <template v-slot:prepend>
             <v-list-item two-line>
-                <v-list-item-avatar>
-                    <img src="https://randomuser.me/api/portraits/women/81.jpg">
-                </v-list-item-avatar>
-
                 <v-list-item-content>
-                    <v-list-item-title>Jane Smith</v-list-item-title>
-                    <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+                    <v-list-item-title class="text-center ">
+
+                        {{$store.state.user.user.name}} {{$store.state.user.user.lastname}}</v-list-item-title>
+<!--                    <v-list-item-subtitle>{{$store.state.user.user.email}}</v-list-item-subtitle>-->
+                    <v-list-item-subtitle  class="text-center mt-4">
+                        <v-icon>mdi-home-city</v-icon>
+                        <router-link :to="{name:'home'}">سایت صبانت</router-link>
+                    </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </template>
@@ -30,7 +33,8 @@
                 <router-link :to="props.item.to" v-if="props.item.to">{{ props.item.name }}</router-link>
                 <span v-else>{{ props.item.name }}</span>
             </template>
-        </v-treeview> <v-treeview
+        </v-treeview>
+        <v-treeview
             :items="treeitemsForNormoalUser"
             activatable
             transition
@@ -42,20 +46,20 @@
                 <span v-else>{{ props.item.name }}</span>
             </template>
         </v-treeview>
-        <v-list dense>
-            <v-list-item
-                v-for="item in items"
-                :key="item.title"
-            >
-                <v-list-item-icon >
-                    <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
+<!--        <v-list dense>-->
+<!--            <v-list-item-->
+<!--                v-for="item in items"-->
+<!--                :key="item.title"-->
+<!--            >-->
+<!--                <v-list-item-icon >-->
+<!--                    <v-icon>{{ item.icon }}</v-icon>-->
+<!--                </v-list-item-icon>-->
 
-                <v-list-item-content>
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-        </v-list>
+<!--                <v-list-item-content>-->
+<!--                    <v-list-item-title>{{ item.title }}</v-list-item-title>-->
+<!--                </v-list-item-content>-->
+<!--            </v-list-item>-->
+<!--        </v-list>-->
     </v-navigation-drawer>
 </template>
 
@@ -65,13 +69,13 @@ export default {
     name: "rightMenu",
     data() {
         return {
-            items: [
-                {title: 'صفحه اصلی', icon: 'mdi-home-city'},
-                {title: 'استان ها', icon: 'mdi-country'},
-                {title: 'شهرها', icon: 'mdi-city'},
-                {title: 'مراکز مخابراتی', icon: 'mdi-city'},
-
-            ],
+            // items: [
+            //     {title: 'صفحه اصلی', icon: 'mdi-home-city'},
+            //     {title: 'استان ها', icon: 'mdi-country'},
+            //     {title: 'شهرها', icon: 'mdi-city'},
+            //     {title: 'مراکز مخابراتی', icon: 'mdi-city'},
+            //
+            // ],
             treeitems: [
                 {
                     id: 1,
@@ -150,14 +154,28 @@ export default {
                         {id: 19, name: 'مشاهده منو ها', to: {name: 'menu'}},
                     ],
                 },
+                {
+                    id: 20,
+                    name: 'اسلایدر ها',
+                    children: [
+                        {id: 21, name: 'مشاهده اسلایدر ها', to: {name: 'slider'}},
+                    ],
+                },
+                {
+                    id: 22,
+                    name: 'خبر ها',
+                    children: [
+                        {id: 23, name: 'مشاهده خبر ها', to: {name: 'news'}},
+                    ],
+                },
             ],
             treeitemsForNormoalUser:[
                 {
 
-                    id: 18,
+                    id: 23,
                     name: 'سفارش های من',
                     children: [
-                        {id: 19, name: 'مشاهده سفارش ها', to: {name: 'my-order'}},
+                        {id: 24, name: 'مشاهده سفارش ها', to: {name: 'my-order'}},
                     ],
                 }
             ],
@@ -168,5 +186,7 @@ export default {
 </script>
 
 <style scoped>
-
+.router-link-active{
+    text-decoration: none !important;
+}
 </style>

@@ -2,15 +2,15 @@
   <v-container class="mb-4">
 
     <v-row class="hidden-lg-and-up mb-4">
-      <v-col cols="8" class="text-right  ">
+      <v-col cols="9" class="text-right  ">
         <p class="ma-0 pa-2 d-inline">
 
           <v-icon color="blue">mdi-phone</v-icon>
-          شماره سراسری 09131011538
+            شماره پشتیبانی 1707 007 0930
 
         </p>
       </v-col>
-      <v-col cols="4" class="text-left">
+      <v-col cols="3" class="text-left">
         <v-icon @click="showTop=!showTop">
           <template v-if="!showTop">mdi-plus</template>
           <template v-else>mdi-minus</template>
@@ -27,11 +27,11 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="2" class="d-flex justify-center">
+      <v-col col="12" md="2" class="d-flex justify-center">
         <v-img src="images/front/shatel-logo.svg" max-width="110" max-height="110"
                contain></v-img>
       </v-col>
-      <v-col cols="10" class="top-nav">
+      <v-col col="12" md="10" class="top-nav">
         <v-row class="hidden-md-and-down">
           <v-col class="text-left ">
             <p class="ma-0 pa-2 d-inline "><span>راهکار های سازمانی</span></p>
@@ -43,7 +43,7 @@
             <p class="ma-0 pa-2 d-inline ">
                                 <span>
                                           <v-icon color="blue">mdi-phone</v-icon>
-                                      شماره سراسری 09131011538
+                                      شماره پشتیبانی 1707 007 0930
                                 </span>
 
             </p>
@@ -51,8 +51,9 @@
 
         </v-row>
         <v-row>
-          <v-col cols="12" class="d-flex justify-end">
-            <v-btn class="primary ">
+          <v-col cols="12" class="d-flex "   :class="{'justify-center': $vuetify.breakpoint.smAndDown, 'justify-end': $vuetify.breakpoint.mdAndUp}"
+          >
+            <v-btn class="primary  hidden-md-and-down">
               <v-icon>mdi-lock</v-icon>
               شاتل کلاب
             </v-btn>

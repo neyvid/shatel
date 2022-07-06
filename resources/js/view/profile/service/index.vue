@@ -7,16 +7,27 @@
 
                 </v-col>
                 <!--             Start   Modal For create Item-->
+
                 <v-dialog
                     v-model="createDialog"
-                    persistent
-                    max-width="600px"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
+
                 >
 
                     <v-card>
-                        <v-card-title>
-                            <span class="text-h5">ایجاد سرویس جدید</span>
-                        </v-card-title>
+                        <v-toolbar
+                            dark
+                            class="orange darken-1"
+                        >
+
+                            <v-toolbar-title>
+                                <span class="text-h5">ایجاد سرویس جدید </span>
+                            </v-toolbar-title>
+                            <v-spacer></v-spacer>
+
+                        </v-toolbar>
                         <v-card-text>
                             <v-form ref="createForm">
                                 <v-container>
@@ -206,11 +217,20 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="جسنجو کنید..."
+                        single-line
+                        hide-details
+                        class="mb-8"
+                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="servicesData"
                         :items-per-page="20"
                         class="elevation-1"
+                        :search="search"
 
                         :expanded.sync="expanded"
                         show-expand
@@ -458,6 +478,7 @@ export default {
             expanded: [],
             servicesData: [],
             createDialog: false,
+            search:'',
             editDialog: false,
             typeData: {},
             planData: {},
@@ -513,13 +534,13 @@ export default {
     methods: {
         createService() {
             axios.post('/admin/service/create', this.createItem).then(({data}) => {
-                console.log(data);
+
                 this.servicesData.push(data);
                 this.createDialog = false;
             })
         },
         deleteItem(id) {
-            console.log(id);
+
             Swal.fire({
                 title: 'از حذف این گزینه مطمئن هستید؟',
                 text: "درصورت حذف، قابل برگشت نمی باشد",
@@ -598,7 +619,7 @@ export default {
     },
     created() {
         axios.get('/admin/services/').then(({data}) => {
-            console.log(data);
+
             this.servicesData = data.services;
             this.typeData = data.type;
             this.planData = data.plan;

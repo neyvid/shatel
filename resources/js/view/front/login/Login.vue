@@ -41,7 +41,7 @@
                                 required
                                 v-model="LoginInfo.remember"
                             ></v-checkbox>
-                            <router-link :to="{name:'reset-password-form'}">رمزعبوررا فراموش کرده اید؟</router-link>
+                            <router-link style="font-size: 14px" :to="{name:'reset-password-form'}">رمزعبوررا فراموش کرده اید؟</router-link>
 
 
                             <v-btn
@@ -53,7 +53,7 @@
                                 <template v-if="loading">
                                     <v-progress-circular
                                         indeterminate
-                                        color="red"
+                                        color="white"
                                     ></v-progress-circular>
                                 </template>
                                 <template v-else> ورود</template>

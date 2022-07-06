@@ -7,16 +7,27 @@
 
                 </v-col>
                 <!--             Start   Modal For create Item-->
+
                 <v-dialog
                     v-model="createDialog"
-                    persistent
-                    max-width="600px"
+                    fullscreen
+                    hide-overlay
+                    transition="dialog-bottom-transition"
+
                 >
 
                     <v-card>
-                        <v-card-title>
-                            <span class="text-h5">ایجاد سفارش جدید</span>
-                        </v-card-title>
+                        <v-toolbar
+                            dark
+                            class="orange darken-1"
+                        >
+
+                            <v-toolbar-title>
+                                <span class="text-h5">ایجاد سفارش جدید </span>
+                            </v-toolbar-title>
+                            <v-spacer></v-spacer>
+
+                        </v-toolbar>
                         <v-card-text>
                             <v-form ref="createForm">
                                 <v-container>
@@ -85,25 +96,52 @@
                 </v-dialog>
                 <!--                End Modal For create Item-->
             </v-row>
+
+
             <v-row>
-                <v-row>
-                    <v-col cols="10">
-                        <form class="d-flex align-center" @submit="formSubmit" enctype="multipart/form-data">
-                            <v-file-input label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید"
-                                          v-on:change="onFileChange"></v-file-input>
-                            <v-btn type="submit" class="mr-4" color="success">انتقال از اکسل به پایگاه داده</v-btn>
-                        </form>
-                    </v-col>
-                </v-row>
+                <v-col cols="12" :class="{'text-center':$vuetify.breakpoint.smAndDown}">
+                    <v-form class="d-flex align-center" ref="exelFormInput"
+                            enctype="multipart/form-data">
+                        <v-file-input
+                            accept=".xlsx"
+                            label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید(پسوند xlsx.)"
+                            :rules="[required('فایل مورد نظر'),]"
+                            :error-messages="errors.name"
+                            v-on:change="onFileChange"
+                        ></v-file-input>
+
+                    </v-form>
+                    <v-btn @click="importCity" class="mr-4 exelBtn" color="success">
+                        <template v-if="loading">
+                            <v-progress-circular
+                                indeterminate
+                                color="white"
+                            ></v-progress-circular>
+                            درحال انتفال
+                        </template>
+                        <template v-else>
+                            انتقال از اکسل به پایگاه داده
+                        </template>
+                    </v-btn>
+                </v-col>
             </v-row>
+
             <v-row>
                 <v-col>
-
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="جسنجو کنید..."
+                        single-line
+                        hide-details
+                        class="mb-8"
+                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="orderData"
                         :items-per-page="20"
                         class="elevation-1"
+                        :search="search"
                     >
 
                         <template v-slot:item.actions="{ item }">
@@ -304,9 +342,11 @@ export default {
         return {
             required, code, persianCharachter,
             orderData: [],
+            loading: false,
+search:'',
             uersInfo: [],
-            // createProductItem:[],
-            // createServiceItem:{},
+            exelFormInput: null,
+
             orderItems: null,
             userData: [],
             dialog: false,
@@ -430,24 +470,59 @@ export default {
         onFileChange(event) {
             this.exelFile = event;
         },
-        formSubmit(e) {
-            e.preventDefault();
-            let currentObj = this;
-            const config = {
-                headers: {'content-type': 'multipart/form-data'}
+        importCity() {
+            if (this.$refs.exelFormInput.validate()) {
+
+                let currentObj = this;
+                this.loading = true;
+                const config = {
+                    headers: {'content-type': 'multipart/form-data'}
+                }
+                let formData = new FormData();
+                formData.append('file', this.exelFile);
+
+                axios.post('/admin/order/import', formData, config).then(({data}) => {
+                    if (!data.status) {
+                        Swal.fire(
+                            {
+                                title: 'خطایی رخ داده!',
+                                text: data.message,
+                                type: 'warning',
+                                confirmButtonText: 'متوجه شدم!'
+                            }
+                        )
+                    } else {
+                        this.orderData = data.orders;
+                        this.productData = data.products;
+                        this.serviceData = data.services;
+                    }
+
+                }).finally(() => {
+
+                    this.loading = false;
+                })
             }
-            let formData = new FormData();
-            formData.append('file', this.exelFile);
 
-            axios.post('/admin/order/import', formData, config).then(({data}) => {
-                console.log(data);
-                this.orderData = data.orders;
-                this.productData = data.products;
-                this.serviceData = data.services;
 
-            })
-
-        }
+        },
+        // formSubmit(e) {
+        //     e.preventDefault();
+        //     let currentObj = this;
+        //     const config = {
+        //         headers: {'content-type': 'multipart/form-data'}
+        //     }
+        //     let formData = new FormData();
+        //     formData.append('file', this.exelFile);
+        //
+        //     axios.post('/admin/order/import', formData, config).then(({data}) => {
+        //         console.log(data);
+        //         this.orderData = data.orders;
+        //         this.productData = data.products;
+        //         this.serviceData = data.services;
+        //
+        //     })
+        //
+        // }
     },
     created() {
         axios.get('/admin/orders/').then(({data}) => {

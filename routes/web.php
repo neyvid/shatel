@@ -49,6 +49,7 @@ Route::post('/adslRegister/save/check', [\App\Http\Controllers\Front\OrderContro
 //Route::get('/create/assingRoleToUser', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'assingRoleToUser']);
 //Route::get('/create/assignPermissionToUser', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'assignPermissionToUser']);
 Route::get('/menus/all', [\App\Http\Controllers\Front\MenuController::class, 'all'])->name('menus.all');
+Route::get('/sliders', [\App\Http\Controllers\Front\SliderController::class, 'all'])->name('slider.all');
 
 //Admin
 Route::prefix('admin')->group(function () {
@@ -111,6 +112,15 @@ Route::prefix('admin')->group(function () {
     Route::get('/menu/edit/{id}', [App\Http\Controllers\Admin\MenusController::class, 'edit'])->name('menu.edit.show');
     Route::post('/menu/edit/{id}', [App\Http\Controllers\Admin\MenusController::class, 'update'])->name('menu.update');
     Route::get('/menu/delete/{id}', [App\Http\Controllers\Admin\MenusController::class, 'delete'])->name('menu.delete');
+
+    Route::get('/sliders', [App\Http\Controllers\Admin\SliderController::class, 'all'])->name('sliders');
+    Route::post('/slider/create', [App\Http\Controllers\Admin\SliderController::class, 'create'])->name('slider.create');
+    Route::get('/slider/edit/{id}', [App\Http\Controllers\Admin\SliderController::class, 'edit'])->name('slider.edit.show');
+    Route::post('/slider/edit/{id}', [App\Http\Controllers\Admin\SliderController::class, 'update'])->name('slider.update');
+    Route::get('/slider/delete/{id}', [App\Http\Controllers\Admin\SliderController::class, 'delete'])->name('slider.delete');
+
+    Route::get('/news', [App\Http\Controllers\Admin\NewsController::class, 'all'])->name('news');
+    Route::post('/news/create', [App\Http\Controllers\Admin\NewsController::class, 'create'])->name('news.create');
 
 });
 //User panel

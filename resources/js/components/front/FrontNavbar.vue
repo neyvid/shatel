@@ -3,10 +3,10 @@
         <v-row>
             <v-col>
                 <v-app-bar dense
-                           color="red"
+
                            dark
                            flat
-                           class="app_bar"
+                           class="app_bar menuNavBar"
                            height="52px"
                 >
                     <v-container>
@@ -74,7 +74,9 @@ export default {
     color: #f44336 !important;
     display: block !important;
 }
-
+.menuNavBar{
+    background-color: #f95114 !important;
+}
 .subnav-content {
     position: absolute !important;
     width: 1200px !important;

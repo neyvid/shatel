@@ -2,6 +2,7 @@ import {ref} from "@vue/composition-api";
 import {required} from "../../rules/frontRules";
 import store from "../../store";
 import router from "../../router/router";
+import Swal from "sweetalert2";
 
 
 export default function userProfile() {
@@ -63,13 +64,19 @@ export default function userProfile() {
 
     function userUpdate() {
         if (userInfoForm.value.validate()) {
-
             axios.patch('/api/user/update', user.value).then((response) => {
                 disabled.value = true;
                 user.value = response.data;
-                isMobileExist.value=true;
+                isMobileExist.value = true;
                 response.data.mobile_verified_at === null ? store.state.user.user.isMobileVerified = 1 : '';
                 response.data.email_verified_at === null ? store.state.user.user.isVerified = 1 : '';
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'اطلاعات شما با موفقیت ویرایش شد',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
             }).catch((error) => {
                 errors.value.email = error.response.data.errors.email != undefined ? error.response.data.errors.email[0] : '';
                 errors.value.mobile = error.response.data.errors.mobile != undefined ? error.response.data.errors.mobile[0] : '';
@@ -88,6 +95,7 @@ export default function userProfile() {
 
         })
     }
+
     function emailConfirmation() {
         isEmailVerifyLoading.value = true;
         axios.post('/email/resend').then((responsse) => {
