@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProvinceRequest;
+use App\Imports\CityImport;
+use App\Imports\ProvinceImport;
 use App\Repositories\ProvinceRepository\ProvinceRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProvinceController extends Controller
 {
@@ -54,5 +58,20 @@ class ProvinceController extends Controller
         ];
         $provinceCreated=$this->provinceRepository->create($provinceData);
         return $provinceCreated;
+    }
+    public function import(Request $request)
+    {
+
+        if ($request->file->getClientOriginalExtension() === 'xlsx') {
+            $fileName = time() . '.' . $request->file->getClientOriginalExtension();
+            if (File::exists(public_path() . '/provinceImport')) {
+                File::deleteDirectory(public_path() . '/provinceImport');
+            };
+            $file = $request->file->move(public_path() . '/provinceImport', $fileName);
+            Excel::import(new ProvinceImport, $file);
+            return ['status'=>true,'allData'=>$this->all()];
+        } else {
+            return ['status'=>false,'message'=> '(پسوند قابل قبول xlsx. می باشد)  فرمت فایل انتخابی صحیح نمی باشد.  '];
+        }
     }
 }

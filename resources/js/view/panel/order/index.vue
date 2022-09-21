@@ -119,17 +119,13 @@ export default {
             ordersData: [],
             orderItems: [],
             dialog: false,
-
-
             headers: [
-
                 {
                     text: 'قیمت سفارش',
                     align: 'start',
                     sortable: false,
                     value: 'price',
                 },
-
                 {
                     text: 'مبلغ قابل پرداخت',
                     align: 'start',
@@ -147,11 +143,9 @@ export default {
                     align: 'start',
                     sortable: false,
                     value: 'refId',
-                },
-
+                }
+                ,
                 {text: 'عملیات', value: 'actions', sortable: false,},
-
-
             ],
         }
     },
@@ -163,15 +157,13 @@ export default {
                 this.orderItems = data;
                 this.dialog = true;
             })
-
         },
-
     },
     created() {
         axios.get('/panel/orders/').then(({data}) => {
+            console.log(data);
             this.ordersData = data;
             console.log(data);
-
         })
     }
 }

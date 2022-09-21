@@ -3,41 +3,54 @@
 namespace App\Imports;
 
 use App\Models\service;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Repositories\CategoryRepository\CategoryRepository;
+use App\Services\JalaliDate\JalaliDate;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class ServiceImport implements ToModel
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+
+class ServiceImport implements ToCollection, WithHeadingRow
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    protected $categoryRepository;
+    public function __construct()
     {
-        return new service([
-            'oprator_id' => $row[0],
-            'name' => $row[1],
-            'telecomcenter_id' => $row[2],
-            'commission_price' => $row[3],
-            'total_price' => $row[4],
-            'sell_price' => $row[5],
-            'base_price' => $row[6],
-            'expire_date' => $row[7],
-            'available_id' => $row[8],
-            'available_id' => $row[8],
-            'category_id' => $row[9],
-            'price_id' => $row[10],
-            'service_id' => $row[11],
-            'type' => $row[12],
-            'plan' => $row[13],
-            'discount' => $row[14],
-            'period' => $row[15],
-            'night_trafic' => $row[16],
-            'speed' => $row[17],
-            'limit_amount' => $row[18],
-            'international_trafic' => $row[19],
-            'description' => $row[20],
-            'price' => $row[21],
-        ]);
+        $this->categoryRepository=new CategoryRepository();
+    }
+
+    public function collection(Collection $rows)
+    {
+        $service = [];
+        foreach ($rows as $row) {
+            $service = Service::create([
+                'oprator_id' => $row['oprator_id'],
+                'name' => $row['name'],
+                'telecomcenter_id' => $row['telecomcenter_id'],
+                'commission_price' => $row['commission_price'],
+                'total_price' => $row['total_price'],
+                'sell_price' => $row['sell_price'],
+                'base_price' => $row['base_price'],
+                'expire_date' => JalaliDate::convert_jalali_to_miladi($row['expire_date']),
+                'available_id' => $row['available_id'],
+                'category_id' => $row['category_id'],
+                'price_id' => $row['price_id'],
+                'service_id' => $row['service_id'],
+                'type' => $row['type'],
+                'plan' => $row['plan'],
+                'discount' => $row['discount'],
+                'period' => $row['period'],
+                'night_trafic' => $row['night_trafic'],
+                'speed' => $row['speed'],
+                'limit_amount' => $row['limit_amount'],
+                'international_trafic' => $row['international_trafic'],
+                'description' => $row['description'],
+                'price' => $row['price'],
+            ]);
+            $category = $this->categoryRepository->find($row['category_id']);
+            $service->categories()->attach($category);
+        }
+
+
     }
 }

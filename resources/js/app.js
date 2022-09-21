@@ -19,7 +19,6 @@ Vue.use(VuePersianDatetimePicker, {
         format: 'jYYYY-jMM-jDD',
         displayFormat: 'jYYYY-jMM-jDD', // if you need jalali dates
         color: '#00acc1',
-
         inputClass: 'my-custom-date-picker',
         autoSubmit: true,
         clearable: true,

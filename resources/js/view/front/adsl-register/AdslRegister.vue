@@ -32,13 +32,13 @@
                                 انتخاب سرویس و مودم
                             </v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step
-                                :complete="e1 > 2"
-                                step="2"
-                            >
-                                انتخاب خدمات تکمیلی
-                            </v-stepper-step>
-                            <v-divider></v-divider>
+                            <!--                            <v-stepper-step-->
+                            <!--                                :complete="e1 > 2"-->
+                            <!--                                step="2"-->
+                            <!--                            >-->
+                            <!--                                انتخاب خدمات تکمیلی-->
+                            <!--                            </v-stepper-step>-->
+                            <!--                            <v-divider></v-divider>-->
                             <v-stepper-step
                                 :complete="e1 > 3"
                                 step="3">
@@ -66,18 +66,25 @@
 
                         <step-one :orderDetails="orderDetails" :serviceDetails="serviceDetails"
                                   :produtDetails="productData"
-                                  @selectServ="selectServ" @selectProd="selectProd" @nextStep="e1=2"
+                                  @selectServ="selectServ" @selectProd="selectProd" @nextStep="nextStepTo3"
                                   @exit="exit"></step-one>
-                        <step-two @nextStep="nextStepToThree" @backStep="e1=1" @exit="exit"></step-two>
+                        <!--                        <step-two @nextStep="nextStepToThree" @backStep="e1=1" @exit="exit"></step-two>-->
                         <step-three
+                            :userInfo="userInfo"
+                            :isUserLogin="isUserLogin"
+                            :userKind="userKind"
+                            :userType="userType"
+                            :isDisabled="isDisabled"
                             @deletePersonalFormData="deletePersonalData"
                             @deleteCompanyFormData="deleteCompanyData"
                             @personalFormChange="changePersonalForm"
                             @companyFormChange="changeCompanyForm"
+                            @changeUserKind="changeUserKind"
+                            @changeUserTypeAfterLogin="changeUserTypeAfterLogin"
+                            @setUserInfo="setUserInfo"
                             @nextStep="nextStepTo4"
-                            @backStep="e1=2"
+                            @backStep="e1=1"
                             @exit="exit">
-
                         </step-three>
                         <step-four :orderDetails="orderDetails" :serviceSelectedDetail="selectService"
                                    :personalFormInfo="personalData? personalData : ''"
@@ -120,7 +127,10 @@ export default {
             e1: 1,
             loadingOpenGateWay: false,
             orderDetails: [],
+            userInfo: [],
+            companyInfo: [],
             productData: [],
+            isUserLogin: false,
             serviceDetails: [],
             selectService: {},
             selectProduct: null,
@@ -129,6 +139,9 @@ export default {
             confirmContract: null,
             payStatus: null,
             sendsms: null,
+            userKind: null,
+            userType: null,
+            isDisabled: false,
         }
     },
     methods: {
@@ -146,6 +159,7 @@ export default {
                         companyData: this.companyData,
                         confirmContract: this.confirmContract
                     }).then(({data}) => {
+                    console.log(data);
                     if (!data.status) {
                         console.log(data.message);
                     } else {
@@ -167,43 +181,64 @@ export default {
             }
 
         },
-        nextStepToThree() {
+        nextStepTo3() {
             this.e1 = 3;
-        },
-        nextStepTo4() {
-            if (this.personalData != null && (!this.personalData.birthday_date || this.personalData.birthday_date === '')) {
-                Swal.fire(
-                    {
-                        title: 'اخطار',
-                        text: 'تاریخ تولد را وارد نمایید',
-                        type: 'warning',
-                        confirmButtonText: 'باشه!'
-                    }
-                )
-            } else {
-                axios.post('/adslRegister/save/check', {
-                    personalData: this.personalData,
-                    companyData: this.companyData
-                }).then(({data}) => {
-                    if (data) {
-                        Swal.fire(
-                            {
-                                title: 'خطا',
-                                text: 'ایمیل و یا شماره موبایل وارد شده در سیستم موجود می باشد؛لطفا با ایمیل ویا شماره موبایل دیگری اقدام نمایید.',
-                                type: 'warning',
-                                confirmButtonText: 'باشه!'
-                            }
-                        )
+            if (store.state.user.user) {
+                this.isUserLogin = true;
+                axios.get('/api/user').then(({data}) => {
 
-                    } else {
-                        this.e1 = 4;
+                    if (!!data) {
+                        this.userInfo = data;
+                        this.userType = data.user_type;
+                        this.isDisabled = true;
                     }
                 })
+            } else {
+                // this.userKind = 0;
+                this.isDisabled = false;
 
             }
 
 
         },
+        nextStepTo4(userInfo) {
+
+            let _token = (document.querySelector('meta[name="csrf-token"]').content);
+            if (!!userInfo && userInfo.user_kind === 0) {
+                this.personalData = userInfo;
+            }
+            if (!!userInfo && userInfo.user_kind === 1) {
+                this.companyData = userInfo;
+
+            }
+
+            axios.post('/adslRegister/save/check', {
+
+                headers: {
+                    'X-CSRF-TOKEN': _token
+                },
+
+                personalData: this.personalData,
+                companyData: this.companyData
+            }).then(({data}) => {
+                if (!data) {
+                    this.e1 = 4
+                } else {
+                    Swal.fire(
+                        {
+                            title: 'خطا',
+                            text: 'ایمیل و یا شماره موبایل وارد شده در سیستم موجود می باشد؛لطفا با ایمیل ویا شماره موبایل دیگری اقدام نمایید.',
+                            type: 'warning',
+                            confirmButtonText: 'باشه !'
+                        }
+                    )
+
+                }
+            })
+
+
+        }
+        ,
         nextStepTo5() {
             if (this.payStatus) {
                 this.e1 = 5;
@@ -217,11 +252,13 @@ export default {
                     }
                 )
             }
-        },
+        }
+        ,
         selectServ(item) {
             this.selectService = item;
 
-        },
+        }
+        ,
         exit() {
             axios.get('/adsl/buy/online/cancel').then(({data}) => {
                 if (data) {
@@ -237,42 +274,67 @@ export default {
                 }
             })
 
-        },
+        }
+        ,
         selectProd(item) {
             this.selectProduct = item;
 
-        },
+        }
+        ,
         changePersonalForm(personalFormData) {
 
             this.personalData = personalFormData;
             this.companyData = null;
 
-        },
+        }
+        ,
         changeCompanyForm(companyFormData) {
             this.companyData = companyFormData;
             this.personalData = null;
-        },
+        }
+        ,
+        changeUserKind(value) {
+            // this.userKind = value
+            this.userKind = value;
+        }
+        ,
+        changeUserTypeAfterLogin(value) {
+            // this.userKind = value
+            this.userType = value;
+        }
+        ,
+        setUserInfo(value) {
+            this.userInfo = value;
+            this.isDisabled = true;
+        }
+        ,
         deleteCompanyData() {
             this.companyData = {};
-        },
+        }
+        ,
         deletePersonalData() {
             this.personalData = {};
-        },
+        }
+        ,
 
         changeContractStatus(status) {
             this.confirmContract = status;
-        },
+        }
+        ,
         changePayStatus(status) {
             this.payStatus = status;
 
-        },
+        }
+        ,
+
         smsStatus(status) {
             this.sendsms = status;
 
         }
 
 
-    },
+    }
+    ,
     watch: {
         e1: function (step) {
             if (Object.keys(this.selectService).length > 0) {
@@ -291,11 +353,12 @@ export default {
                 this.e1 = 1;
             }
         }
-    },
+    }
+    ,
     created() {
-
         axios.get('/adsl/buy/online/get/session/').then(({data}) => {
             if (data.status) {
+
                 this.orderDetails = data.orderDetails;
                 this.productData = data.products;
                 this.serviceDetails = data.servicesDetails;
@@ -314,7 +377,8 @@ export default {
 
 
         })
-    },
+    }
+    ,
 
 }
 </script>

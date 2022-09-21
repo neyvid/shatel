@@ -11,6 +11,10 @@ export default [
                 path: '/services/adsl/availability-check',
                 component: require('../view/front/adsl-service-availability-check/AdslServiceAvailabilityCheck').default,
                 name: 'adsl-availability-check'
+            },{
+                path: '/services/areas/covered',
+                component: require('../view/front/areasCovered/areasCovered').default,
+                name: 'areas-covered'
             },
         ]
     },
@@ -173,6 +177,12 @@ export default [
                 path: 'news',
                 component: require('../view/profile/news/index').default,
                 name: 'news',
+                meta: {auth: true,canSeeUser:false},
+            },
+            {
+                path: 'code', //profile/code
+                component: require('../view/profile/code/index').default,
+                name: 'code',
                 meta: {auth: true,canSeeUser:false},
             },
 

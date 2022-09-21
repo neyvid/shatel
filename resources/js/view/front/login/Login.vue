@@ -60,7 +60,7 @@
                             </v-btn>
                         </v-form>
                     </v-col>
-                    <v-col cols="12" md="8" class="pt-0">
+                    <v-col cols="12" md="8" class="pt-0" :class="{'d-none':$vuetify.breakpoint.smAndDown}">
 
                         <v-carousel
                             cycle

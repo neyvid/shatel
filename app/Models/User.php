@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\JalaliDate\JalaliDate;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,19 +14,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-//    protected $fillable = [
-//        'name',
-//        'email',
-//        'password',
-//        'mobile'
-//    ];
+
     protected $guarded = ['id'];
 
     /**
@@ -52,11 +43,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new \App\Notifications\VerifyEmail());
     }
-
-    public function areacode()
-    {
-        return $this->hasOne(Areacode::class);
-    }
+//
+//    public function areacode()
+//    {
+//        return $this->hasOne(Areacode::class);
+//    }
 
     public function orders()
     {
@@ -77,9 +68,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
         if (!empty($this->lastname)) {
 
-            return $this->name.' '.$this->lastname;
+            return $this->name . ' ' . $this->lastname;
         }
     }
 
+    public function getBirthdayDateAttribute()
+    {
+        return JalaliDate::convert_miladi_to_jalali($this->attributes['birthday_date']);
+    }
+    public function getRegistrationNumberDateAttribute()
+    {
+        if($this->attributes['user_type']==1){
 
+            return JalaliDate::convert_miladi_to_jalali($this->attributes['registration_number_date']);
+        }
+    }
 }

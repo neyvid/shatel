@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+//Route::get('/user', [\App\Http\Controllers\Admin\UserController::class,'all'])->middleware('auth:sanctum')->name('user.all');
 Route::patch('/user/update',[\App\Http\Controllers\Admin\UserController::class,'update'])->middleware('auth:sanctum')->name('profile.update');
 Route::post('/user/upload',[\App\Http\Controllers\UploadImage::class,'upload'])->middleware('auth:sanctum');
-//
+Route::post('/adsl/support/check', [\App\Http\Controllers\Front\AdslCheck::class, 'adslSupportCheck'])->name('adsl.support.check');
+
 //Route::prefix('user')->group(function () {
 //    Route::post('/upload', [\App\Http\Controllers\UploadImage::class,'upload']);
 //});

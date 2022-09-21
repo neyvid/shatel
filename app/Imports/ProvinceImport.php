@@ -3,21 +3,27 @@
 namespace App\Imports;
 
 use App\Models\Province;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class ProvinceImport implements ToModel
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Symfony\Component\Mime\Header\HeaderInterface;
+
+class ProvinceImport implements ToCollection,WithHeadingRow
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
-    {
-        return new Province([
-            'name' => $row[0],
-            'code' => $row[1],
 
-        ]);
+    public function collection(Collection $rows)
+    {
+
+        foreach ($rows as $row) {
+             Province::create([
+                'name' => $row['name'],
+                'code' => $row['code'],
+
+
+            ]);
+
+        }
+
     }
 }

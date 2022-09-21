@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Web Routesf
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -32,7 +32,7 @@ Route::get('/password/reset/{token}', function () {
 })->name('password.reset');
 Route::post('/mobileVerify/resend', [App\Http\Controllers\Auth\MobileVerificationController::class, 'resend'])->name('mobile.verify.resend');
 Route::post('/mobile/verify/{hash}', [App\Http\Controllers\Auth\MobileVerificationController::class, 'verify'])->name('mobile.verify');
-Route::post('/adsl/support/check', [\App\Http\Controllers\Front\AdslCheck::class, 'adslSupportCheck'])->name('adsl.support.check');
+//Route::post('/adsl/support/check', [\App\Http\Controllers\Front\AdslCheck::class, 'adslSupportCheck'])->name('adsl.support.check');
 Route::get('/adsl/support/getProvinces', [\App\Http\Controllers\Front\AdslCheck::class, 'getProvinces'])->name('adsl.support.check.getProvinces');
 Route::get('resetSession', [\App\Http\Controllers\Front\AdslCheck::class, 'resetSession'])->name('adslCheck.resetSession');
 Route::get('/adsl/support/getCititesOfProvince/{id}', [\App\Http\Controllers\Front\AdslCheck::class, 'getCitiesOfProvince'])->name('adsl.support.check.getCitiesOfProvince');
@@ -58,6 +58,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/provinces/edit/{id}', [App\Http\Controllers\Admin\ProvinceController::class, 'update'])->name('provinces.update');
     Route::get('/provinces/delete/{id}', [App\Http\Controllers\Admin\ProvinceController::class, 'delete'])->name('provinces.delete');
     Route::post('/provinces/create', [App\Http\Controllers\Admin\ProvinceController::class, 'create'])->name('provinces.create');
+    Route::post('/province/import', [App\Http\Controllers\Admin\ProvinceController::class, 'import'])->name('provinces.provinces.import');
+
     Route::get('/cities', [App\Http\Controllers\Admin\CityController::class, 'all'])->name('cities');
     Route::post('/cities/create', [App\Http\Controllers\Admin\CityController::class, 'create'])->name('cities.create');
     Route::get('/city/edit/{id}', [App\Http\Controllers\Admin\CityController::class, 'edit'])->name('cities.edit.show');
@@ -74,10 +76,17 @@ Route::prefix('admin')->group(function () {
     Route::post('/telecomcenter/edit/{id}', [App\Http\Controllers\Admin\TelecomCenterController::class, 'update'])->name('TelecomCenters.edit.update');
     Route::get('/areacodes', [App\Http\Controllers\Admin\AreacodeController::class, 'all'])->name('areacodes');
     Route::get('/areacode/getInfo', [App\Http\Controllers\Admin\AreacodeController::class, 'getInfoForCreateItem'])->name('areacodes.getInfoForCreateItem');
-    Route::post('/areacode/create', [App\Http\Controllers\Admin\AreacodeController::class, 'create'])->name('areacodes.create');
+    Route::post('/areacode/creaet', [App\Http\Controllers\Admin\AreacodeController::class, 'create'])->name('areacodes.create');
     Route::get('/areacode/delete/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'delete'])->name('areacode.delete');
     Route::get('/areacode/edit/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'edit'])->name('areacode.edit.show');
     Route::post('/areacode/edit/{id}', [App\Http\Controllers\Admin\AreacodeController::class, 'update'])->name('areacode.edit.update');
+
+
+    Route::get('/codes', [App\Http\Controllers\Admin\CodeController::class, 'all'])->name('codes');
+    Route::post('/code/create', [App\Http\Controllers\Admin\CodeController::class, 'create'])->name('code.create');
+    Route::post('/code/import', [\App\Http\Controllers\Admin\CodeController::class, 'import'])->name('panel.codes.import');
+
+
     Route::get('/oprators', [App\Http\Controllers\Admin\OpratorController::class, 'all'])->name('oprators');
     Route::get('/oprator/delete/{id}', [App\Http\Controllers\Admin\OpratorController::class, 'delete'])->name('oprators.delete');
     Route::post('/oprator/create', [App\Http\Controllers\Admin\OpratorController::class, 'create'])->name('oprators.create');
@@ -88,6 +97,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/service/delete/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'delete'])->name('service.delete');
     Route::get('/service/edit/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'edit'])->name('service.edit.show');
     Route::post('/service/edit/{id}', [App\Http\Controllers\Admin\ServiceController::class, 'update'])->name('service.edit.update');
+    Route::post('/service/import', [\App\Http\Controllers\Admin\ServiceController::class, 'import'])->name('panel.service.import');
+
     Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'all'])->name('categories');
     Route::post('/category/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('category.create');
     Route::get('/category/edit/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('category.edit.show');

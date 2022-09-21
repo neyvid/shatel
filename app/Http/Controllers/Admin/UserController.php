@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
 use App\Repositories\UserRepository\UserRepository;
+use App\Services\JalaliDate\JalaliDate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -20,7 +21,12 @@ class UserController extends Controller
     {
         $this->userRepository = new UserRepository();
     }
-
+//    public function all(Request $request){
+//        $user_id=$request->user()->id;
+//        $user= $this->userRepository->find($user_id);
+//        $user['birthday_date']=jalaliDate::convert_miladi_to_jalali($user->birthday_date);
+//        return $user;
+//    }
     public function update(ProfileRequest $request)
     {
 

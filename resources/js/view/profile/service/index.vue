@@ -215,6 +215,35 @@
                 </v-dialog>
                 <!--                End Modal For create Item-->
             </v-row>
+
+            <v-row>
+                <v-col cols="12" :class="{'text-center':$vuetify.breakpoint.smAndDown}">
+                    <v-form class="d-flex align-center" ref="exelFormInput"
+                            enctype="multipart/form-data">
+                        <v-file-input
+                            ref="inputExelFile"
+                            accept=".xlsx"
+                            label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید(پسوند xlsx.)"
+                            :rules="[required('فایل مورد نظر'),]"
+                            :error-messages="errors.name"
+                            v-on:change="onFileChange"
+                        ></v-file-input>
+
+                    </v-form>
+                    <v-btn @click="importService" class="mr-4 exelBtn" color="success">
+                        <template v-if="loading">
+                            <v-progress-circular
+                                indeterminate
+                                color="white"
+                            ></v-progress-circular>
+                            درحال انتفال
+                        </template>
+                        <template v-else>
+                            انتقال از اکسل به پایگاه داده
+                        </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
             <v-row>
                 <v-col>
                     <v-text-field
@@ -478,11 +507,12 @@ export default {
             expanded: [],
             servicesData: [],
             createDialog: false,
-            search:'',
+            search: '',
             editDialog: false,
             typeData: {},
             planData: {},
             opratorData: {},
+            loading: false,
             telecomcenterData: {},
             categoryData: {},
             createItem: {},
@@ -496,17 +526,17 @@ export default {
                 },
 
                 {text: 'شناسه سرویس', value: 'service_id', sortable: false,},
-                {text: 'اپراتور', value: 'oprator.name', sortable: false,},
+                // {text: 'اپراتور', value: 'oprator.name', sortable: false,},
                 {text: 'نوع', value: 'type', sortable: false,},
                 {text: 'طرح', value: 'plan', sortable: false,},
                 // {text: 'شناسه قیمت', value: 'price_id', sortable: false,},
                 // {text: ' قیمت پایه', value: 'base_price', sortable: false,},
                 // {text: ' قیمت فروش', value: 'sell_price', sortable: false,},
-                {text: 'دسته سرویس', value: 'categories[0].name', sortable: false,},
+                // {text: 'دسته سرویس', value: 'categories[0].name', sortable: false,},
                 {text: ' مبنای پورسانت', value: 'commission_price', sortable: false,},
                 {text: ' قیمت کل', value: 'total_price', sortable: false,},
                 {text: 'تخفیف (%)', value: 'discount', sortable: false,},
-                {text: ' منطقه فروش', value: 'telecomcenter.name', sortable: false,},
+                // {text: ' منطقه فروش', value: 'telecomcenter.name', sortable: false,},
                 {text: 'تاریخ اعتبار', value: 'expire_date', sortable: false,},
                 {text: 'زمان', value: 'period', sortable: false,},
                 {text: 'شناسه قیمت', value: 'price_id', sortable: false,},
@@ -534,7 +564,7 @@ export default {
     methods: {
         createService() {
             axios.post('/admin/service/create', this.createItem).then(({data}) => {
-
+                console.log(data);
                 this.servicesData.push(data);
                 this.createDialog = false;
             })
@@ -587,7 +617,7 @@ export default {
                 const index = this.servicesData.map(function (obj) {
                     return obj.id;
                 }).indexOf(this.editItem.id);
-                this.servicesData[index].oprator = data.oprator;
+                // this.servicesData[index].oprator = data.oprator;
                 this.servicesData[index].name = data.name;
                 this.servicesData[index].type = data.type_name;
                 this.servicesData[index].plan = data.plan_name;
@@ -607,15 +637,63 @@ export default {
                 this.servicesData[index].price_id = data.price_id;
                 this.servicesData[index].service_id = data.service_id;
                 this.servicesData[index].telecomcenter = data.telecomcenter;
-                this.servicesData[index].category_id = data.category_id;
-                this.servicesData[index].categories = data.categories;
+                // this.servicesData[index].category_id = data.category_id;
+                // this.servicesData[index].categories = data.categories;
 
 
                 this.editDialog = false;
 
             })
-        }
+        },
+        onFileChange(event) {
 
+            this.exelFile = event;
+        },
+        importService() {
+            if (this.$refs.exelFormInput.validate()) {
+
+                let currentObj = this;
+                this.loading = true;
+                const config = {
+                    headers: {'content-type': 'multipart/form-data'}
+                }
+                let formData = new FormData();
+                formData.append('file', this.exelFile);
+
+                axios.post('/admin/service/import', formData, config).then(({data}) => {
+                    if (!data.status) {
+                        Swal.fire(
+                            {
+                                title: 'خطایی رخ داده!',
+                                text: data.message,
+                                type: 'warning',
+                                confirmButtonText: 'متوجه شدم!'
+                            }
+                        )
+                    } else {
+                        this.servicesData = data.allData.services;
+                        this.typeData = data.allData.type;
+                        this.planData = data.allData.plan;
+                        // this.opratorData = data.allData.oprators;
+                        // this.telecomcenterData = data.allData.telecomcentes;
+                        // this.categoryData = data.allData.categories;
+                    }
+                }).finally(() => {
+                    this.loading = false;
+                    this.$refs.inputExelFile.reset();
+                    Swal.fire(
+                        {
+                            title: 'عملیات تکمیل شد !',
+                            text: 'داده های اکسل به درستی وارد شد',
+                            type: 'success',
+                            confirmButtonText: 'باشه!'
+                        }
+                    )
+                })
+            }
+
+
+        },
     },
     created() {
         axios.get('/admin/services/').then(({data}) => {
@@ -623,9 +701,9 @@ export default {
             this.servicesData = data.services;
             this.typeData = data.type;
             this.planData = data.plan;
-            this.opratorData = data.oprators;
-            this.telecomcenterData = data.telecomcentes;
-            this.categoryData = data.categories;
+            // this.opratorData = data.oprators;
+            // this.telecomcenterData = data.telecomcentes;
+            // this.categoryData = data.categories;
 
         })
     }

@@ -3,7 +3,7 @@
         <v-container fluid class="border-bottom">
             <v-container fluid>
                 <v-row>
-                    <v-col cols="12"  class="pa-0">
+                    <v-col cols="12" class="pa-0">
                         <v-breadcrumbs
                             class="pa-0"
                             :items="items">
@@ -29,20 +29,22 @@
                                 ref="adslCheckForm"
                                 lazy-validation
                             >
-                                <v-text-field
-                                    outlined
-                                    label="کد شهر"
-                                    :rules="[required('کد'),code()]"
-                                    v-model="checkAdslInfo.city_code"
-                                    maxlength="3"
-                                ></v-text-field>
+                                <!--                                <v-text-field-->
+                                <!--                                    outlined-->
+                                <!--                                    label="کد شهر"-->
+                                <!--                                    :rules="[required('کد'),code()]"-->
+                                <!--                                    v-model="checkAdslInfo.city_code"-->
+                                <!--                                    maxlength="3"-->
+                                <!--                                ></v-text-field>-->
                                 <v-text-field
                                     label="شماره تلفن"
                                     required
                                     outlined
                                     :rules="[required('شماره تلفن'),phoneNumber()]"
                                     v-model="checkAdslInfo.phone_number"
-                                    maxlength="8"
+                                    maxlength="11"
+                                    ref="number"
+                                    @keyup="checkAdslSupport"
                                 ></v-text-field>
 
 
@@ -61,12 +63,14 @@
                     <!--                    online Order Table start-->
                     <v-expand-transition>
                         <v-row v-if="orderTableShow">
-                            <v-col cols="10">
+                            <v-col cols="12">
                                 <v-simple-table class="simple-table-bordered">
                                     <template v-slot:default>
                                         <thead>
                                         <tr class="blue-bg th-border-simple-table">
                                             <th class="text-right">
+                                                استان
+                                            </th><th class="text-right">
                                                 شهر
                                             </th>
                                             <th class="text-right">
@@ -82,8 +86,9 @@
                                         </thead>
                                         <tbody>
                                         <tr class=" td-border-simple-table">
-                                            <td class="text-right">{{ areacodeData.city.name }}</td>
-                                            <td class="text-right">{{ areacodeData.telecomcenter.name }}</td>
+                                            <td class="text-right">{{ areacodeData.province }}</td>
+                                            <td class="text-right">{{ areacodeData.city }}</td>
+                                            <td class="text-right">{{ areacodeData.telecomcenter }}</td>
                                             <td class="text-right">{{ areacodeData.areacode }}</td>
                                             <td class="text-right">فعال</td>
 
@@ -148,9 +153,10 @@
 </template>
 
 <script>
-import {required, code,moreThan,phoneNumber} from "../../../rules/frontRules";
+import {required, code, moreThan, phoneNumber} from "../../../rules/frontRules";
 import router from "../../../router/router";
 import Swal from "sweetalert2";
+
 export default {
     name: "AdslServiceAvailabilityCheck",
     data() {
@@ -160,7 +166,7 @@ export default {
             adslCheckFail: false,
             required,
             code,
-             moreThan,
+            moreThan,
             phoneNumber,
             provinceValue: null,
             loading: false,
@@ -212,50 +218,58 @@ export default {
     },
     methods:
         {
-        checkAdslSupport() {
-            if (this.$refs.adslCheckForm.validate()) {
-                this.loading = true;
-                axios.post('/adsl/support/check', this.checkAdslInfo).then(({data}) => {
-                    if (data !== '') {
-                        this.orderTableShow = true;
-                        this.adslCheckFail = false;
-                        this.areacodeData = data;
-                    }else{
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'warning',
-                            text: 'برای این شماره تلفن قبلا درخواست ارسال شده است',
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
+            checkAdslSupport(e) {
+                console.log(e);
+                if (this.$refs.adslCheckForm.validate()) {
 
+                    this.loading = true;
+                    axios.post('/api/adsl/support/check', this.checkAdslInfo).then(({data}) => {
+                        console.log(data);
+                        if (data.areacodeIsExist && data.status) {
+                            this.orderTableShow = true;
+                            this.adslCheckFail = false;
+                            this.areacodeData = data.areacodeIsExist;
+                        }
+                        if (!data.status) {
+                            this.adslCheckFail = false;
+                            this.orderTableShow = false;
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'warning',
+                                text: 'برای این شماره تلفن قبلا درخواست ارسال شده است',
+                                showConfirmButton: false,
+                                timer: 2500
+                            })
+                        }
+                        if (data.areacodeIsExist === null) {
+                            this.adslCheckFail = true;
+                            this.orderTableShow = false;
+                        }
+                    }).finally(() => {
+                        this.loading = false;
+                    })
+                }
+            },
+            changeProvince(provinceId) {
+                axios.get('/adsl/support/getCititesOfProvince/' + provinceId).then(({data}) => {
+                    this.cityData = data
+
+                })
+            },
+            buyAdslBtn() {
+                axios.post('/adsl/buy/online', this.areacodeData).then(({data}) => {
+                    console.log(data);
+                    if (data !== '') {
+                        router.push({name: 'adsl-register'})
                     }
                 }).catch(() => {
-                    this.adslCheckFail = true;
-                    this.orderTableShow = false;
-                }).finally(() => {
-                    this.loading = false;
+                    Swal.fire('خطایی رخ داده است لطفا مجددا تلاش کنید!')
                 })
             }
         },
-        changeProvince(provinceId) {
-            axios.get('/adsl/support/getCititesOfProvince/' + provinceId).then(({data}) => {
-                this.cityData = data
-
-            })
-        },
-        buyAdslBtn() {
-            axios.post('/adsl/buy/online', this.areacodeData).then(({data}) => {
-                if (data !== '') {
-                    router.push({name: 'adsl-register'})
-                }
-            }).catch(() => {
-                Swal.fire('خطایی رخ داده است لطفا مجددا تلاش کنید!')
-            })
-        }
-    },
     created() {
         axios.get('/adsl/support/getProvinces').then(({data}) => {
+            console.log(data);
             this.provinceData = data;
 
         })

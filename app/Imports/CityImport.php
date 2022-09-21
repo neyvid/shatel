@@ -3,20 +3,27 @@
 namespace App\Imports;
 
 use App\Models\City;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CityImport implements ToModel
+class CityImport implements ToCollection,WithHeadingRow
 {
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+
+
+    public function collection(Collection $rows)
     {
-        return new City([
-            'name' => $row[0],
-            'province_id' => $row[1],
-        ]);
+
+        foreach ($rows as $row) {
+            City::create([
+                'name' => $row['name'],
+                'province_id' => $row['province_id'],
+
+
+            ]);
+
+        }
+
     }
 }

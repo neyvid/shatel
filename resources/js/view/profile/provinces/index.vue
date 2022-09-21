@@ -80,6 +80,34 @@
                 <!--                End Modal For create Item-->
             </v-row>
             <v-row>
+                <v-col cols="12" :class="{'text-center':$vuetify.breakpoint.smAndDown}">
+                    <v-form class="d-flex align-center" ref="exelFormInput"
+                            enctype="multipart/form-data">
+                        <v-file-input
+                            ref="inputExelFile"
+                            accept=".xlsx"
+                            label="برای ورود داده ها توسط فایل اکسل، فایل را انتخاب نمایید(پسوند xlsx.)"
+                            :rules="[required('فایل مورد نظر'),]"
+                            :error-messages="errors.name"
+                            v-on:change="onFileChange"
+                        ></v-file-input>
+
+                    </v-form>
+                    <v-btn @click="importService" class="mr-4 exelBtn" color="success">
+                        <template v-if="loading">
+                            <v-progress-circular
+                                indeterminate
+                                color="white"
+                            ></v-progress-circular>
+                            درحال انتفال
+                        </template>
+                        <template v-else>
+                            انتقال از اکسل به پایگاه داده
+                        </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
                 <v-col>
                     <v-text-field
                         v-model="search"
@@ -201,7 +229,8 @@ export default {
             createForm: null,
             editDialog: false,
             createDialog: false,
-            search:'',
+            search: '',
+            loading: false,
             errors: {
                 name: null,
                 code: null
@@ -312,12 +341,56 @@ export default {
 
             }
         },
+        onFileChange(event) {
 
+            this.exelFile = event;
+        },
+        importService() {
+            if (this.$refs.exelFormInput.validate()) {
+
+                let currentObj = this;
+                this.loading = true;
+                const config = {
+                    headers: {'content-type': 'multipart/form-data'}
+                }
+                let formData = new FormData();
+                formData.append('file', this.exelFile);
+
+                axios.post('/admin/province/import', formData, config).then(({data}) => {
+                    if (!data.status) {
+                        Swal.fire(
+                            {
+                                title: 'خطایی رخ داده!',
+                                text: data.message,
+                                type: 'warning',
+                                confirmButtonText: 'متوجه شدم!'
+                            }
+                        )
+                    } else {
+                        this.provinceData = data.allData;
+
+                    }
+                }).finally(() => {
+                    this.loading = false;
+                    this.$refs.inputExelFile.reset();
+                    Swal.fire(
+                        {
+                            title: 'عملیات تکمیل شد !',
+                            text: 'داده های اکسل به درستی وارد شد',
+                            type: 'success',
+                            confirmButtonText: 'باشه!'
+                        }
+                    )
+                })
+            }
+
+
+        },
     },
     created() {
 
         axios.get('/admin/provinces').then(({data}) => {
-     ;
+            ;
             this.provinceData = data;
 
         })

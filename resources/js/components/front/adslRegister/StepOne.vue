@@ -24,30 +24,30 @@
                             <template v-if="isSelected==index">
                                 <v-icon class="selectIcon" color="green" size="40">mdi-checkbox-marked-circle</v-icon>
                             </template>
-                            <div class="suggestion-image-service"></div>
-                            <div class="suggestion-service-content pa-2">
-                                <p class="ma-0 py-1   fs-13">
+                            <div class="suggestion-image-service col-5"></div>
+                            <div class="suggestion-service-content pa-2 col-7">
+                                <p class="ma-0 py-1   fs-11">
 
 
                                     <span>نام سرویس : </span>
                                     {{ serviceDetail.name }}
                                 </p>
-                                <p class="ma-0 py-1   fs-13">
+                                <p class="ma-0 py-1   fs-11">
                                     <span>سرعت : </span>
                                     {{ serviceDetail.speed }}
                                 </p>
-                                <p class="ma-0 py-1 pr-1  fs-13">
+                                <p class="ma-0 py-1 pr-1  fs-11">
                                     <span>دوره: </span>
                                     {{ serviceDetail.period }}
                                 </p>
-                                <p class="ma-0 py-1 pr-2  fs-13">
+                                <p class="ma-0 py-1 pr-2  fs-11">
                                     <span>حد آستانه مصرف: </span>
                                     {{ serviceDetail.limit_amount }}
                                 </p>
-                                <p class="ma-0 py-1 pr-3 fs-13">
+                                <p class="ma-0 py-1 pr-3 fs-11">
                                     {{ serviceDetail.description }}
                                 </p>
-                                <p class="ma-0 fs-14 pr-5 font-weight-bold subtitle-1">
+                                <p class="ma-0 fs-13 pr-5 font-weight-bold subtitle-1">
                                     {{ serviceDetail.total_price }}
                                     <span>ریال</span>
                                 </p>
@@ -102,7 +102,7 @@
 
                 <v-btn
                     color="primary"
-                    @click="$emit('nextStep')"
+                    @click="nextStep3"
                     class="mt-8"
                 >
                     ادامه
@@ -125,6 +125,8 @@
 </template>
 
 <script>
+import user from "../../../store/modules/user";
+
 export default {
     name: "StepOne",
     props: ['orderDetails', 'serviceDetails', 'produtDetails'],
@@ -149,9 +151,11 @@ export default {
                 this.isSelectedProduct = index;
                 this.$emit('selectProd', productDetail);
             }
-
-
+        },
+        nextStep3(){
+                this.$emit('nextStep')
         }
+
     },
     created() {
 
@@ -172,6 +176,7 @@ export default {
 
 .serviceWrap {
     position: relative !important;
+    height: 200px !important;
 }
 
 .selectIcon {

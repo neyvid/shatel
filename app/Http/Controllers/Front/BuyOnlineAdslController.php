@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\AreacodeRepository\AreacodeRepository;
+use App\Repositories\CodeRepository\CodeRepository;
 use App\Repositories\ProductRepository\ProductRepository;
 use App\Repositories\ServiceRepository\ServiceRepository;
 use App\Repositories\TelecomcenterRepository\TelecomcenterRepository;
@@ -17,32 +18,28 @@ class BuyOnlineAdslController extends Controller
     protected $areacodeRepository;
     protected $serviceRepository;
     protected $productRepository;
+    protected $codeRepository;
+
 
     public function __construct()
     {
         $this->areacodeRepository = new AreacodeRepository();
         $this->serviceRepository = new ServiceRepository();
         $this->productRepository = new ProductRepository();
+        $this->codeRepository = new CodeRepository();
 
     }
 
     public function buyOnline(Request $request)
     {
-        $adslData = [
-            'code' => $request->code,
-            'areacode' => $request->areacode,
-//            'province_id' => $request->province_id,
-//            'city_id' => $request->city_id,
-//            'telecomcenter_id' => $request->telecomcenter_id,
 
+        $adslData = [
+            'areacode' => $request->areacode,
         ];
-        $isAreacode = $this->areacodeRepository->findBy($adslData);
+        $isAreacode = $this->codeRepository->findBy($adslData);
         if ($isAreacode != ' ') {
             self::resetSession();
-            $isAreacode->city;
-            $isAreacode->telecomcenter;
-            $isAreacode->province;
-            $isAreacode['phoneNumber'] = $request->phoneNumber;
+            $isAreacode['phoneNumber'] = $request->phone_number;
             session(['orderDetails' => $isAreacode]);
             return $isAreacode;
         }
@@ -53,9 +50,8 @@ class BuyOnlineAdslController extends Controller
 
     public function getOrderDetailsSession()
     {
-
         if (session()->has('orderDetails')) {
-            $services = $this->serviceRepository->all()->where('telecomcenter_id', session('orderDetails')->telecomcenter_id);
+            $services = $this->serviceRepository->all();
             $products = $this->productRepository->all();
             return ['status' => true, 'orderDetails' => session('orderDetails'), 'servicesDetails' => $services, 'products' => $products];
         }

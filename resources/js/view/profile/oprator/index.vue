@@ -84,7 +84,7 @@
                         :items="opratorData"
                         :items-per-page="20"
                         class="elevation-1"
-                        :search="earch"
+                        :search="search"
                     >
                         <template v-slot:item.actions="{ item }">
                             <v-icon

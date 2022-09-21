@@ -77,48 +77,48 @@ export default {
             //
             // ],
             treeitems: [
-                {
-                    id: 1,
-                    name: 'شهر ها',
-                    children: [
-                        {id: 2, name: 'مشاهده شهر ها', to: {name: 'cities'}},
-                    ],
-                },
-                {
-                    id: 3,
-                    name: 'استان ها',
-                    children: [
-                        {id: 4, name: 'مشاهده استان ها', to: {name: 'provinces'}},
-                    ],
-                },
-                {
-                    id: 5,
-                    name: 'ادیتور',
-                    children: [
-                        {id: 6, name: 'ادیتور', to: {name: 'editor'}},
-                    ],
-                },
-                {
-                    id: 6,
-                    name: 'مراکز مخابراتی',
-                    children: [
-                        {id: 7, name: 'مشاهده مراکز مخابراتی', to: {name: 'telecomeCenters'}},
-                    ],
-                },
-                {
-                    id: 7,
-                    name: 'پیش شماره ها',
-                    children: [
-                        {id: 8, name: 'مشاهده پیش شماره ها', to: {name: 'areacode'}},
-                    ],
-                },
-                {
-                    id: 9,
-                    name: 'اپراتور ها',
-                    children: [
-                        {id: 10, name: 'مشاهده اپراتورها', to: {name: 'oprator'}},
-                    ],
-                },
+                // {
+                //     id: 1,
+                //     name: 'شهر ها',
+                //     children: [
+                //         {id: 2, name: 'مشاهده شهر ها', to: {name: 'cities'}},
+                //     ],
+                // },
+                // {
+                //     id: 3,
+                //     name: 'استان ها',
+                //     children: [
+                //         {id: 4, name: 'مشاهده استان ها', to: {name: 'provinces'}},
+                //     ],
+                // },
+                // {
+                //     id: 5,
+                //     name: 'ادیتور',
+                //     children: [
+                //         {id: 6, name: 'ادیتور', to: {name: 'editor'}},
+                //     ],
+                // },
+                // {
+                //     id: 6,
+                //     name: 'مراکز مخابراتی',
+                //     children: [
+                //         {id: 7, name: 'مشاهده مراکز مخابراتی', to: {name: 'telecomeCenters'}},
+                //     ],
+                // },
+                // {
+                //     id: 7,
+                //     name: 'پیش شماره ها',
+                //     children: [
+                //         {id: 8, name: 'مشاهده پیش شماره ها', to: {name: 'areacode'}},
+                //     ],
+                // },
+                // {
+                //     id: 9,
+                //     name: 'اپراتور ها',
+                //     children: [
+                //         {id: 10, name: 'مشاهده اپراتورها', to: {name: 'oprator'}},
+                //     ],
+                // },
                 {
                     id: 11,
                     name: 'سرویس ها',
@@ -168,14 +168,21 @@ export default {
                         {id: 23, name: 'مشاهده خبر ها', to: {name: 'news'}},
                     ],
                 },
+                {
+                    id: 23,
+                    name: 'کدها',
+                    children: [
+                        {id: 24, name: 'مشاهده پیش شماره ها', to: {name: 'code'}},
+                    ],
+                },
             ],
             treeitemsForNormoalUser:[
                 {
 
-                    id: 23,
+                    id: 25,
                     name: 'سفارش های من',
                     children: [
-                        {id: 24, name: 'مشاهده سفارش ها', to: {name: 'my-order'}},
+                        {id: 26, name: 'مشاهده سفارش ها', to: {name: 'my-order'}},
                     ],
                 }
             ],

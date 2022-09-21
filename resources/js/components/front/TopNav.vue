@@ -2,7 +2,7 @@
   <v-container class="mb-4">
 
     <v-row class="hidden-lg-and-up mb-4">
-      <v-col cols="9" class="text-right  ">
+      <v-col cols="10" class="text-right  ">
         <p class="ma-0 pa-2 d-inline">
 
           <v-icon color="blue">mdi-phone</v-icon>
@@ -10,7 +10,7 @@
 
         </p>
       </v-col>
-      <v-col cols="3" class="text-left">
+      <v-col cols="2" class="text-left">
         <v-icon @click="showTop=!showTop">
           <template v-if="!showTop">mdi-plus</template>
           <template v-else>mdi-minus</template>

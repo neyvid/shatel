@@ -40,7 +40,6 @@ class OrderController extends Controller
         $users = $this->userRepository->all();
         $services = $this->serviceRepository->all();
         $products = $this->productRepository->all();
-
         return ['orders' => $orders, 'services' => $services, 'products' => $products, 'users' => $users];
     }
 

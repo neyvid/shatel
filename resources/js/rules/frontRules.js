@@ -21,7 +21,7 @@ export function code() {
 }
 
 export function phoneNumber() {
-    return v => /^[1-9][0-9]{7}$/.test(v) || 'شماره تلفن معتبر نمی باشد'
+    return v => /^[0-9]{11}$/.test(v) || 'شماره تلفن معتبر نمی باشد'
 }
 
 export function persianCharachter(text) {

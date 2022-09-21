@@ -35,6 +35,7 @@ export function loginModule() {
 
         if (loginForm.value.validate()) {
             loading.value = true;
+
             store.dispatch('login', LoginInfo.value)
                 .then(() => {
                     router.push({name:'home'})

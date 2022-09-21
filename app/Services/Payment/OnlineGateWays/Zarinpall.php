@@ -24,7 +24,8 @@ class Zarinpall extends OnlineGateWay
 
     public function paymentRequest(array $params)
     {
-        $this->amount = $params['Amount'];
+//        $this->amount = $params['Amount'];
+
         $result = $this->client->PaymentRequest(
             [
                 'MerchantID' => $this->MerchantId,

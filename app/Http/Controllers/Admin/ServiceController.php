@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CityImport;
+use App\Imports\OrdersImport;
+use App\Imports\ServiceImport;
 use App\Models\service\ServicePlan;
 use App\Models\service\ServiceType;
 use App\Repositories\CategoryRepository\CategoryRepository;
@@ -13,6 +16,8 @@ use App\Services\JalaliDate\JalaliDate;
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ServiceController extends Controller
 {
@@ -31,28 +36,27 @@ class ServiceController extends Controller
 
     public function all()
     {
-        $services = $this->serviceRepository->all(['oprator', 'telecomcenter']);
-        $categories = $this->categoryRepository->all();
+//        $services = $this->serviceRepository->all(['oprator', 'telecomcenter']);
+        $services = $this->serviceRepository->all();
+//        $categories = $this->categoryRepository->all();
         foreach ($services as $service) {
             $service['type'] = $service->type_name;
             $service['plan'] = $service->plan_name;
             $service['expire_date'] = JalaliDate::get_date_in_jalali($service->expire_date);
-            $service['categories'] = $service->categories;
+//            $service['categories'] = $service->categories;
         }
         $type = ServiceType::getServiceTypeWithKeyValue();
         $plan = ServicePlan::getServiceplanWithKeyValue();
-        $oprators = $this->opratorRepository->all();
-        $telecomcenters = $this->telecomcenterRepository->all();
-
-
-        return ['services' => $services, 'type' => $type, 'plan' => $plan, 'oprators' => $oprators, 'telecomcentes' => $telecomcenters, 'categories' => $categories];
+//        $oprators = $this->opratorRepository->all();
+//        $telecomcenters = $this->telecomcenterRepository->all();
+//        return ['services' => $services, 'type' => $type, 'plan' => $plan, 'oprators' => $oprators, 'telecomcentes' => $telecomcenters, 'categories' => $categories];
+        return ['services' => $services, 'type' => $type, 'plan' => $plan];
     }
 
     public function create(Request $request)
     {
-
         $serviceData = [
-            'oprator_id' => $request->oprator_id,
+//            'oprator_id' => $request->oprator_id,
             'name' => $request->name,
             'type' => $request->type,
             'plan' => $request->plan,
@@ -64,22 +68,22 @@ class ServiceController extends Controller
             'limit_amount' => $request->limit_amount,
             'international_trafic' => $request->international_trafic,
             'description' => $request->description,
-            'telecomcenter_id' => $request->telecomcenter_id, //Sell_zone
+//            'telecomcenter_id' => $request->telecomcenter_id, //Sell_zone
             'commission_price' => $request->commission_price,
             'total_price' => $request->total_price,
             'sell_price' => $request->sell_price,
             'base_price' => $request->base_price,
             'available_id' => $request->available_id,
-            'category_id' => $request->category_id,
+//            'category_id' => $request->category_id,
             'price_id' => $request->price_id,
             'service_id' => $request->service_id,
 
         ];
         $service = $this->serviceRepository->create($serviceData);
-        $category = $this->categoryRepository->find($request->category_id);
-        $service->categories()->attach($category);
-        $service->oprator;
-        $service->telecomcenter;
+//        $category = $this->categoryRepository->find($request->category_id);
+//        $service->categories()->attach($category);
+//        $service->oprator;
+//        $service->telecomcenter;
         return $service;
     }
 
@@ -93,14 +97,14 @@ class ServiceController extends Controller
     {
         $service = $this->serviceRepository->find($request->id);
         $service['expire_date'] = JalaliDate::convert_miladi_to_jalali($service->expire_date);
-        $service->oprator;
+//        $service->oprator;
         return $service;
     }
 
     public function update(Request $request)
     {
         $serviceData = [
-            'oprator_id' => $request->oprator_id,
+//            'oprator_id' => $request->oprator_id,
             'name' => $request->name,
             'type' => $request->type,
             'plan' => $request->plan,
@@ -117,27 +121,43 @@ class ServiceController extends Controller
             'sell_price' => $request->sell_price,
             'base_price' => $request->base_price,
             'available_id' => $request->available_id,
-            'category_id' => $request->category_id,
+//            'category_id' => $request->category_id,
             'price_id' => $request->price_id,
             'service_id' => $request->service_id,
-            'telecomcenter_id' => $request->telecomcenter_id, //Sell_zone
-
+//            'telecomcenter_id' => $request->telecomcenter_id, //Sell_zone
         ];
-
         $service = $this->serviceRepository->find($request->id);
         $service->update($serviceData);
-        $category = $this->categoryRepository->find($request->category_id);
-        $service->categories()->sync($category);
-
-
+//        $category = $this->categoryRepository->find($request->category_id);
+//        $service->categories()->sync($category);
         $service['expire_date'] = JalaliDate::convert_miladi_to_jalali($service->expire_date);
         $type = ServiceType::getServiceTypeWithTypeNumber($service->type);
         $plan = ServicePlan::getServicePlanWithPlanNumber($service->plan);
-        $service->oprator;
-        $service->telecomcenter;
-        $service->categories;
+//        $service->oprator;
+//        $service->telecomcenter;
+//        $service->categories;
         $service['type_name'] = $type;
         $service['plan_name'] = $plan;
         return $service;
     }
+
+    public function import(Request $request)
+    {
+
+        if ($request->file->getClientOriginalExtension() === 'xlsx') {
+            $fileName = time() . '.' . $request->file->getClientOriginalExtension();
+            if (File::exists(public_path() . '/serviceImport')) {
+                File::deleteDirectory(public_path() . '/serviceImport');
+            };
+            $file = $request->file->move(public_path() . '/serviceImport', $fileName);
+            Excel::import(new ServiceImport, $file);
+
+
+            return ['status' => true, 'allData' => $this->all()];
+        } else {
+            return ['status' => false, 'message' => '(پسوند قابل قبول xlsx. می باشد)  فرمت فایل انتخابی صحیح نمی باشد.  '];
+        }
+
+    }
+
 }
