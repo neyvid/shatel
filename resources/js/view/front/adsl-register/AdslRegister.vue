@@ -1,5 +1,5 @@
 <template>
-    <v-main>
+    <v-main ref="main">
         <v-container fluid class="adslRegisterHeader">
             <v-container>
                 <v-row>
@@ -8,8 +8,7 @@
                     </v-col>
                     <v-divider></v-divider>
                     <v-col cols='12' class="d-flex align-center flex-column text-center">
-                        <v-img src="images/front/shatel-logo.svg" contain width="100px" height="100px"></v-img>
-                        <p>100-94-15 :از سوی سازمان تنظیم مقررات و ارتباطات رادیویی FCP شماره پروانه سراسری
+                        <v-img src="images/front/sabanet-logo.png" contain width="180px" height="80px"></v-img>
                         </p>
                     </v-col>
 
@@ -65,7 +64,7 @@
                         </v-stepper-header>
 
                         <step-one :orderDetails="orderDetails" :serviceDetails="serviceDetails"
-                                  :produtDetails="productData"
+                                  :produtDetails="productData" :serviceLoading="serviceLoading"
                                   @selectServ="selectServ" @selectProd="selectProd" @nextStep="nextStepTo3"
                                   @exit="exit"></step-one>
                         <!--                        <step-two @nextStep="nextStepToThree" @backStep="e1=1" @exit="exit"></step-two>-->
@@ -90,11 +89,12 @@
                                    :personalFormInfo="personalData? personalData : ''"
                                    @ChangeLastPayStatus="changePayStatus"
                                    @ChangeSmsStatus="smsStatus"
+                                   :productSelectedDetail="selectProduct"
                                    :companyFormInfo="companyData? companyData : ''"
                                    @nextStep="nextStepTo5"
                                    @backStep="e1=3"
                                    @exit="exit"></step-four>
-                        <step-five @nextStep="nextStepTo6" @confirmContract="changeContractStatus"
+                        <step-five    :userInfo="userInfo" @nextStep="nextStepTo6" @confirmContract="changeContractStatus"
                                    @backStep="e1=4"
                                    @exit="exit"></step-five>
                         <step-six :loadingForOpenGatway="loadingOpenGateWay"></step-six>
@@ -133,7 +133,7 @@ export default {
             isUserLogin: false,
             serviceDetails: [],
             selectService: {},
-            selectProduct: null,
+            selectProduct: {},
             companyData: null,
             personalData: {},
             confirmContract: null,
@@ -142,12 +142,23 @@ export default {
             userKind: null,
             userType: null,
             isDisabled: false,
+            serviceLoading:false,
         }
     },
     methods: {
+        ScrollToZero() {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            });
+        },
+
         nextStepTo6() {
+            this.ScrollToZero();
             if (this.confirmContract) {
                 this.e1 = 6;
+
                 this.loadingOpenGateWay = true;
                 axios.post('/adslRegister/save/order',
                     {
@@ -182,7 +193,9 @@ export default {
 
         },
         nextStepTo3() {
+            this.ScrollToZero();
             this.e1 = 3;
+
             if (store.state.user.user) {
                 this.isUserLogin = true;
                 axios.get('/api/user').then(({data}) => {
@@ -202,7 +215,7 @@ export default {
 
         },
         nextStepTo4(userInfo) {
-
+            this.ScrollToZero();
             let _token = (document.querySelector('meta[name="csrf-token"]').content);
             if (!!userInfo && userInfo.user_kind === 0) {
                 this.personalData = userInfo;
@@ -217,12 +230,12 @@ export default {
                 headers: {
                     'X-CSRF-TOKEN': _token
                 },
-
                 personalData: this.personalData,
                 companyData: this.companyData
             }).then(({data}) => {
                 if (!data) {
                     this.e1 = 4
+
                 } else {
                     Swal.fire(
                         {
@@ -237,11 +250,13 @@ export default {
             })
 
 
-        }
-        ,
+        },
         nextStepTo5() {
+
             if (this.payStatus) {
+                this.ScrollToZero();
                 this.e1 = 5;
+
             } else {
                 Swal.fire(
                     {
@@ -252,25 +267,31 @@ export default {
                     }
                 )
             }
-        }
-        ,
+        },
         selectServ(item) {
             this.selectService = item;
 
-        }
-        ,
+        },
         exit() {
             axios.get('/adsl/buy/online/cancel').then(({data}) => {
                 if (data) {
                     Swal.fire({
-                        title: "اخطار",
-                        text: "آیا از خروج روند خرید مطمئن هستید؟",
-                        icon: "warning",
-                        confirmButtonText: 'بله'
-                    }).then(() => {
-                        router.push('/services/adsl/availability-check')
-                        location.reload();
-                    });
+                        title: 'آیا از خروج روند خرید مطمئن هستید؟',
+                        icon: 'اخطار',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'انصراف',
+                        confirmButtonText: '!بله مطمئن هستم'
+                    }).then((result) => {
+                        if (result.isConfirmed){
+                            router.push('/services/adsl/availability-check').then(() => window.location.reload())
+                            // router.push('/services/adsl/availability-check')
+                            // location.reload();
+                        }
+
+                    })
+
                 }
             })
 
@@ -336,6 +357,7 @@ export default {
     }
     ,
     watch: {
+
         e1: function (step) {
             if (Object.keys(this.selectService).length > 0) {
                 this.e1 = step;
@@ -351,17 +373,20 @@ export default {
                     }
                 })
                 this.e1 = 1;
+
             }
         }
     }
     ,
     created() {
+        this.ScrollToZero();
+        this.serviceLoading=true;
         axios.get('/adsl/buy/online/get/session/').then(({data}) => {
             if (data.status) {
-
                 this.orderDetails = data.orderDetails;
                 this.productData = data.products;
                 this.serviceDetails = data.servicesDetails;
+                this.serviceLoading=false;
             } else {
                 Swal.fire({
                     title: " ! خطا",
@@ -377,8 +402,8 @@ export default {
 
 
         })
-    }
-    ,
+
+    },
 
 }
 </script>

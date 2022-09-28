@@ -2,7 +2,7 @@
     <v-container>
         <v-row class="mt-8 ">
             <v-col col="12" class="pa-0 ma-0 justify-center d-flex">
-                <v-img src="/images/front/shatel-logo.svg" contain width="100px" height="100px"></v-img>
+                <v-img src="/images/front/sabanet-logo.png" contain width="50px" height="50px"></v-img>
             </v-col>
         </v-row>
         <v-row class="mt-12">

@@ -137,6 +137,7 @@ Route::prefix('admin')->group(function () {
 //User panel
 Route::prefix('panel')->group(function () {
     Route::get('/orders', [\App\Http\Controllers\Panel\OrderController::class, 'all'])->name('panel.order.all');
+    Route::post('/order/pay', [\App\Http\Controllers\Panel\OrderController::class, 'orderPay'])->name('panel.order.pay');
     Route::get('/order/detail/{id}', [\App\Http\Controllers\Panel\OrderController::class, 'orderDetail'])->name('panel.orders.detail');
 
 });

@@ -19,10 +19,10 @@
         </v-container>
         <v-container>
             <v-row class="mt-5 mb-5 ">
-                <v-col cols="12" md="8">
-                    <h2 :class="{'text-center':$vuetify.breakpoint.smAndDown}">بررسی وضعیت دسترسی به ADSL2+</h2>
+                <v-col cols="12" md="12">
+                    <h2 class="text-center" :class="{'text-center':$vuetify.breakpoint.smAndDown}">بررسی وضعیت دسترسی به ADSL2+</h2>
                     <v-row>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="6" class="availablilityFormWrap">
                             <v-form
                                 :class="{'text-center pb-4':$vuetify.breakpoint.smAndDown}"
                                 class="mt-8"
@@ -115,37 +115,37 @@
                     <!--                    online Order Table end-->
 
                 </v-col>
-                <v-col cols="12" md="4">
-                    <div class="widget mb-3  d-flex flew-row">
-                        <div class="widget-icon pa-2">
-                            <v-img src="/images/front/adslAvailabilityCheck/shatel-online-order.png" width="70"
-                                   height="70"></v-img>
-                        </div>
-                        <div class="widget-content pa-2">
-                            <p class="Overline">خرید آنلاین</p>
-                            <span class='caption'>خرید خود را اینترنتی انجام دهید</span>
-                        </div>
-                    </div>
-                    <div class="widget mb-3  d-flex flew-row">
-                        <div class="widget-icon pa-2">
-                            <v-img src="/images/front/adslAvailabilityCheck/shatel-online-order.png" width="70"
-                                   height="70"></v-img>
-                        </div>
-                        <div class="widget-content pa-2">
-                            <p class="Overline">خرید آنلاین</p>
-                            <span class='caption'>خرید خود را اینترنتی انجام دهید</span>
-                        </div>
-                    </div>
-                    <div class="services-widget widget">
-                        <div class="services-widget-title pa-3">
-                            <p class="ma-0">خدمات صبا نت</p>
-                        </div>
-                        <div class="services-widget-content ">
-                            <v-treeview hoverable :items="treeItem" transition>
-                            </v-treeview>
-                        </div>
-                    </div>
-                </v-col>
+<!--                <v-col cols="12" md="4">-->
+<!--                    <div class="widget mb-3  d-flex flew-row">-->
+<!--                        <div class="widget-icon pa-2">-->
+<!--                            <v-img src="/images/front/adslAvailabilityCheck/shatel-online-order.png" width="70"-->
+<!--                                   height="70"></v-img>-->
+<!--                        </div>-->
+<!--                        <div class="widget-content pa-2">-->
+<!--                            <p class="Overline">خرید آنلاین</p>-->
+<!--                            <span class='caption'>خرید خود را اینترنتی انجام دهید</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="widget mb-3  d-flex flew-row">-->
+<!--                        <div class="widget-icon pa-2">-->
+<!--                            <v-img src="/images/front/adslAvailabilityCheck/shatel-online-order.png" width="70"-->
+<!--                                   height="70"></v-img>-->
+<!--                        </div>-->
+<!--                        <div class="widget-content pa-2">-->
+<!--                            <p class="Overline">خرید آنلاین</p>-->
+<!--                            <span class='caption'>خرید خود را اینترنتی انجام دهید</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="services-widget widget">-->
+<!--                        <div class="services-widget-title pa-3">-->
+<!--                            <p class="ma-0">خدمات صبا نت</p>-->
+<!--                        </div>-->
+<!--                        <div class="services-widget-content ">-->
+<!--                            <v-treeview hoverable :items="treeItem" transition>-->
+<!--                            </v-treeview>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </v-col>-->
             </v-row>
         </v-container>
 
@@ -219,12 +219,12 @@ export default {
     methods:
         {
             checkAdslSupport(e) {
-                console.log(e);
+
                 if (this.$refs.adslCheckForm.validate()) {
 
                     this.loading = true;
                     axios.post('/api/adsl/support/check', this.checkAdslInfo).then(({data}) => {
-                        console.log(data);
+
                         if (data.areacodeIsExist && data.status) {
                             this.orderTableShow = true;
                             this.adslCheckFail = false;
@@ -258,7 +258,7 @@ export default {
             },
             buyAdslBtn() {
                 axios.post('/adsl/buy/online', this.areacodeData).then(({data}) => {
-                    console.log(data);
+
                     if (data !== '') {
                         router.push({name: 'adsl-register'})
                     }
@@ -269,7 +269,7 @@ export default {
         },
     created() {
         axios.get('/adsl/support/getProvinces').then(({data}) => {
-            console.log(data);
+
             this.provinceData = data;
 
         })
@@ -281,6 +281,9 @@ export default {
 <style scoped>
 .Overline, .caption {
     font-family: shabnam !important;
+}
+.availablilityFormWrap{
+    margin: 0 auto !important;
 }
 
 </style>

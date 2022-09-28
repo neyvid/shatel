@@ -28,7 +28,7 @@
     </v-row>
     <v-row>
       <v-col col="12" md="2" class="d-flex justify-center">
-        <v-img src="images/front/shatel-logo.svg" max-width="110" max-height="110"
+        <v-img src="images/front/sabanet-logo.png" max-width="210" max-height="210"
                contain></v-img>
       </v-col>
       <v-col col="12" md="10" class="top-nav">
@@ -53,14 +53,14 @@
         <v-row>
           <v-col cols="12" class="d-flex "   :class="{'justify-center': $vuetify.breakpoint.smAndDown, 'justify-end': $vuetify.breakpoint.mdAndUp}"
           >
-            <v-btn class="primary  hidden-md-and-down">
-              <v-icon>mdi-lock</v-icon>
-              شاتل کلاب
-            </v-btn>
+<!--            <v-btn class="primary  hidden-md-and-down">-->
+<!--              <v-icon>mdi-lock</v-icon>-->
+<!--              شاتل کلاب-->
+<!--            </v-btn>-->
             <template v-if="!auth">
               <v-btn class="success mr-2 ml-2" to="/login">
                 <v-icon>mdi-lock</v-icon>
-                مای شاتل
+                صبانت من
               </v-btn>
             </template>
             <template v-else>

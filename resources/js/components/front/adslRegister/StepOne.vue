@@ -8,17 +8,23 @@
                 <v-row>
                     <v-col cols="12">
                         <p>شما می‌توانید سرویس مورد نظر خود را از میان فهرست پیشنهادی زیر انتخاب
-                            فرمایید. برای مشاهده سرویس‌های دیگر شاتل بر روی کلید انتخاب‌های بیش‌تر
-                            کلیک کنید. </p>
+                            نمایید. </p>
                     </v-col>
                 </v-row>
                 <v-row>
-
+                    <v-col v-if="serviceLoading" cols="6" class="serviceLoading">
+                        <v-progress-linear
+                            color="blue accent-4 darken-2"
+                            indeterminate
+                            rounded
+                            height="10"
+                        ></v-progress-linear>
+                    </v-col>
                     <v-col
                         v-for="(serviceDetail,index) in serviceDetails" :key="index"
                         cols="12" md="4">
 
-                        <div :class="{ 'is-selected': isSelected==index }"
+                        <div :class="{ 'is-selected': isSelected==index , 'green-border' : isSelected==index}"
                              @click="selectService(serviceDetail,index,$event)"
                              class="serviceWrap pointerCursor d-flex flex-row suggestion-service-wrap">
                             <template v-if="isSelected==index">
@@ -58,11 +64,12 @@
                 </v-row>
                 <p class="mt-8">تجهیزات پیشنهادی</p>
                 <v-divider></v-divider>
-                <v-row class="mt-6">
+                <v-row class="mt-6 fs-15">
 
                     <v-col cols="12" md="3" v-for="(produtDetail,index) in produtDetails" :key="index">
-                        <div :class="{ 'is-selected': isSelectedProduct==index }"
-                             class="suggestion-equipment-wrap text-center">
+                        <div
+                            :class="{ 'is-selected': isSelectedProduct==index , 'green-border' : isSelectedProduct==index }"
+                            class="suggestion-equipment-wrap text-center">
 
                             <div class="sugesstion-equipment-image d-flex">
                                 <v-img
@@ -81,7 +88,8 @@
                                     <span>ریال</span>
                                 </p>
 
-                                <v-btn @click="selectProduct(produtDetail,index,$event)" class="rounded-0" :class="isSelectedProduct==index ? 'success ' : 'primary' "
+                                <v-btn @click="selectProduct(produtDetail,index,$event)" class="rounded-0"
+                                       :class="isSelectedProduct==index ? 'success ' : 'primary' "
                                        block>
                                     <template v-if="isSelectedProduct==index">
                                         <v-icon>mdi-checkbox-marked-circle-plus-outline</v-icon>
@@ -129,7 +137,7 @@ import user from "../../../store/modules/user";
 
 export default {
     name: "StepOne",
-    props: ['orderDetails', 'serviceDetails', 'produtDetails'],
+    props: ['orderDetails', 'serviceDetails', 'produtDetails', 'serviceLoading'],
     data() {
         return {
             serviceDetail: '',
@@ -144,16 +152,16 @@ export default {
 
         },
         selectProduct(productDetail, index) {
-            if(this.isSelectedProduct === index){
+            if (this.isSelectedProduct === index) {
                 this.isSelectedProduct = null;
                 this.$emit('selectProd', null);
-            }else{
+            } else {
                 this.isSelectedProduct = index;
                 this.$emit('selectProd', productDetail);
             }
         },
-        nextStep3(){
-                this.$emit('nextStep')
+        nextStep3() {
+            this.$emit('nextStep')
         }
 
     },
@@ -165,9 +173,17 @@ export default {
 </script>
 
 <style scoped>
+.equipment-title {
+    min-height: 55px !important;
+}
+
 .suggestion-service-wrap {
     border: 1px solid #d5d5d5;
     border-radius: 10px;
+}
+
+.green-border {
+    border: 1px solid #4caf50;
 }
 
 .pointerCursor {
@@ -177,12 +193,22 @@ export default {
 .serviceWrap {
     position: relative !important;
     height: 200px !important;
+    background-color: #f7f7f7;
 }
+
+/*.suggestion-equipment-wrap {*/
+/*    background-color: #f7f7f7;*/
+
+/*}*/
 
 .selectIcon {
     position: absolute !important;
     top: 30px !important;
     left: 30px !important;
+}
+
+.serviceLoading {
+    margin: 0 auto !important;
 }
 
 .suggestion-image-service {
@@ -191,6 +217,7 @@ export default {
     background-position: top left;
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: 0 10px 10px 0;
 
 }
 

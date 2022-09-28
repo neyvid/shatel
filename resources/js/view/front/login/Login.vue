@@ -37,8 +37,9 @@
 
 
                             <v-checkbox
-                                label="مرابه یاد داشته باش!"
+                                label="مرابه یاد داشته باش !"
                                 required
+
                                 v-model="LoginInfo.remember"
                             ></v-checkbox>
                             <router-link style="font-size: 14px" :to="{name:'reset-password-form'}">رمزعبوررا فراموش کرده اید؟</router-link>

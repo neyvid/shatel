@@ -143,7 +143,15 @@
                         class="elevation-1"
                         :search="search"
                     >
+                        <template v-slot:item.status="{ item }">
+                            <v-chip
+                                :color="getStatusColor(item.status)"
+                                dark
+                            >
+                                {{ item.status }}
+                            </v-chip>
 
+                        </template>
                         <template v-slot:item.actions="{ item }">
                             <v-icon
                                 small
@@ -399,6 +407,10 @@ search:'',
         }
     },
     methods: {
+        getStatusColor (status) {
+            if (status ==0) return 'red'
+            else return 'green'
+        },
         showDetail(item) {
             axios.get('/admin/order/detail/' + item.id).then(({data}) => {
                 console.log(data);

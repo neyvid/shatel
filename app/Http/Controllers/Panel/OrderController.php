@@ -7,6 +7,7 @@ use App\Imports\OrdersImport;
 use App\Repositories\OrderRepository\OrderRepository;
 use App\Repositories\ProductRepository\ProductRepository;
 use App\Repositories\ServiceRepository\ServiceRepository;
+use App\Services\Payment\OnlineGateWays\Zarinpall;
 use App\Services\UploadService\UploadImageService;
 use App\Services\UploadService\UploadServices;
 use Illuminate\Http\Request;
@@ -51,7 +52,6 @@ class OrderController extends Controller
     }
 
 
-
     public function all(Request $request)
     {
         $current_user_id = Auth::user()->id;
@@ -62,5 +62,21 @@ class OrderController extends Controller
 
         }
         return $result;
+    }
+
+    public function orderPay(Request $request)
+    {
+
+        session(['orderId' => $request->id]);
+        $gateWay = new Zarinpall();
+        $Authority = $gateWay->paymentRequest([
+            'Amount' => $request->payable_amount,
+            'Description' => 'توضیخات',
+            'Email' => Auth::user()->email,
+            'Mobile' => Auth::user()->mobile,
+        ]);
+
+        return ['status' => true, 'Authority' => $Authority];
+
     }
 }

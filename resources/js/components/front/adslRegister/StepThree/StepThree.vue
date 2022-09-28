@@ -8,7 +8,7 @@
 
 
                 <v-row class="mt-15" v-if="this.userInfo.length===0">
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" >
 
                         <v-row justify="center">
                             <v-dialog
@@ -19,7 +19,7 @@
                             >
                                 <template v-slot:activator="{ on, attrs }">
                                     <div class="d-flex justify-center align-center">
-                                        <p>درصوتیکه قبلا در سایت عضو شده اید وارد سایت شوید</p>
+                                        <p class="fs-16">درصوتیکه قبلا در سایت عضویت دارید ، وارد سایت شوید</p>
                                     </div>
                                     <v-btn
                                         color="warning"
@@ -120,7 +120,7 @@
 
                 </v-row>
                 <v-row class="mt-15">
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" md="8" class="topBoxWrap">
                         <div class="select-customer-type-wrap d-flex justify-center">
                             <v-radio-group
                                 row
@@ -147,7 +147,7 @@
                 </v-row>
 
                 <v-row v-if="personalForm" class="mt-15">
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" md="8" class="formBoxWrap">
                         <v-row>
                             <v-col cols="12">
                                 <div class="person-info-customer-form">
@@ -287,35 +287,35 @@
                             </v-col>
                         </v-row>
                     </v-col>
-                    <v-col cols="12" md="4" class="online-chat-base"
-                           :class="{'d-none':$vuetify.breakpoint.smAndDown}">
+                    <!--                    <v-col cols="12" md="4" class="online-chat-base"-->
+                    <!--                           :class="{'d-none':$vuetify.breakpoint.smAndDown}">-->
 
-                        <div class="online-chat-wraper text-center">
-                            <v-img class="online-chat-img" src="images/front/adslRegister/online-chat-pic.png"
-                                   width="80"
-                                   height="80" contain></v-img>
-                            <h4 class="mt-15 mx-5">
-                                لطفا به موارد زیر توجه فرمایید:
-                            </h4>
-                            <p class="mx-5 mt-5">یک آدرس ایمیل معتبر وارد کنید.</p>
-                            <p class="mx-5 mt-5">
-                                به راهنمایی نیاز دارید؟
+                    <!--                        <div class="online-chat-wraper text-center">-->
+                    <!--                            <v-img class="online-chat-img" src="images/front/adslRegister/online-chat-pic.png"-->
+                    <!--                                   width="80"-->
+                    <!--                                   height="80" contain></v-img>-->
+                    <!--                            <h4 class="mt-15 mx-5">-->
+                    <!--                                لطفا به موارد زیر توجه فرمایید:-->
+                    <!--                            </h4>-->
+                    <!--                            <p class="mx-5 mt-5">یک آدرس ایمیل معتبر وارد کنید.</p>-->
+                    <!--                            <p class="mx-5 mt-5">-->
+                    <!--                                به راهنمایی نیاز دارید؟-->
 
-                            </p>
+                    <!--                            </p>-->
 
-                            <p class="online-chat-btn">
-                                <a href="#" class="d-inline-block">
-                                    <v-icon color="blue">mdi-chat</v-icon>
-                                    <span>
-                                       گفتگوی آنلاین با کارشناسان فروش
-                                </span>
-                                </a>
-                            </p>
-                        </div>
-                    </v-col>
+                    <!--                            <p class="online-chat-btn">-->
+                    <!--                                <a href="#" class="d-inline-block">-->
+                    <!--                                    <v-icon color="blue">mdi-chat</v-icon>-->
+                    <!--                                    <span>-->
+                    <!--                                       گفتگوی آنلاین با کارشناسان فروش-->
+                    <!--                                </span>-->
+                    <!--                                </a>-->
+                    <!--                            </p>-->
+                    <!--                        </div>-->
+                    <!--                    </v-col>-->
                 </v-row>
                 <v-row v-if="companyForm" class="mt-15">
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" md="8" class="formBoxWrap">
                         <v-row>
 
 
@@ -524,32 +524,32 @@
                             </v-col>
                         </v-row>
                     </v-col>
-                    <v-col cols="12" md="4" class="online-chat-base"
-                           :class="{'d-none':$vuetify.breakpoint.smAndDown}">
-                        <div class="online-chat-wraper text-center">
-                            <v-img class="online-chat-img" src="images/front/adslRegister/online-chat-pic.png"
-                                   width="80"
-                                   height="80" contain></v-img>
-                            <h4 class="mt-15 mx-5">
-                                لطفا به موارد زیر توجه فرمایید:
-                            </h4>
-                            <p class="mx-5 mt-5">یک آدرس ایمیل معتبر وارد کنید.</p>
-                            <p class="mx-5 mt-5">
-                                به راهنمایی نیاز دارید؟
+                    <!--                    <v-col cols="12" md="4" class="online-chat-base"-->
+                    <!--                           :class="{'d-none':$vuetify.breakpoint.smAndDown}">-->
+                    <!--                        <div class="online-chat-wraper text-center">-->
+                    <!--                            <v-img class="online-chat-img" src="images/front/adslRegister/online-chat-pic.png"-->
+                    <!--                                   width="80"-->
+                    <!--                                   height="80" contain></v-img>-->
+                    <!--                            <h4 class="mt-15 mx-5">-->
+                    <!--                                لطفا به موارد زیر توجه فرمایید:-->
+                    <!--                            </h4>-->
+                    <!--                            <p class="mx-5 mt-5">یک آدرس ایمیل معتبر وارد کنید.</p>-->
+                    <!--                            <p class="mx-5 mt-5">-->
+                    <!--                                به راهنمایی نیاز دارید؟-->
 
-                            </p>
+                    <!--                            </p>-->
 
-                            <p class="online-chat-btn">
-                                <a href="#" class="d-inline-block">
-                                    <v-icon color="blue">mdi-chat</v-icon>
-                                    <span>
-                                       گفتگوی آنلاین با کارشناسان فروش
-                                </span>
-                                </a>
-                            </p>
+                    <!--                            <p class="online-chat-btn">-->
+                    <!--                                <a href="#" class="d-inline-block">-->
+                    <!--                                    <v-icon color="blue">mdi-chat</v-icon>-->
+                    <!--                                    <span>-->
+                    <!--                                       گفتگوی آنلاین با کارشناسان فروش-->
+                    <!--                                </span>-->
+                    <!--                                </a>-->
+                    <!--                            </p>-->
 
-                        </div>
-                    </v-col>
+                    <!--                        </div>-->
+                    <!--                    </v-col>-->
                 </v-row>
 
 
@@ -784,6 +784,7 @@ export default {
 
             })
         }
+
     }
 
 
@@ -875,5 +876,12 @@ export default {
 
 .agent-birthday_date input {
     width: 133px !important;
+
 }
+.formBoxWrap,.topBoxWrap {
+    margin: 0 auto !important;
+}
+
+
+
 </style>

@@ -57,7 +57,6 @@ export default {
     methods: {},
     created() {
         axios.get('/menus/all').then(({data}) => {
-            console.log(data);
             this.menusData = data;
         })
     }
@@ -75,7 +74,7 @@ export default {
     display: block !important;
 }
 .menuNavBar{
-    background-color: #f95114 !important;
+    background-color: #da1f26 !important;
 }
 .subnav-content {
     position: absolute !important;

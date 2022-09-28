@@ -12,25 +12,75 @@
                             <div class="review-customer-info-wrap">
                                 <ul>
                                     <li>نام اشتراک:
-                                        <span>{{personalFormInfo.name? personalFormInfo.name : companyFormInfo.name}}</span>
+                                        <v-chip
+                                            class="ma-2"
+
+                                            color="orange"
+                                            outlined
+                                            label
+                                        >
+                                        {{personalFormInfo.name? personalFormInfo.name : companyFormInfo.name}}
+                                        </v-chip>
                                     </li>
                                     <li>نام و نام خانوادگی:
-                                        <span>{{personalFormInfo.lastName? personalFormInfo.lastName : companyFormInfo.agentName}}</span>
 
+                                        <v-chip
+                                            class="ma-2"
+
+                                            color="orange"
+                                            outlined
+                                            label
+                                        >
+                                            {{personalFormInfo.lastname? personalFormInfo.lastname : companyFormInfo.lastname}}
+                                        </v-chip>
                                     </li>
                                     <li>شماره تلفن:
-                                        <span>{{orderDetails.phoneNumber}}</span>
+
+                                        <v-chip
+                                            class="ma-2"
+                                            color="orange"
+                                            outlined
+                                            label
+
+                                        >
+                                            {{orderDetails.phoneNumber}}
+                                        </v-chip>
                                     </li>
                                     <li>شماره موبایل:
-                                        <span>{{personalFormInfo.mobile? personalFormInfo.mobile : companyFormInfo.mobile}}</span>
 
+                                        <v-chip
+                                            class="ma-2"
+                                            label
+                                            color="orange"
+                                            outlined
+                                        >
+                                            {{personalFormInfo.mobile? personalFormInfo.mobile : companyFormInfo.mobile}}
+                                        </v-chip>
                                     </li>
                                     <li>ایمیل:
-                                        <span>{{personalFormInfo.email? personalFormInfo.email :''}}</span>
+                                        <v-chip
+                                            class="ma-2"
+                                            label
+                                            color="orange"
+                                            outlined
+                                        >
+                                            {{personalFormInfo.email? personalFormInfo.email :''}}
+                                        </v-chip>
                                     </li>
-                                    <li>مودم انتخابی:
-                                        <span>TP-LINK Wd2500</span>
-                                    </li>
+                                    <template v-if="!!productSelectedDetail.name">
+                                        <li >تجهیزات انتخابی شما:
+                                            <v-chip
+                                                class="ma-2"
+
+                                                color="orange"
+                                                label
+                                                outlined
+                                            >
+                                                {{productSelectedDetail.name}}
+                                            </v-chip>
+                                        </li>
+                                    </template>
+
                                     <li>جشنواره انتخابی
                                         <span>بهاره</span>
                                     </li>
@@ -78,24 +128,26 @@
                             </div>
                         </v-col>
                     </v-row>
+<!--                    <v-row>-->
+<!--                        <v-col cols="12"  >-->
+<!--                            <div class="discount-code-input pa-6">-->
+<!--                                <p>کد تخفیف (پیمانی)</p>-->
+<!--                                <v-text-field-->
+<!--                                    label="Outlined"-->
+<!--                                    placeholder="Placeholder"-->
+<!--                                    outlined-->
+<!--                                    dense-->
+<!--                                ></v-text-field>-->
+<!--                            </div>-->
+<!--                        </v-col>-->
+<!--                    </v-row>-->
                     <v-row>
-                        <v-col cols="12"  >
-                            <div class="discount-code-input pa-6">
-                                <p>کد تخفیف (پیمانی)</p>
-                                <v-text-field
-                                    label="Outlined"
-                                    placeholder="Placeholder"
-                                    outlined
-                                    dense
-                                ></v-text-field>
-                            </div>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col class="review-register-description-wrap">
+                        <v-col class="review-register-description-wrap ">
+                            <p class="fs-15 text-red" >برای ادامه خرید می بایست  پرداخت آخرین قبض تلفن را تایید نمایید.</p>
+
                             <v-checkbox
                                 :label=" ' آخرین قبض خط ' +orderDetails.phoneNumber+' پرداخت شده است. '"
-                                color="blue"
+                                color="red"
                                 hide-details
                                 v-model="lastPayStatus"
                                 @change="ChangeLastPayStatus"
@@ -104,24 +156,21 @@
                             <v-checkbox
                                 v-model="smsStatus"
                                 label="مایلم پیامک‌های خودکار اطلاع‌رسانی شاتل را دریافت کنم."
-                                color="blue"
+                                color="red"
                                 hide-details
                                 @change="ChangeSmsStatus"
                                 class="checkbox_step4"
                             ></v-checkbox>
-                            <p>درخواست سرویس شما برای شماره تلفن
-                                <span class="red--text">
-                                    {{orderDetails.phoneNumber}}
-                                </span>
-                                است. </p>
-                            <p>سپاس گزار خواهیم بود اگر صحت اطلاعات بالا را برای ثبت نهایی تایید فرمایید.</p>
-                            <p> دوست گرامی، در سفارش شما تجهیزات مورد نیاز برای استفاده از خدمات اینترنت پرسرعت ثبت نشده
-                                است. در صورت تمایل می‌توانید تجهیزات مورد نیاز خود را از فهرست پیشنهادی شاتل انتخاب
-                                فرمایید. </p>
-                            <p>به اطلاع می‌رسانیم که سرویس اینترنت پرسرعت شما طی 3 تا 7 روز کاری پس از زمان پرداخت اولین
-                                صورت‌حساب، راه‌اندازی خواهد شد. </p>
-                            <p> اگر گزینه‌ی «پیامک خودکار» روی صورت‌حساب شما فعال باشد، پیامک‌های اطلاع‌رسانی شاتل برای
-                                شما ارسال و به ازای هر ماه اشتراک، مبلغ ۱۰۰۰ تومان به صورت‌حساب شما افزوده می‌شود. </p>
+<!--                            <p>درخواست سرویس شما برای شماره تلفن-->
+<!--                                <span class="red&#45;&#45;text">-->
+<!--                                    {{orderDetails.phoneNumber}}-->
+<!--                                </span>-->
+<!--                                است. </p>-->
+
+                            <p class="fs-15 text-green">قابل ذکر می باشد که سرویس اینترنت پرسرعت شما طی 3 تا 7 روز کاری پس از زمان پرداخت
+                                صورت‌حساب ، راه‌اندازی خواهد شد. </p>
+                            <p class="fs-15 text-red" > درصورت انتخاب «پیامک خودکار»، پیامک‌های اطلاع‌رسانی صبا نت برای
+                                شما ارسال و به ازای هر ماه اشتراک ، مبلغ 10,000 تومان به صورت‌حساب شما افزوده می‌شود. </p>
                         </v-col>
                     </v-row>
                     <v-btn
@@ -153,7 +202,7 @@
 <script>
 export default {
     name: "StepFour",
-    props: ['serviceSelectedDetail', 'personalFormInfo', 'companyFormInfo','orderDetails'],
+    props: ['serviceSelectedDetail', 'personalFormInfo', 'companyFormInfo','orderDetails' ,'productSelectedDetail'],
 
     data() {
         return {

@@ -142,6 +142,7 @@ class  OrderController extends Controller
             }
 
             $orderCreateItems = $orderCreate->order_items()->createMany($orderItems);
+            session()->forget('orderDetails');
             if ($orderCreateItems) {
                 session(['orderId' => $orderCreate->id]);
                 $gateWay = new Zarinpall();
@@ -151,7 +152,7 @@ class  OrderController extends Controller
                     'Email' => $createUser->email,
                     'Mobile' => $createUser->mobile,
                 ]);
-                session()->forget('orderDetails');
+
                 return ['status' => true, 'Authority' => $Authority];
             }
 

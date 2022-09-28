@@ -22,11 +22,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getStatusAttribute($value)
-    {
-        if ($value == 1) {
-            return config('orderStatus.confirmPay');
-        }
-        return config('orderStatus.notConfirmPay');
-    }
+//    public function getStatusAttribute($value)
+//    {
+//        if ($value == 1) {
+//            return config('orderStatus.confirmPay');
+//        }
+//        return config('orderStatus.notConfirmPay');
+//    }
 }

@@ -3,7 +3,7 @@
         <v-container>
             <v-row>
                 <v-col col="12" md="4" class="d-flex justify-center">
-                    <v-img src="images/front/shatel-logo.svg" contain max-width="110" max-height="110"></v-img>
+                    <v-img src="images/front/sabanet-logo.png" contain max-width="150" max-height="150"></v-img>
                 </v-col>
                 <v-col cols="12" md="8" class="d-flex align-center justify-center justify-sm-center">
 
