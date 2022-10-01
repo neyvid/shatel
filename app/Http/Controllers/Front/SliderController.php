@@ -18,10 +18,9 @@ class SliderController extends Controller
 
     public function all(Request $request)
     {
-
         $sliders = $this->sliderRepository->all()->where('status', 'فعال')->where('expire_date','>=',Carbon::now()->format('Y-m-d'))->where('start_date','<=',Carbon::now()->format('Y-m-d'));
-
+        $sliderImagePath=config('slidersPath.mainSlider');
+        $sliders['sliderImagePath']=$sliderImagePath;
         return $sliders;
-
     }
 }

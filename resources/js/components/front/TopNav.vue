@@ -28,7 +28,7 @@
     </v-row>
     <v-row>
       <v-col col="12" md="2" class="d-flex justify-center">
-        <v-img src="images/front/sabanet-logo.png" max-width="210" max-height="210"
+        <v-img src="/images/front/sabanet-logo.png" max-width="210" max-height="210"
                contain></v-img>
       </v-col>
       <v-col col="12" md="10" class="top-nav">

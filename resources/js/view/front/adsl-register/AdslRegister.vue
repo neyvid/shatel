@@ -1,5 +1,9 @@
 <template>
-    <v-main ref="main">
+    <v-main ref="main" >
+        <v-img v-if="loading_step" src="/images/loading-step.gif" class="loading-img">
+
+        </v-img>
+        <p v-if="loading_step" class="inLoadingStep">درحال پردازش...</p>
         <v-container fluid class="adslRegisterHeader">
             <v-container>
                 <v-row>
@@ -9,7 +13,7 @@
                     <v-divider></v-divider>
                     <v-col cols='12' class="d-flex align-center flex-column text-center">
                         <v-img src="images/front/sabanet-logo.png" contain width="180px" height="80px"></v-img>
-                        </p>
+
                     </v-col>
 
                 </v-row>
@@ -70,6 +74,9 @@
                         <!--                        <step-two @nextStep="nextStepToThree" @backStep="e1=1" @exit="exit"></step-two>-->
                         <step-three
                             :userInfo="userInfo"
+                            :opacity="opacity"
+                            :loadingBtnStep="loadingBtnStep"
+                            :isDisable="isDisable"
                             :isUserLogin="isUserLogin"
                             :userKind="userKind"
                             :userType="userType"
@@ -94,7 +101,7 @@
                                    @nextStep="nextStepTo5"
                                    @backStep="e1=3"
                                    @exit="exit"></step-four>
-                        <step-five    :userInfo="userInfo" @nextStep="nextStepTo6" @confirmContract="changeContractStatus"
+                        <step-five :userInfo="userInfo" @nextStep="nextStepTo6" @confirmContract="changeContractStatus"
                                    @backStep="e1=4"
                                    @exit="exit"></step-five>
                         <step-six :loadingForOpenGatway="loadingOpenGateWay"></step-six>
@@ -142,7 +149,12 @@ export default {
             userKind: null,
             userType: null,
             isDisabled: false,
-            serviceLoading:false,
+            serviceLoading: false,
+            opacity:false,
+            loading_step:false,
+            loadingBtnStep:false,
+            isDisable:false,
+
         }
     },
     methods: {
@@ -215,6 +227,10 @@ export default {
 
         },
         nextStepTo4(userInfo) {
+            this.loadingBtnStep = true;
+            this.isDisable=true;
+            this.opacity=true;
+            this.loading_step=true;
             this.ScrollToZero();
             let _token = (document.querySelector('meta[name="csrf-token"]').content);
             if (!!userInfo && userInfo.user_kind === 0) {
@@ -235,7 +251,6 @@ export default {
             }).then(({data}) => {
                 if (!data) {
                     this.e1 = 4
-
                 } else {
                     Swal.fire(
                         {
@@ -245,7 +260,10 @@ export default {
                             confirmButtonText: 'باشه !'
                         }
                     )
-
+                    this.opacity=false;
+                    this.loading_step=false;
+                    this.loadingBtnStep = false;
+                    this.isDisable=false;
                 }
             })
 
@@ -273,27 +291,27 @@ export default {
 
         },
         exit() {
-            axios.get('/adsl/buy/online/cancel').then(({data}) => {
-                if (data) {
-                    Swal.fire({
-                        title: 'آیا از خروج روند خرید مطمئن هستید؟',
-                        icon: 'اخطار',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: 'انصراف',
-                        confirmButtonText: '!بله مطمئن هستم'
-                    }).then((result) => {
-                        if (result.isConfirmed){
+            Swal.fire({
+                title: 'آیا از خروج روند خرید مطمئن هستید؟',
+                icon: 'اخطار',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'انصراف',
+                confirmButtonText: '!بله مطمئن هستم'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.get('/adsl/buy/online/cancel').then(({data}) => {
+                        if (data) {
                             router.push('/services/adsl/availability-check').then(() => window.location.reload())
-                            // router.push('/services/adsl/availability-check')
-                            // location.reload();
                         }
-
                     })
-
+                    // router.push('/services/adsl/availability-check')
+                    // location.reload();
                 }
+
             })
+
 
         }
         ,
@@ -380,13 +398,13 @@ export default {
     ,
     created() {
         this.ScrollToZero();
-        this.serviceLoading=true;
+        this.serviceLoading = true;
         axios.get('/adsl/buy/online/get/session/').then(({data}) => {
             if (data.status) {
                 this.orderDetails = data.orderDetails;
                 this.productData = data.products;
                 this.serviceDetails = data.servicesDetails;
-                this.serviceLoading=false;
+                this.serviceLoading = false;
             } else {
                 Swal.fire({
                     title: " ! خطا",
@@ -416,4 +434,19 @@ export default {
     position: relative;
 }
 
+.loading-img{
+    position: absolute;
+    top: 20%;
+    right: 45%;
+    z-index: 1000;
+}
+.inLoadingStep{
+    position: absolute;
+    top: 17%;
+    left: 44%;
+    z-index: 211;
+    color: #da1f26;
+    font-size: 25px;
+
+}
 </style>

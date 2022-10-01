@@ -1,14 +1,14 @@
 <template>
-    <v-container fluid class="ourServiceWrap">
+    <v-container fluid class="ourServiceWrap " :class="$vuetify.breakpoint.smAndDown ? 'bg-cover':'bg-contain'">
         <v-container>
-            <v-row class=" ourServicesTitle">
+            <v-row class="ourServicesTitle">
                 <v-col class="d-flex justify-center ">
                     <h3>خدمات صبانت</h3>
                 </v-col>
             </v-row>
-            <v-divider class="my-2">
+<!--            <v-divider class="my-2">-->
 
-            </v-divider>
+<!--            </v-divider>-->
             <v-row class="my-5 d-flex justify-center justify-content-center" >
 
                 <v-col cols="12" md="2" class="d-flex justify-center">
@@ -80,5 +80,10 @@ export default {
 </script>
 
 <style scoped>
-
+.bg-contain{
+  background-size: contain !important;
+}
+.bg-cover{
+  background-size: cover !important;
+}
 </style>

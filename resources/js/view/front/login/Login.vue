@@ -17,7 +17,6 @@
                             ref="loginForm"
 
                         >
-
                             <v-text-field
                                 label="ایمیل یا شماره همراه"
                                 required

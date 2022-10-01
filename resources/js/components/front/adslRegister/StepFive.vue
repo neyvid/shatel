@@ -13,8 +13,6 @@
                         <p>
                             اين قرارداد بين شركت صبانت به
                             <span class="font-weight-italic ">
-
-
                             شماره ثبت 9359
                                      </span>
                             ،
@@ -22,7 +20,7 @@
                             شناسه ملی 10780077580
                                 </span>
                             و
-                            <span class="font-weight-italic ">كداقتصادي:411313957195span</span>
+                            <span class="font-weight-italic ">كداقتصادي:411313957195</span>
                             دارنده پروانه ارایه خدمات ارتباطي اینترنت ثابت (ADSL) به شماره 100-95-65 از
                             سازمان تنظيم مقررات و ارتباطات راديويي با اعتبار از مورخ 7/8/1396 به مدت 5 سال شمسی ،
                             <span class="font-weight-italic ">ایمیل info@sabanetco.com</span>

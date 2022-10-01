@@ -1,13 +1,9 @@
 <template>
     <v-main>
-
-        <carousel ></carousel>
+        <carousel></carousel>
         <online-services></online-services>
         <our-services></our-services>
         <our-news></our-news>
-
-
-
     </v-main>
 </template>
 

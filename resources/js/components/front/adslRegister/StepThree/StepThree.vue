@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-stepper-items>
+        <v-stepper-items :class="{'lowOpacity':this.opacity}">
 
             <v-stepper-content step="3">
                 <p class="mt-8">تکمیل اطلاعات </p>
@@ -8,7 +8,7 @@
 
 
                 <v-row class="mt-15" v-if="this.userInfo.length===0">
-                    <v-col cols="12" >
+                    <v-col cols="12">
 
                         <v-row justify="center">
                             <v-dialog
@@ -552,16 +552,33 @@
                     <!--                    </v-col>-->
                 </v-row>
 
-
                 <v-btn
                     color="primary"
                     @click="nextToStep4"
-                    class="mt-8"
+                    class="mt-8 "
+                    :disabled="this.isDisable"
                 >
-                    ادامه
-                    <v-icon>mdi-chevron-left</v-icon>
-
+                    <template v-if="this.loadingBtnStep">
+                        <v-progress-circular
+                            indeterminate
+                            color="white"
+                        ></v-progress-circular>
+                    </template>
+                    <template v-else>
+                        ادامه
+                        <v-icon>mdi-chevron-left</v-icon>
+                    </template>
                 </v-btn>
+                <!--                <v-btn-->
+                <!--                    color="primary"-->
+                <!--                    @click="nextToStep4"-->
+                <!--                    class="mt-8 "-->
+
+                <!--                >-->
+                <!--                    ادامه-->
+                <!--                    <v-icon>mdi-chevron-left</v-icon>-->
+
+                <!--                </v-btn>-->
                 <v-btn
                     color="warning"
                     @click="$emit('backStep')"
@@ -595,7 +612,7 @@ import router from "../../../../router/router";
 
 export default {
     name: "StepThree",
-    props: ['isUserLogin', 'userInfo', 'userKind', 'userType', 'isDisabled'],
+    props: ['isUserLogin', 'userInfo', 'userKind', 'userType', 'isDisabled', 'opacity','loadingBtnStep','isDisable'],
     data() {
         return {
 
@@ -622,6 +639,7 @@ export default {
                 {name: 'مرد', value: 1}
             ],
             loading: false,
+
             personalForm: true,
             companyForm: false,
             companyFormData: {},
@@ -878,10 +896,14 @@ export default {
     width: 133px !important;
 
 }
-.formBoxWrap,.topBoxWrap {
+
+.formBoxWrap, .topBoxWrap {
     margin: 0 auto !important;
 }
 
+.lowOpacity {
+    opacity: .2 !important;
+}
 
 
 </style>

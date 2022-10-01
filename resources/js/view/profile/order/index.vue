@@ -143,14 +143,21 @@
                         class="elevation-1"
                         :search="search"
                     >
-                        <template v-slot:item.status="{ item }">
-                            <v-chip
-                                :color="getStatusColor(item.status)"
-                                dark
-                            >
-                                {{ item.status }}
-                            </v-chip>
+                        <template  v-slot:item.status="{ item }">
+                            <template v-if="!item.status">
+                                <v-chip
+                                    :color="getStatusColor(item.status)"
+                                    dark>
+                                    {{ showStatus(item.status) }}
+                                </v-chip>
+                            </template>
 
+                            <v-chip
+                                v-else
+                                :color="getStatusColor(item.status)"
+                                dark>
+                                {{ showStatus(item.status) }}
+                            </v-chip>
                         </template>
                         <template v-slot:item.actions="{ item }">
                             <v-icon
@@ -407,9 +414,13 @@ search:'',
         }
     },
     methods: {
-        getStatusColor (status) {
-            if (status ==0) return 'red'
+        getStatusColor(status) {
+            if (status == 0) return 'red'
             else return 'green'
+        },
+        showStatus(status) {
+            if (status == 0) return 'پرداخت نشده'
+            else return 'پرداخت شده'
         },
         showDetail(item) {
             axios.get('/admin/order/detail/' + item.id).then(({data}) => {

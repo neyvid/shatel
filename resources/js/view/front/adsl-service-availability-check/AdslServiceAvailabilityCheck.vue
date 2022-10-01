@@ -177,17 +177,13 @@ export default {
                 {
                     text: 'خانه',
                     disabled: false,
-                    href: '/home',
+                    href: '/',
                 },
-                {
-                    text: 'خدمات صبانت',
-                    disabled: false,
-                    href: 'asd',
-                },
+
                 {
                     text: 'بررسی وضعیت دسترسی به ADSL2+',
                     disabled: true,
-                    href: 'dassa',
+                    href: '#',
                 },
             ],
             treeItem: [

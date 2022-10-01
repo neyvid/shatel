@@ -267,9 +267,10 @@ export default {
                     align: 'start',
                     sortable: false,
                     value: 'name',
+                    width: '30%'
                 },
                 {text: 'قیمت', value: 'price'},
-                {text: 'درصد تخفیف', value: 'discount'},
+                {text: 'درصد تخفیف', value: 'discount',width:'5%'},
                 {text: 'دسته محصول', value: 'categories[0].name'},
                 {text: 'توضیحات', value: 'description'},
                 {text: 'تصویر', value: 'image_name'},

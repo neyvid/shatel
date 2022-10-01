@@ -2,7 +2,7 @@
     <v-container fluid class="footer-bg">
         <v-container>
 
-            <v-row class="mb-8 pb-8">
+            <v-row >
                 <v-col cols="12" md="6">
 
                     <v-row>

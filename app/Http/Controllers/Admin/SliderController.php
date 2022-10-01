@@ -23,7 +23,6 @@ class SliderController extends Controller
         foreach ($sliders as $slider) {
             $slider['start_date'] = JalaliDate::convert_miladi_to_jalali($slider->start_date);
             $slider['expire_date'] = JalaliDate::convert_miladi_to_jalali($slider->expire_date);
-
         }
         return $sliders;
     }

@@ -11,7 +11,7 @@
                 <v-carousel-item
                     v-for="(item,i) in sliderData"
                     :key="i"
-                    :src="'http://shatel.org/slidersImage/'+item.id+'/'+item.picture"
+                    :src="sliderData.sliderImagePath+item.id+'/'+item.picture"
                     reverse-transition="fade-transition"
                     transition="fade-transition"
                     :href="item.link"
@@ -30,6 +30,7 @@ export default {
     data() {
         return {
             sliderData: [],
+            sliderImagePath:null,
 
         }
     },
@@ -37,6 +38,7 @@ export default {
         axios.get('/sliders/').then(({data}) => {
 
             this.sliderData = data;
+            console.log(data.sliderImagePath)
         })
     }
 }
