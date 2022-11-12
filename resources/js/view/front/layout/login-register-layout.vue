@@ -8,8 +8,8 @@
                 <v-col cols="12" md="8" class="d-flex align-center justify-center justify-sm-center">
 
 <!--                    <p class="ma-0 pa-3 fs-14 d-inline "><span>ENGLISH Version</span></p>-->
-                    <p class="ma-0 pa-2 fs-14 d-inline "><span>شماره سراسری : 1707 007 0930</span></p>
-                    <p class="ma-0 pa-2 fs-14 d-inline "><span>ارتباط با ما</span></p>
+                    <p class="ma-0 pa-2 fs-13 d-inline "><span>شماره سراسری : 1707 007 0930</span></p>
+                    <p class="ma-0 pa-2 fs-13 d-inline "><span>ارتباط با ما</span></p>
                     <v-btn class="success" :class="{'d-none':$vuetify.breakpoint.smAndDown}" :to="{name:'home'}">سایت صبانت</v-btn>
 
                 </v-col>

@@ -2,11 +2,13 @@
     <v-container fluid class="verify-email-banner-wrap">
         <v-row>
             <v-col class="d-flex justify-center align-center">
-                <p class="ma-0">شما هنوز ایمیل خود را تایید نکرده اید.</p>
-                <span v-if="sended">ایمیل به درستی ارسال شد</span>
+                <p class="ma-0 verify-text">شما هنوز ایمیل خود را تایید نکرده اید.</p>
+                <span class="verify-text-answer" v-if="sended">ایمیل با موفقیت ارسال شد</span>
                 <template v-else>
                     <v-btn :disabled="isClicked" class="success mr-4 " small rounded
-                           @click="resendVerify">ارسال مجدد لینک تایید
+                           @click="resendVerify">
+                        <template  v-if="!isClicked">ارسال مجدد لینک تایید</template>
+                        <template  v-if="isClicked">درحال ارسال...</template>
                         <v-progress-circular
                             v-if="isClicked"
                             :size="18"
@@ -53,6 +55,14 @@ export default {
 
 <style scoped>
 .verify-email-banner-wrap {
-    background-color: #ff8888;
+    background-color: #da1f26;
+}
+.verify-text {
+    color: #ffffff;
+    font-size: 14px;
+}
+.verify-text-answer {
+    color: #ffc85f;
+    font-size: 14px;
 }
 </style>

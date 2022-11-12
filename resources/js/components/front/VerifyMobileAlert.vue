@@ -3,14 +3,16 @@
         <v-row>
             <v-col class="d-flex justify-center align-center">
 
-                <p class="ma-0">شما هنوز شماره همراه خود را تایید نکرده اید.</p>
+                <p class="ma-0 verify-text">شما هنوز شماره همراه خود را تایید نکرده اید.</p>
 
                 <template v-if="sended">
-                    <span class="pr-5">کد فعال سازی برای شماره همراه شما به درستی ارسال گردید.</span>
+                    <span class="pr-5 verify-text-answer">کد فعال سازی برای شماره همراه شما به درستی ارسال گردید.</span>
                 </template>
                 <template v-else>
                     <v-btn :disabled="isClicked" class="success mr-4 " small rounded
-                           @click="resendMobileVerify">ارسال مجدد کد تایید
+                           @click="resendMobileVerify">
+                        <template  v-if="!isClicked">ارسال مجدد لینک تایید</template>
+                        <template  v-if="isClicked">درحال ارسال...</template>
                         <v-progress-circular
                             v-if="isClicked"
                             :size="18"
@@ -56,6 +58,14 @@ export default {
 
 <style scoped>
 .verify-mobile-banner-wrap {
-    background-color: #ff8888;
+    background-color: #da1f26;
+}
+.verify-text {
+    color: #ffffff;
+    font-size: 14px;
+}
+.verify-text-answer {
+    color: #ffc85f;
+    font-size: 14px;
 }
 </style>

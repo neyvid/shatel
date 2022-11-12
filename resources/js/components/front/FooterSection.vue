@@ -2,7 +2,7 @@
     <v-container fluid class="footer-bg">
         <v-container>
 
-            <v-row >
+            <v-row>
                 <v-col cols="12" md="6">
 
                     <v-row>
@@ -44,17 +44,43 @@
                         </v-col>
                         <v-col cols="12">
                             <v-row>
+
                                 <v-col cols="9" class="pl-0 ml-0">
-                                    <v-text-field
-                                        placeholder="عضویت در خبرنامه"
-                                        outlined
-                                        class="rounded-l-0 subscribeInput"
-                                        background-color="white"
-                                        flat
-                                    ></v-text-field>
+                                    <v-form
+                                        ref="subscribeEmailForm"
+
+                                    >
+                                        <v-text-field
+                                            placeholder="عضویت در خبرنامه"
+                                            outlined
+                                            class="rounded-l-0 subscribeInput"
+                                            background-color="white"
+                                            flat
+                                            :rules="[required(' ایمیل '),email()]"
+                                            v-model="subscribeEmail"
+                                            color="success"
+                                        ></v-text-field>
+                                    </v-form>
                                 </v-col>
+
                                 <v-col cols="3" class="pr-0 mr-0">
-                                    <v-btn class="subscribeBtn rounded-r-0 py-7">عضویت</v-btn>
+                                    <!--                                    <v-btn :disabled="this.subscribeBtnDisable" @click="subscribe" class="subscribeBtn rounded-r-0 py-7">عضویت</v-btn>-->
+                                    <v-btn
+                                        block
+                                        color="success"
+                                        @click="subscribe"
+                                        class="subscribeBtn rounded-r-0 py-7"
+                                        :disabled="this.subscribeBtnDisable"
+                                    >
+                                        <template v-if="loading">
+                                            <v-progress-circular
+                                                indeterminate
+                                                color="green"
+                                            ></v-progress-circular>
+                                        </template>
+                                        <template v-else>عضویت</template>
+                                    </v-btn>
+
                                 </v-col>
                             </v-row>
 
@@ -65,7 +91,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12"  md="6" class="pa-0 ma-0" :class="{'text-center':$vuetify.breakpoint.smAndDown}">
+                <v-col cols="12" md="6" class="pa-0 ma-0" :class="{'text-center':$vuetify.breakpoint.smAndDown}">
                     <p class="fs-13">
                         کپی‌رایت © ۱۴۰۰. گروه فناوری ارتباطات و اطلاعات شاتل
                     </p></v-col>
@@ -81,10 +107,15 @@
 </template>
 
 <script>
+import {required, email} from '../../rules/frontRules';
+import {ref} from "@vue/composition-api";
+import Swal from "sweetalert2";
+
 export default {
     name: "FooterSection",
     data() {
         return {
+            required, email,
             items: [
                 {
                     icon: 'mdi-wifi',
@@ -99,6 +130,45 @@ export default {
                     text: 'Data Usage',
                 },
             ],
+            subscribeBtnDisable: false,
+            loading: false,
+            subscribeEmail: null,
+        }
+
+    },
+    methods: {
+        subscribe() {
+            if (this.$refs.subscribeEmailForm.validate()) {
+                this.loading = true;
+                this.subscribeBtnDisable = true;
+                axios.post('/subscribe/add', {subscribeEmail: this.subscribeEmail}
+                ).then(({data}) => {
+
+                    if (data.status) {
+                        Swal.fire(
+                            {
+                                icon: 'success',
+                                text: 'ایمیل شما در خبر نامه با موفقیت ثبت گردید',
+                                type: 'success',
+                                confirmButtonText: 'باشه!'
+                            }
+                        )
+                    }else{
+                        Swal.fire(
+                            {
+                                icon: 'info',
+                                text: 'ایمیل شما قبلا در خبر نامه ثبت گردیده است',
+                                type: 'danger',
+                                confirmButtonText: 'باشه!'
+                            }
+                        )
+                    }
+                    this.loading = false;
+                    this.subscribeBtnDisable = false;
+                })
+
+            }
+
         }
     }
 }

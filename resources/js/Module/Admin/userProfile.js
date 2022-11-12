@@ -1,4 +1,4 @@
-import {ref} from "@vue/composition-api";
+import {watch, ref} from "@vue/composition-api";
 import {required} from "../../rules/frontRules";
 import store from "../../store";
 import router from "../../router/router";
@@ -35,10 +35,10 @@ export default function userProfile() {
     });
     const verifyMobileCode = ref(null);
     const isClick = ref(false);
+    const navid = ref('navid');
 
     function getUser() {
         axios.get('/api/user').then(({data}) => {
-
             user.value = data;
             isEmailExist.value = !!user.value.email;
             isMobileExist.value = !!user.value.mobile;
@@ -66,6 +66,7 @@ export default function userProfile() {
         if (userInfoForm.value.validate()) {
             axios.patch('/api/user/update', user.value).then((response) => {
                 disabled.value = true;
+
                 user.value = response.data;
                 isMobileExist.value = true;
                 response.data.mobile_verified_at === null ? store.state.user.user.isMobileVerified = 1 : '';
@@ -96,11 +97,20 @@ export default function userProfile() {
         })
     }
 
-    function emailConfirmation() {
+    function emailConfirmation(email) {
+
         isEmailVerifyLoading.value = true;
         axios.post('/email/resend').then((responsse) => {
+
             isClickInVerifyEmail.value = true;
             isEmailVerifyLoading.value = false;
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'لینک تایید ایمیل ، به ایمیل شما ارسال گردید',
+                showConfirmButton: false,
+                timer: 6000
+            })
         }).catch(() => {
 
         })
@@ -131,10 +141,20 @@ export default function userProfile() {
         reader.readAsDataURL(file);
     }
 
+
     getUser();
+
+    watch(user, (newValue, olfValue) => {
+        window.user.name = newValue.name;
+        window.user.lastname = newValue.lastname;
+
+    })
     return {
+
         required,
+        watch,
         user,
+        navid,
         isClick,
         disabled,
         isEmailExist,

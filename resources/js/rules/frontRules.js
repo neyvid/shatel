@@ -1,5 +1,5 @@
 export function required(text) {
-    return v => !!v || `وارد نمودن ${text} الزامی می باشد.`;
+    return v => !!v || `   وارد نمودن ${text}الزامی می باشد.  `;
 }
 
 

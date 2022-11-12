@@ -210,6 +210,8 @@
                                             @input="changePersonalFrm,birthday=$event"
                                             :disabled="isDisabled"
                                             class="birthday"
+                                            min="1320/01/01"
+                                            max="1383/12/01"
                                         >
                                         </date-picker>
                                         <v-text-field
@@ -422,7 +424,8 @@
                                         ></v-file-input>
 
                                         <date-picker v-model="companyFormData.birthday_date"
-
+                                                     min="1320/01/01"
+                                                     max="1383/12/01"
                                                      placeholder="تاریخ تولد نماینده"
                                                      color="dimgray" simple
                                                      class="agent-birthday_date"

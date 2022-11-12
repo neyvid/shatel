@@ -50,6 +50,7 @@ Route::post('/adslRegister/save/check', [\App\Http\Controllers\Front\OrderContro
 //Route::get('/create/assignPermissionToUser', [\App\Http\Controllers\Admin\CreateRolePermission::class, 'assignPermissionToUser']);
 Route::get('/menus/all', [\App\Http\Controllers\Front\MenuController::class, 'all'])->name('menus.all');
 Route::get('/sliders', [\App\Http\Controllers\Front\SliderController::class, 'all'])->name('slider.all');
+Route::post('/subscribe/add', [\App\Http\Controllers\Front\EmailSubscribe::class, 'create'])->name('subscribe.create');
 
 //Admin
 Route::prefix('admin')->group(function () {
@@ -132,6 +133,7 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/news', [App\Http\Controllers\Admin\NewsController::class, 'all'])->name('news');
     Route::post('/news/create', [App\Http\Controllers\Admin\NewsController::class, 'create'])->name('news.create');
+
 
 });
 //User panel

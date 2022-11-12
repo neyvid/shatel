@@ -1,5 +1,5 @@
 <template>
-    <v-main ref="main" >
+    <v-main ref="main">
         <v-img v-if="loading_step" src="/images/loading-step.gif" class="loading-img">
 
         </v-img>
@@ -150,10 +150,10 @@ export default {
             userType: null,
             isDisabled: false,
             serviceLoading: false,
-            opacity:false,
-            loading_step:false,
-            loadingBtnStep:false,
-            isDisable:false,
+            opacity: false,
+            loading_step: false,
+            loadingBtnStep: false,
+            isDisable: false,
 
         }
     },
@@ -228,9 +228,9 @@ export default {
         },
         nextStepTo4(userInfo) {
             this.loadingBtnStep = true;
-            this.isDisable=true;
-            this.opacity=true;
-            this.loading_step=true;
+            this.isDisable = true;
+            this.opacity = true;
+            this.loading_step = true;
             this.ScrollToZero();
             let _token = (document.querySelector('meta[name="csrf-token"]').content);
             if (!!userInfo && userInfo.user_kind === 0) {
@@ -260,11 +260,12 @@ export default {
                             confirmButtonText: 'باشه !'
                         }
                     )
-                    this.opacity=false;
-                    this.loading_step=false;
-                    this.loadingBtnStep = false;
-                    this.isDisable=false;
+
                 }
+                this.opacity = false;
+                this.loading_step = false;
+                this.loadingBtnStep = false;
+                this.isDisable = false;
             })
 
 
@@ -434,13 +435,14 @@ export default {
     position: relative;
 }
 
-.loading-img{
+.loading-img {
     position: absolute;
     top: 20%;
     right: 45%;
     z-index: 1000;
 }
-.inLoadingStep{
+
+.inLoadingStep {
     position: absolute;
     top: 17%;
     left: 44%;

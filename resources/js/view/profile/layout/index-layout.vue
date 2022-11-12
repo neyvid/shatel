@@ -13,7 +13,9 @@
                     </v-col>
 
                     <v-col cols="2" class="d-flex justify-end align-center">
-                        <v-btn class="warning" @click.prevent="logout" rounded>خروج</v-btn>
+                        <v-btn class="error mx-2" @click.prevent="logout" rounded>خروج</v-btn>
+                        <v-btn class="success mx-2" href="/"  rounded>سایت صبا نت</v-btn>
+                        <v-btn class="warning mx-2" href="/profile" rounded>اطلاعات کاربری</v-btn>
                     </v-col>
                 </v-row>
                 <v-divider>

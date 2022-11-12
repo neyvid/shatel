@@ -30,7 +30,7 @@
 
                 </v-col>
             </v-row>
-            <v-row  class="d-flex justify-center">
+            <v-row class="d-flex justify-center">
                 <v-col cols="12" md="8">
                     <v-form ref="userInfoForm">
 
@@ -43,6 +43,7 @@
                             >
 
                             </v-text-field>
+
                         </div>
 
                         <div>
@@ -56,98 +57,97 @@
                             </v-text-field>
                         </div>
 
-                        <div>
-                            <span>ایمیل:</span>
-                            <template v-if="!isClickInVerifyEmail">
-                                <v-progress-circular
-                                    indeterminate
-                                    color="red"
-                                    v-show="isEmailVerifyLoading"
-                                ></v-progress-circular>
+                        <!--                        <div>-->
+                        <!--                            <span>ایمیل:</span>-->
+                        <!--                            <template v-if="!isClickInVerifyEmail">-->
+                        <!--                                <v-progress-circular-->
+                        <!--                                    indeterminate-->
+                        <!--                                    color="red"-->
+                        <!--                                    v-show="isEmailVerifyLoading"-->
+                        <!--                                ></v-progress-circular>-->
 
-                            </template>
-                            <template v-if="!isEmailVerifyLoading">
-                                <v-btn v-if="isEmailExist && $store.state.user.user.isVerified!==2"
-                                       @click="emailConfirmation(user.email)" rounded small outlined
-                                       class="success">تایید
-                                    ایمیل
-                                </v-btn>
-                            </template>
+                        <!--                            </template>-->
+                        <!--                            <template v-if="!isEmailVerifyLoading">-->
+                        <!--                                <v-btn v-if="isEmailExist && $store.state.user.user.isVerified!==2"-->
+                        <!--                                       @click="emailConfirmation(user.email)" rounded small outlined-->
+                        <!--                                       class="success">تایید-->
+                        <!--                                    ایمیل-->
+                        <!--                                </v-btn>-->
+                        <!--                            </template>-->
 
 
+                        <!--                            <v-text-field-->
+                        <!--                                v-model="user.email"-->
+                        <!--                                :disabled="disabled"-->
+                        <!--                                :rules="[required('ایمیل')]"-->
+                        <!--                                :error-messages="errors.email"-->
+                        <!--                            >-->
+                        <!--                            </v-text-field>-->
+                        <!--                        </div>-->
 
-                            <v-text-field
-                                v-model="user.email"
-                                :disabled="disabled"
-                                :rules="[required('ایمیل')]"
-                                :error-messages="errors.email"
-                            >
-                            </v-text-field>
-                        </div>
+                        <!--                        <div>-->
 
-                        <div>
+                        <!--                            <span>شماره همراه:</span>-->
+                        <!--                            <template v-if="!isClickInVerifyMobile">-->
+                        <!--                                <v-progress-circular-->
+                        <!--                                    indeterminate-->
+                        <!--                                    color="red"-->
+                        <!--                                    v-show="isLoading"-->
+                        <!--                                ></v-progress-circular>-->
+                        <!--                                <v-btn v-show="!isLoading"-->
+                        <!--                                       v-if="isMobileExist && $store.state.user.user.isMobileVerified!==2"-->
+                        <!--                                       @click="mobileConfirmation(user.mobile)" rounded small-->
+                        <!--                                       outlined class="success">تایید شماره همراه-->
+                        <!--                                </v-btn>-->
 
-                            <span>شماره همراه:</span>
-                            <template v-if="!isClickInVerifyMobile">
-                                <v-progress-circular
-                                    indeterminate
-                                    color="red"
-                                    v-show="isLoading"
-                                ></v-progress-circular>
-                                <v-btn v-show="!isLoading"
-                                       v-if="isMobileExist && $store.state.user.user.isMobileVerified!==2"
-                                       @click="mobileConfirmation(user.mobile)" rounded small
-                                       outlined class="success">تایید شماره همراه
-                                </v-btn>
+                        <!--                            </template>-->
+                        <!--                            <template v-else>-->
+                        <!--                                <v-col cols="6">-->
+                        <!--                                    <v-otp-input-->
+                        <!--                                        length="6"-->
+                        <!--                                        v-model="verifyMobileCode"-->
+                        <!--                                    ></v-otp-input>-->
 
-                            </template>
-                            <template v-else>
-                                <v-col cols="6">
-                                    <v-otp-input
-                                        length="6"
-                                        v-model="verifyMobileCode"
-                                    ></v-otp-input>
+                        <!--                                    <v-btn :disabled="isClick" @click="verifyMobile" rounded outlined small-->
+                        <!--                                           class="success">-->
 
-                                    <v-btn :disabled="isClick" @click="verifyMobile" rounded outlined small
-                                           class="success">
+                        <!--                                        <v-progress-circular-->
+                        <!--                                            indeterminate-->
+                        <!--                                            color="amber"-->
+                        <!--                                            small-->
+                        <!--                                            size="20"-->
+                        <!--                                            v-if="isClick"-->
 
-                                        <v-progress-circular
-                                            indeterminate
-                                            color="amber"
-                                            small
-                                            size="20"
-                                            v-if="isClick"
+                        <!--                                        ></v-progress-circular>-->
+                        <!--                                        <template v-else>تایید</template>-->
+                        <!--                                    </v-btn>-->
 
-                                        ></v-progress-circular>
-                                        <template v-else>تایید</template>
-                                    </v-btn>
+                        <!--                                </v-col>-->
 
-                                </v-col>
+                        <!--                            </template>-->
 
-                            </template>
+                        <!--                            <v-text-field-->
+                        <!--                                v-model="user.mobile"-->
+                        <!--                                :disabled="disabled"-->
+                        <!--                                :rules="[required('شماره همراه')]"-->
+                        <!--                                :error-messages="errors.mobile"-->
+                        <!--                            >-->
 
-                            <v-text-field
-                                v-model="user.mobile"
-                                :disabled="disabled"
-                                :rules="[required('شماره همراه')]"
-                                :error-messages="errors.mobile"
-                            >
+                        <!--                            </v-text-field>-->
 
-                            </v-text-field>
+                        <!--                        </div>-->
 
-                        </div>
+                        <!--                        <div>-->
+                        <!--                            <span>رمزعبور:</span>-->
+                        <!--                            <v-text-field-->
+                        <!--                                v-model="user.password"-->
+                        <!--                                :disabled="disabled"-->
+                        <!--                                type="password"-->
 
-                        <div>
-                            <span>رمزعبور:</span>
-                            <v-text-field
-                                v-model="user.password"
-                                :disabled="disabled"
-                                type="password"
+                        <!--                            >-->
 
-                            >
-
-                            </v-text-field>
-                        </div>
+                        <!--                            </v-text-field>-->
+                        <!--                        </div>-->
 
                     </v-form>
 
@@ -172,12 +172,14 @@ import {mapState} from "vuex";
 export default {
     name: "home",
     setup() {
+
         return {
 
             ...userProfile(),
+
         }
 
-    },
+    }
 
 
 }
